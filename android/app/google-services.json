@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "622241807603",
+    "firebase_url": "https://catt-catt-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "catt-catt",
+    "storage_bucket": "catt-catt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:622241807603:android:186c47b8122750aa870b86",
+        "android_client_info": {
+          "package_name": "com.cattcatt.catt_catt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "622241807603-brkfk5r2ga3k9vtvo2kop2jrutf7ursj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbkUPjrXGsbUXarTHd-97K63JpyVkPlNQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "622241807603-brkfk5r2ga3k9vtvo2kop2jrutf7ursj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "622241807603-dfi8eri9qg2v6kmnufa54tob7fm3fqbg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.cattcatt.cattCatt"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
