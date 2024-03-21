@@ -13,12 +13,13 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return LoadingOverlay(
       onReady: () async {
-        // await 350.ms.wait();
+        await Future.delayed(const Duration(seconds: 7));
+        // ignore: use_build_context_synchronously
         await context.router.replace(const HomeRoute());
       },
       child: Scaffold(
         body: UpgradeAlert(
-          // upgrader: Upgrader(),
+          upgrader: Upgrader(),
           child: const Center(
             child: Text('temple'),
           ),

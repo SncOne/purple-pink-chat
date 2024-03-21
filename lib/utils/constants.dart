@@ -13,7 +13,7 @@ class C {
   static const api = _Api();
   static const hive = _Hive();
 
-  static const title = 'Temple';
+  static const title = 'Purple & Pink';
   static const restorationScopeId = 'restorationScopeId';
 
   static const designSize = Size(428, 926);
