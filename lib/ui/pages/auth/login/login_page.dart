@@ -6,6 +6,7 @@ import 'package:catt_catt/ui/shared/widgets/touchable_opacity.dart';
 import 'package:catt_catt/utils/app_router.dart';
 import 'package:catt_catt/utils/assets.dart';
 import 'package:catt_catt/utils/constants.dart';
+import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:catt_catt/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -30,9 +31,9 @@ class LoginPage extends HookConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              "Login",
-              style: TextStyle(
+            Text(
+              t.login,
+              style: const TextStyle(
                 color: Colors.deepPurple,
                 fontSize: 15,
               ),
@@ -46,9 +47,9 @@ class LoginPage extends HookConsumerWidget {
               ),
               child: TextField(
                 controller: email,
-                decoration: const InputDecoration(
-                  hintText: "Email",
-                  hintStyle: TextStyle(fontSize: 12, color: Colors.white),
+                decoration: InputDecoration(
+                  hintText: t.email,
+                  hintStyle: const TextStyle(fontSize: 12, color: Colors.white),
                 ),
               ),
             ),
@@ -60,9 +61,9 @@ class LoginPage extends HookConsumerWidget {
               ),
               child: TextField(
                 controller: password,
-                decoration: const InputDecoration(
-                  hintText: "Password",
-                  hintStyle: TextStyle(fontSize: 12, color: Colors.white),
+                decoration: InputDecoration(
+                  hintText: t.password,
+                  hintStyle: const TextStyle(fontSize: 12, color: Colors.white),
                 ),
               ),
             ),
@@ -77,9 +78,9 @@ class LoginPage extends HookConsumerWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text(
-                      'Login',
-                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    Text(
+                      t.login,
+                      style: const TextStyle(fontSize: 12, color: Colors.white),
                     ),
                     S.sizedBox.w12,
                     CustomImage.asset(

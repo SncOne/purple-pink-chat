@@ -3,7 +3,7 @@ part of 'main.dart';
 Future<ProviderContainer> init() async {
   final binding = WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
+  LocaleSettings.useDeviceLocale();
   // debugRepaintTextRainbowEnabled = true;
   // debugRepaintRainbowEnabled = true;
   // debugPaintSizeEnabled = true;

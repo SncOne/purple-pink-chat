@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:catt_catt/utils/app_router.dart';
+import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -34,9 +35,11 @@ void main() async {
         //     child: const MyApp(),
         //   ),
         // ),
-        UncontrolledProviderScope(
-          container: container,
-          child: MyApp(),
+        TranslationProvider(
+          child: UncontrolledProviderScope(
+            container: container,
+            child: MyApp(),
+          ),
         ),
       );
     },
@@ -69,15 +72,10 @@ class MyApp extends StatelessWidget {
                 );
               },
               routerConfig: _appRouter.config(),
-              supportedLocales: const [
-                Locale('en'),
-                Locale('fr'),
-                Locale('es'),
-                Locale('ru'),
-                Locale('tr'),
-              ],
+              locale: TranslationProvider.of(context).flutterLocale,
+              supportedLocales: AppLocaleUtils.supportedLocales,
               localizationsDelegates: const [
-                GlobalMaterialLocalizations.delegate,
+                ...GlobalMaterialLocalizations.delegates,
                 GlobalWidgetsLocalizations.delegate,
                 FormBuilderLocalizations.delegate,
               ],

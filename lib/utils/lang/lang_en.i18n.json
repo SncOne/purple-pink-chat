@@ -1,0 +1,14 @@
+{
+    "hello": "Hello $name",
+    "login":"Login",
+    "loginState": {
+        "success": "Logged in successfully",
+        "fail": "Logged in failed"
+    },
+    "logout":"Logout",
+    "getStarted":"Get Started",
+    "email":"Email",
+    "password":"Password",
+    "appIntro":"intro about the app xxxx xxx xx xxxxx include by mentioning the name of the app",
+    "save": "Save"
+}

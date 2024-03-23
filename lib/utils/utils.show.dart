@@ -79,7 +79,6 @@ class _Show {
     BuildContext context,
     String text, {
     Duration? duration,
-    FlashPosition? position,
     BorderRadius? borderRadius,
     Color? bgColor,
     TextStyle? textStyle,
@@ -94,18 +93,21 @@ class _Show {
       duration: duration ?? const Duration(seconds: 3),
       barrierDismissible: isDismissible ?? false,
       builder: (_, c) {
-        return Flash<T>(
-          controller: c,
-          position: position ?? FlashPosition.bottom,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            child: Text(
-              text,
-              style: textStyle ??
-                  const TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                  ),
+        return Align(
+          alignment: Alignment.bottomCenter,
+          child: Flash<T>(
+            controller: c,
+            position: FlashPosition.bottom,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              child: Text(
+                text,
+                style: textStyle ??
+                    const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
+              ),
             ),
           ),
         );

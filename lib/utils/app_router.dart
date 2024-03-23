@@ -7,6 +7,7 @@ import 'package:catt_catt/ui/pages/home/home_page.dart';
 import 'package:catt_catt/ui/pages/onboarding/onboarding_page.dart';
 import 'package:catt_catt/ui/pages/splash/splash_page.dart';
 import 'package:catt_catt/ui/pages/welcome/welcome_page.dart';
+import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:catt_catt/utils/utils.dart';
 
 part 'app_router.gr.dart';
@@ -41,10 +42,13 @@ class AuthGuard extends AutoRouteGuard {
       if (user != null) {
         resolver.next(true);
         if (user.displayName != null) {
-          Utils.show.toast(context!, 'Hoşgeldin ${user.displayName}');
+          Utils.show.toast(
+            context!,
+            t.hello(name: user.displayName!),
+          );
         }
       } else {
-        resolver.redirect(const WelcomeRoute());
+        resolver.redirect(const WelcomeRoute(), replace: true);
       }
     });
   }

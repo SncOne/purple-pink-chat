@@ -3,6 +3,7 @@ import 'package:catt_catt/ui/shared/widgets/custom_image.dart';
 import 'package:catt_catt/ui/shared/widgets/touchable_opacity.dart';
 import 'package:catt_catt/utils/app_router.dart';
 import 'package:catt_catt/utils/assets.dart';
+import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:catt_catt/utils/styles.dart';
 import 'package:flutter/material.dart';
 
@@ -39,10 +40,10 @@ class WelcomePage extends StatelessWidget {
               ],
             ),
             S.sizedBox.h32,
-            const Text(
-              "intro about the app xxxx xxx xx xxxxx include by mentioning the name of the app",
+            Text(
+              t.appIntro,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.deepPurple),
+              style: const TextStyle(color: Colors.deepPurple),
             ),
             S.sizedBox.h32,
             TouchableOpacity(
@@ -55,9 +56,9 @@ class WelcomePage extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text(
-                      'Get Started',
-                      style: TextStyle(color: Colors.white),
+                    Text(
+                      t.getStarted,
+                      style: const TextStyle(color: Colors.white),
                     ),
                     S.sizedBox.w12,
                     CustomImage.asset(

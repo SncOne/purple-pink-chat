@@ -11,6 +11,6 @@ final passwordController = Provider.autoDispose<TextEditingController>((ref) {
   return ref.useTextEditingController();
 });
 
-final authProvider = Provider<AuthService>((ref) {
+final authProvider = Provider.autoDispose<AuthService>((ref) {
   return ref.state;
 });

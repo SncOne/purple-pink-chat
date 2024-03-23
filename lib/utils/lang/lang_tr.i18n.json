@@ -1,0 +1,14 @@
+{
+    "hello": "Merhaba $name",
+    "login":"Giriş Yap",
+    "loginState": {
+        "success": "Başarıyla giriş Yapıldı",
+        "fail": "Giriş yaparken bir sorun ile karşılaşıldı"
+    },
+    "logout":"Çıkış Yap",
+    "getStarted":"Başlayalım!",
+    "email":"Email",
+    "password":"Şifre",
+    "appIntro":"Uygulama hakkında bilgi xxxx xxx xx xxxxx uygulamanın adını ekleyerek belirt",
+    "save": "Kaydet"
+}
