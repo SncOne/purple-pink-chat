@@ -32,6 +32,10 @@ class _Icons {
 class _Images {
   static const path = 'assets/images';
   final logo = '$path/logo.png';
+  final welcomePhoto1 = '$path/welcome_photo_1.png';
+  final welcomePhoto2 = '$path/welcome_photo_2.png';
+  final welcomePhoto3 = '$path/welcome_photo_3.png';
+  final welcomePhoto4 = '$path/welcome_photo_4.png';
   final logoSquare = '$path/logo_square.png';
 }
 

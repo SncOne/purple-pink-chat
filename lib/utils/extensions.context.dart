@@ -15,6 +15,16 @@ extension CheckNull on Object? {
   bool get isNotNull => this != null;
 }
 
+extension EditController on AutoDisposeRef {
+  TextEditingController useTextEditingController() {
+    final controller = TextEditingController();
+    onDispose(() {
+      controller.dispose();
+    });
+    return controller;
+  }
+}
+
 extension MediaQueryExtension on BuildContext {
   Size get mediaQuerySize => mediaQuery.size;
 

@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 enum LoadingState { idle, loading, loaded, error }
 
+enum ProfileStatus { notRegistered, profile, registered }
+
+enum OnboardingStatus { none, show }
+
 enum NotifTopics { none, all }
 
 enum EmailProvider {

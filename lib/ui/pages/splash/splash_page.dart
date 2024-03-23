@@ -13,7 +13,7 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return LoadingOverlay(
       onReady: () async {
-        await Future.delayed(const Duration(seconds: 7));
+        await Future.delayed(const Duration(seconds: 3));
         // ignore: use_build_context_synchronously
         await context.router.replace(const HomeRoute());
       },

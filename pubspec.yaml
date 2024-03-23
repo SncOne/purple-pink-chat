@@ -12,11 +12,13 @@ dependencies:
   animated_notch_bottom_bar: ^1.0.1
   auto_route: ^7.8.4
   cached_network_image: ^3.3.1
+  cloud_firestore: ^4.15.9
   connectivity_plus: ^5.0.2
   device_preview: ^1.1.0
   firebase_analytics: ^10.8.7
   firebase_auth: ^4.17.6
   firebase_core: ^2.25.5
+  firebase_storage: ^11.6.10
   flash: ^3.1.0
   flutter:
     sdk: flutter

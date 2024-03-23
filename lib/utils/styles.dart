@@ -60,6 +60,9 @@ class _SizedBox {
   final h12 = const SizedBox(height: 12);
   final h24 = const SizedBox(height: 24);
   final h32 = const SizedBox(height: 32);
+  final w12 = const SizedBox(width: 12);
+  final w24 = const SizedBox(width: 24);
+  final w32 = const SizedBox(width: 32);
 }
 
 class _TextStyles {

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:catt_catt/core/services/auth_service.dart';
 import 'package:catt_catt/ui/pages/auth/forgot/forgot_password_page.dart';
 import 'package:catt_catt/ui/pages/auth/login/login_page.dart';
 import 'package:catt_catt/ui/pages/auth/register/register_page.dart';
@@ -6,6 +7,7 @@ import 'package:catt_catt/ui/pages/home/home_page.dart';
 import 'package:catt_catt/ui/pages/onboarding/onboarding_page.dart';
 import 'package:catt_catt/ui/pages/splash/splash_page.dart';
 import 'package:catt_catt/ui/pages/welcome/welcome_page.dart';
+import 'package:catt_catt/utils/utils.dart';
 
 part 'app_router.gr.dart';
 
@@ -33,27 +35,25 @@ class AppRouter extends _$AppRouter {
 class AuthGuard extends AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
-    // the navigation is paused until resolver.next() is called with either
-    // true to resume/continue navigation or false to abort navigation
-    // if (authenticated) {
-    //   // if user is authenticated we continue
-    //   resolver.next(true);
-    // } else {
-    //   // we redirect the user to our login page
-    //   // tip: use resolver.redirect to have the redirected route
-    //   // automatically removed from the stack when the resolver is completed
-    //   resolver.redirect(LoginRoute(onResult: (success) {
-    //     // if success == true the navigation will be resumed
-    //     // else it will be aborted
-    //     resolver.next(success);
-    //   }));
-    // }
+    final context = router.navigatorKey.currentContext;
+    const authService = AuthService();
+    authService.authState.listen((user) {
+      if (user != null) {
+        resolver.next(true);
+        if (user.displayName != null) {
+          Utils.show.toast(context!, 'Hoşgeldin ${user.displayName}');
+        }
+      } else {
+        resolver.redirect(const WelcomeRoute());
+      }
+    });
   }
 }
 
 class OnboardingGuard extends AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
+    resolver.next(true);
     // the navigation is paused until resolver.next() is called with either
     // true to resume/continue navigation or false to abort navigation
     // if (authenticated) {
