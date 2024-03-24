@@ -3,10 +3,16 @@ import 'package:catt_catt/core/services/auth_service.dart';
 import 'package:catt_catt/ui/pages/auth/forgot/forgot_password_page.dart';
 import 'package:catt_catt/ui/pages/auth/login/login_page.dart';
 import 'package:catt_catt/ui/pages/auth/register/register_page.dart';
+import 'package:catt_catt/ui/pages/discover/discover_page.dart';
 import 'package:catt_catt/ui/pages/home/home_page.dart';
+import 'package:catt_catt/ui/pages/likes/likes_page.dart';
+import 'package:catt_catt/ui/pages/messages/messages_page.dart';
 import 'package:catt_catt/ui/pages/onboarding/onboarding_page.dart';
+import 'package:catt_catt/ui/pages/profile/profile_page.dart';
 import 'package:catt_catt/ui/pages/splash/splash_page.dart';
 import 'package:catt_catt/ui/pages/welcome/welcome_page.dart';
+import 'package:catt_catt/ui/shared/pages/no_connection/no_connection_page.dart';
+import 'package:catt_catt/ui/shared/pages/not_found/not_found_page.dart';
 import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:catt_catt/utils/utils.dart';
 
@@ -25,10 +31,19 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: LoginRoute.page),
         AutoRoute(page: RegisterRoute.page),
         AutoRoute(page: ForgotPasswordRoute.page),
-        AutoRoute(page: HomeRoute.page, guards: [
-          AuthGuard(),
-          OnboardingGuard(),
-        ]),
+        AutoRoute(
+          page: HomeRoute.page,
+          guards: [
+            AuthGuard(),
+            OnboardingGuard(),
+          ],
+          children: [
+            AutoRoute(page: DiscoverRoute.page),
+            AutoRoute(page: LikesRoute.page),
+            AutoRoute(page: ProfileRoute.page),
+            AutoRoute(page: MessagesRoute.page),
+          ],
+        ),
         AutoRoute(page: OnboardingRoute.page),
       ];
 }

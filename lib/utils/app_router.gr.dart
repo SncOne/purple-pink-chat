@@ -15,6 +15,12 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    DiscoverRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const DiscoverPage(),
+      );
+    },
     ForgotPasswordRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -27,16 +33,46 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const HomePage(),
       );
     },
+    LikesRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const LikesPage(),
+      );
+    },
     LoginRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const LoginPage(),
       );
     },
+    MessagesRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const MessagesPage(),
+      );
+    },
+    NoConnectionRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const NoConnectionPage(),
+      );
+    },
+    NotFoundRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const NotFoundPage(),
+      );
+    },
     OnboardingRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const OnboardingPage(),
+      );
+    },
+    ProfileRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ProfilePage(),
       );
     },
     RegisterRoute.name: (routeData) {
@@ -58,6 +94,20 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
   };
+}
+
+/// generated route for
+/// [DiscoverPage]
+class DiscoverRoute extends PageRouteInfo<void> {
+  const DiscoverRoute({List<PageRouteInfo>? children})
+      : super(
+          DiscoverRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DiscoverRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -89,6 +139,20 @@ class HomeRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [LikesPage]
+class LikesRoute extends PageRouteInfo<void> {
+  const LikesRoute({List<PageRouteInfo>? children})
+      : super(
+          LikesRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LikesRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [LoginPage]
 class LoginRoute extends PageRouteInfo<void> {
   const LoginRoute({List<PageRouteInfo>? children})
@@ -103,6 +167,48 @@ class LoginRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [MessagesPage]
+class MessagesRoute extends PageRouteInfo<void> {
+  const MessagesRoute({List<PageRouteInfo>? children})
+      : super(
+          MessagesRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MessagesRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [NoConnectionPage]
+class NoConnectionRoute extends PageRouteInfo<void> {
+  const NoConnectionRoute({List<PageRouteInfo>? children})
+      : super(
+          NoConnectionRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NoConnectionRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [NotFoundPage]
+class NotFoundRoute extends PageRouteInfo<void> {
+  const NotFoundRoute({List<PageRouteInfo>? children})
+      : super(
+          NotFoundRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NotFoundRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [OnboardingPage]
 class OnboardingRoute extends PageRouteInfo<void> {
   const OnboardingRoute({List<PageRouteInfo>? children})
@@ -112,6 +218,20 @@ class OnboardingRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'OnboardingRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ProfilePage]
+class ProfileRoute extends PageRouteInfo<void> {
+  const ProfileRoute({List<PageRouteInfo>? children})
+      : super(
+          ProfileRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ProfileRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
