@@ -25,6 +25,22 @@ extension EditController on AutoDisposeRef {
   }
 }
 
+extension AnimController on AutoDisposeRef {
+  AnimationController useAnimationController() {
+    final controller = AnimationController(
+      duration: const Duration(seconds: 3),
+      value: 1,
+      vsync: useSingleTickerProvider(),
+    );
+
+    onDispose(() {
+      controller.dispose();
+    });
+
+    return controller;
+  }
+}
+
 extension MediaQueryExtension on BuildContext {
   Size get mediaQuerySize => mediaQuery.size;
 

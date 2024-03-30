@@ -23,21 +23,27 @@ class LoginPage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 17,
-        title: const Text(C.title),
+        title: const Text(
+          C.title,
+          style: TextStyle(fontSize: 24, color: Colors.deepPurple),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              t.login,
-              style: const TextStyle(
-                color: Colors.deepPurple,
-                fontSize: 15,
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                t.login,
+                style: const TextStyle(
+                  color: Colors.deepPurple,
+                  fontSize: 15,
+                ),
+                textAlign: TextAlign.left,
               ),
-              textAlign: TextAlign.left,
             ),
             S.sizedBox.h32,
             Container(
@@ -47,8 +53,11 @@ class LoginPage extends HookConsumerWidget {
               ),
               child: TextField(
                 controller: email,
+                style: const TextStyle(fontSize: 12, color: Colors.white),
                 decoration: InputDecoration(
                   hintText: t.email,
+                  contentPadding: S.edgeInsets.all20,
+                  border: InputBorder.none,
                   hintStyle: const TextStyle(fontSize: 12, color: Colors.white),
                 ),
               ),
@@ -61,9 +70,12 @@ class LoginPage extends HookConsumerWidget {
               ),
               child: TextField(
                 controller: password,
+                style: const TextStyle(fontSize: 12, color: Colors.white),
                 decoration: InputDecoration(
                   hintText: t.password,
+                  contentPadding: S.edgeInsets.all20,
                   hintStyle: const TextStyle(fontSize: 12, color: Colors.white),
+                  border: InputBorder.none,
                 ),
               ),
             ),
@@ -82,7 +94,7 @@ class LoginPage extends HookConsumerWidget {
                       t.login,
                       style: const TextStyle(fontSize: 12, color: Colors.white),
                     ),
-                    S.sizedBox.w12,
+                    S.sizedBox.w24,
                     CustomImage.asset(
                       R.icons.send,
                       svgColor: Colors.white,

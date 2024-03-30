@@ -14,3 +14,7 @@ final passwordController = Provider.autoDispose<TextEditingController>((ref) {
 final authProvider = Provider.autoDispose<AuthService>((ref) {
   return ref.state;
 });
+
+final animationController = Provider.autoDispose<AnimationController>((ref) {
+  return ref.useAnimationController();
+});
