@@ -20,12 +20,10 @@ import 'package:catt_catt/utils/utils.dart';
 
 part 'app_router.gr.dart';
 
-@AutoRouterConfig(
-  replaceInRouteName: 'Page,Route',
-)
+@AutoRouterConfig()
 class AppRouter extends _$AppRouter {
   @override
-  RouteType get defaultRouteType => const RouteType.adaptive();
+  RouteType get defaultRouteType => const RouteType.cupertino();
   @override
   List<AutoRoute> get routes => [
         AutoRoute(page: SplashRoute.page, initial: true),
@@ -56,20 +54,20 @@ class AuthGuard extends AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
     final context = router.navigatorKey.currentContext;
-    const authService = AuthService();
-    authService.authState.listen((user) {
-      if (user != null) {
-        resolver.next(true);
-        if (user.displayName != null) {
-          Utils.show.toast(
-            context!,
-            t.hello(name: user.displayName!),
-          );
-        }
-      } else {
-        resolver.redirect(const WelcomeRoute(), replace: true);
+    final user = const AuthService().user;
+
+    if (user != null) {
+      resolver.next(true);
+      if (user.displayName!.isNotEmpty) {
+        Print.warning(user);
+        Utils.show.toast(
+          context!,
+          t.hello(name: user.displayName!),
+        );
       }
-    });
+    } else {
+      resolver.redirect(const WelcomeRoute(), replace: true);
+    }
   }
 }
 
@@ -77,25 +75,24 @@ class CreateProfileGuard extends AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
     final context = router.navigatorKey.currentContext;
-    const authService = AuthService();
-    authService.authState.listen((user) {
-      if (user != null) {
-        Print.error(
-          user.displayName,
+    final user = const AuthService().user;
+
+    if (user != null) {
+      Print.error(
+        user.displayName,
+      );
+      if (user.displayName!.isNotEmpty) {
+        resolver.next(true);
+        Utils.show.toast(
+          context!,
+          t.hello(name: user.displayName!),
         );
-        if (user.displayName != null) {
-          resolver.next(true);
-          Utils.show.toast(
-            context!,
-            t.hello(name: user.displayName!),
-          );
-        } else {
-          resolver.redirect(const CreateProfileRoute(), replace: true);
-        }
       } else {
-        resolver.redirect(const WelcomeRoute(), replace: true);
+        resolver.redirect(const CreateProfileRoute(), replace: true);
       }
-    });
+    } else {
+      resolver.redirect(const WelcomeRoute(), replace: true);
+    }
   }
 }
 
