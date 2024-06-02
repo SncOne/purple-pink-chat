@@ -11,7 +11,8 @@ class ProfilePage extends HookConsumerWidget {
       appBar: AppBar(
         title: const Text("Profile"),
       ),
-      body: const Center(
+      body: const Align(
+        alignment:Alignment.bottomCenter,
         child: Text("Profile"),
       ),
     );
