@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:catt_catt/core/services/auth_service.dart';
-import 'package:catt_catt/ui/shared/widgets/profileCard.dart';
+import 'package:catt_catt/ui/shared/widgets/profile_card.dart';
 import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -19,15 +19,20 @@ class DiscoverPage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Discover'),
-        actions: [ElevatedButton(onPressed:(){
-         Utils.show.dialog(context,Empty.dialog(content:Text('Filterr')));
-        }, child:SvgPicture.asset(R.icons.filter))],
+        actions: [
+          ElevatedButton(
+              onPressed: () {
+                Utils.show.dialog(
+                    context, const Empty.dialog(content: Text('Filterr')));
+              },
+              child: SvgPicture.asset(R.icons.filter))
+        ],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ProfileCard(),
+            const ProfileCard(),
             ElevatedButton(
               onPressed: () async {
                 await auth.logout();

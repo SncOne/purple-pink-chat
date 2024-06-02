@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:catt_catt/utils/app_router.dart';
 import 'package:catt_catt/utils/lang/strings.g.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -77,6 +78,7 @@ class MyApp extends StatelessWidget {
               localizationsDelegates: const [
                 ...GlobalMaterialLocalizations.delegates,
                 GlobalWidgetsLocalizations.delegate,
+                CountryLocalizations.delegate,
                 FormBuilderLocalizations.delegate,
               ],
             ),

@@ -9,6 +9,9 @@
     "getStarted":"Get Started",
     "email":"Email",
     "password":"Password",
+    "forgotPw":"Forgot Password",
     "appIntro":"intro about the app xxxx xxx xx xxxxx include by mentioning the name of the app",
-    "save": "Save"
+    "save": "Save",
+    "dontHaveAccount":"Don’t have an account?",
+    "register":"Sign Up"
 }

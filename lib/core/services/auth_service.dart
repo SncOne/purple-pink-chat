@@ -1,9 +1,12 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:catt_catt/utils/print.dart';
+import 'package:catt_catt/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final authService = Provider((ref) => const AuthService());
@@ -22,13 +25,15 @@ final class AuthService {
   Future<UserCredential> login({
     required String email,
     required String password,
+    required BuildContext context,
   }) async {
     try {
       return await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-    } on FirebaseAuthException {
+    } on FirebaseAuthException catch (e) {
+      Utils.show.toast(context, e.message!);
       rethrow;
     }
   }
@@ -46,7 +51,10 @@ final class AuthService {
     return userData;
   }
 
-  Future<String> uploadImage({pickedFile}) async {
+  Future<String> uploadImage({
+    required pickedFile,
+    required BuildContext context,
+  }) async {
     try {
       final path = '/files${pickedFile.name}';
       final file = File(pickedFile.path);
@@ -87,9 +95,10 @@ final class AuthService {
     }
   }
 
-  Future<UserCredential> register({
+  Future<UserCredential?> register({
     required String email,
     required String password,
+    required BuildContext context,
   }) async {
     try {
       final createdUser = await _auth.createUserWithEmailAndPassword(
@@ -97,42 +106,57 @@ final class AuthService {
         password: password,
       );
 
-      await _store.collection('users').doc(createdUser.user?.uid).set({
-        "email": email,
-      });
+      // Uncomment this section to store additional user data in Firestore
+      // await _store.collection('users').doc(createdUser.user?.uid).set({
+      //   "email": email,
+      // });
 
       return createdUser;
-    } on FirebaseAuthException {
-      rethrow;
+    } on FirebaseAuthException catch (e) {
+      Utils.show.toast(context, e.message!);
+      return null;
+    } catch (e) {
+      Print.error("Unexpected error during registration: $e");
+      Utils.show.toast(context, e.toString());
+      return null;
     }
   }
 
-  Future<void> forgotPw(String email) async {
+  Future<void> forgotPw(
+    String email,
+    BuildContext context,
+  ) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
-    } on FirebaseAuthException {
-      rethrow;
+    } on FirebaseAuthException catch (e) {
+      Utils.show.toast(context, e.message!);
     }
   }
 
-  // TODO: Future<void> updatePassword(
-  //     String currentPassword, String newPassword) async {
-  //   try {
-  //     await _auth.currentUser?.reauthenticateWithCredential(
-  //         const AuthCredential(
-  //             providerId: 'google.com', signInMethod: 'password'));
+  Future<void> updatePassword(
+    String currentPassword,
+    String newPassword,
+    BuildContext context,
+  ) async {
+    try {
+      await _auth.currentUser?.reauthenticateWithCredential(
+          const AuthCredential(
+              providerId: 'google.com', signInMethod: 'password'));
 
-  //     await _auth.currentUser?.updatePassword(newPassword);
-  //   } on FirebaseAuthException {
-  //     rethrow;
-  //   }
-  // }
+      await _auth.currentUser?.updatePassword(newPassword);
+    } on FirebaseAuthException catch (e) {
+      Utils.show.toast(context, e.message!);
+    }
+  }
 
-  Future<void> deleteAccount(String email) async {
+  Future<void> deleteAccount(
+    String email,
+    BuildContext context,
+  ) async {
     try {
       await _auth.currentUser?.delete();
-    } on FirebaseAuthException {
-      rethrow;
+    } on FirebaseAuthException catch (e) {
+      Utils.show.toast(context, e.message!);
     }
   }
 

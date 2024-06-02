@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:catt_catt/core/services/auth_service.dart';
+import 'package:catt_catt/ui/pages/auth/createProfile/create_profile_page.dart';
 import 'package:catt_catt/ui/pages/auth/forgot/forgot_password_page.dart';
 import 'package:catt_catt/ui/pages/auth/login/login_page.dart';
 import 'package:catt_catt/ui/pages/auth/register/register_page.dart';
@@ -14,6 +15,7 @@ import 'package:catt_catt/ui/pages/welcome/welcome_page.dart';
 import 'package:catt_catt/ui/shared/pages/no_connection/no_connection_page.dart';
 import 'package:catt_catt/ui/shared/pages/not_found/not_found_page.dart';
 import 'package:catt_catt/utils/lang/strings.g.dart';
+import 'package:catt_catt/utils/print.dart';
 import 'package:catt_catt/utils/utils.dart';
 
 part 'app_router.gr.dart';
@@ -30,11 +32,13 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: WelcomeRoute.page),
         AutoRoute(page: LoginRoute.page),
         AutoRoute(page: RegisterRoute.page),
+        AutoRoute(page: CreateProfileRoute.page),
         AutoRoute(page: ForgotPasswordRoute.page),
         AutoRoute(
           page: HomeRoute.page,
           guards: [
             AuthGuard(),
+            CreateProfileGuard(),
             OnboardingGuard(),
           ],
           children: [
@@ -61,6 +65,32 @@ class AuthGuard extends AutoRouteGuard {
             context!,
             t.hello(name: user.displayName!),
           );
+        }
+      } else {
+        resolver.redirect(const WelcomeRoute(), replace: true);
+      }
+    });
+  }
+}
+
+class CreateProfileGuard extends AutoRouteGuard {
+  @override
+  void onNavigation(NavigationResolver resolver, StackRouter router) {
+    final context = router.navigatorKey.currentContext;
+    const authService = AuthService();
+    authService.authState.listen((user) {
+      if (user != null) {
+        Print.error(
+          user.displayName,
+        );
+        if (user.displayName != null) {
+          resolver.next(true);
+          Utils.show.toast(
+            context!,
+            t.hello(name: user.displayName!),
+          );
+        } else {
+          resolver.redirect(const CreateProfileRoute(), replace: true);
         }
       } else {
         resolver.redirect(const WelcomeRoute(), replace: true);

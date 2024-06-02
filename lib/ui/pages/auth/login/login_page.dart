@@ -7,6 +7,7 @@ import 'package:catt_catt/utils/app_router.dart';
 import 'package:catt_catt/utils/assets.dart';
 import 'package:catt_catt/utils/constants.dart';
 import 'package:catt_catt/utils/lang/strings.g.dart';
+import 'package:catt_catt/utils/print.dart';
 import 'package:catt_catt/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -29,7 +30,7 @@ class LoginPage extends HookConsumerWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: S.edgeInsets.all24,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -79,6 +80,26 @@ class LoginPage extends HookConsumerWidget {
                 ),
               ),
             ),
+            S.sizedBox.h12,
+            Align(
+              alignment: Alignment.centerRight,
+              child: Row(
+                children: [
+                  Checkbox(
+                    value: false,
+                    onChanged: (newValue) => Print.error(newValue),
+                  ),
+                  Text(
+                    t.forgotPw,
+                    style: const TextStyle(
+                      color: Colors.deepPurple,
+                      fontSize: 15,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ],
+              ),
+            ),
             S.sizedBox.h32,
             TouchableOpacity(
               child: Container(
@@ -106,10 +127,32 @@ class LoginPage extends HookConsumerWidget {
                 await auth.login(
                   email: email.text,
                   password: password.text,
+                  context: context,
                 );
                 if (context.mounted) {
                   context.router.replace(const HomeRoute());
                 }
+              },
+            ),
+            S.sizedBox.h32,
+            Text(
+              t.dontHaveAccount,
+              style: const TextStyle(
+                color: Colors.deepPurple,
+                fontSize: 15,
+              ),
+            ),
+            TouchableOpacity(
+              child: Text(
+                t.register,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepPurple,
+                ),
+              ),
+              onTap: () {
+                context.router.replace(const RegisterRoute());
               },
             ),
           ],

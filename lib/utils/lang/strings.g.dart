@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 20 (10 per locale)
+/// Strings: 26 (13 per locale)
 ///
-/// Built on 2024-03-24 at 08:10 UTC
+/// Built on 2024-06-02 at 17:47 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -155,8 +155,11 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get getStarted => 'Get Started';
 	String get email => 'Email';
 	String get password => 'Password';
+	String get forgotPw => 'Forgot Password';
 	String get appIntro => 'intro about the app xxxx xxx xx xxxxx include by mentioning the name of the app';
 	String get save => 'Save';
+	String get dontHaveAccount => 'Don’t have an account?';
+	String get register => 'Sign Up';
 }
 
 // Path: loginState
@@ -201,8 +204,11 @@ class _StringsTr implements Translations {
 	@override String get getStarted => 'Başlayalım!';
 	@override String get email => 'Email';
 	@override String get password => 'Şifre';
+	@override String get forgotPw => 'Şifremi unuttum';
 	@override String get appIntro => 'Uygulama hakkında bilgi xxxx xxx xx xxxxx uygulamanın adını ekleyerek belirt';
 	@override String get save => 'Kaydet';
+	@override String get dontHaveAccount => 'Hesabın yok mu?';
+	@override String get register => 'Kayıt Ol';
 }
 
 // Path: loginState
@@ -230,8 +236,11 @@ extension on Translations {
 			case 'getStarted': return 'Get Started';
 			case 'email': return 'Email';
 			case 'password': return 'Password';
+			case 'forgotPw': return 'Forgot Password';
 			case 'appIntro': return 'intro about the app xxxx xxx xx xxxxx include by mentioning the name of the app';
 			case 'save': return 'Save';
+			case 'dontHaveAccount': return 'Don’t have an account?';
+			case 'register': return 'Sign Up';
 			default: return null;
 		}
 	}
@@ -248,8 +257,11 @@ extension on _StringsTr {
 			case 'getStarted': return 'Başlayalım!';
 			case 'email': return 'Email';
 			case 'password': return 'Şifre';
+			case 'forgotPw': return 'Şifremi unuttum';
 			case 'appIntro': return 'Uygulama hakkında bilgi xxxx xxx xx xxxxx uygulamanın adını ekleyerek belirt';
 			case 'save': return 'Kaydet';
+			case 'dontHaveAccount': return 'Hesabın yok mu?';
+			case 'register': return 'Kayıt Ol';
 			default: return null;
 		}
 	}

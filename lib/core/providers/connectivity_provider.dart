@@ -14,10 +14,10 @@ class ConnectivityService extends StateNotifier<bool> {
 
   Future<void> _init() async {
     final e = await _conn.checkConnectivity();
-    state = _check(e);
+    state = _check(e.first);
     if (!state) _action();
     _conn.onConnectivityChanged.listen((e) {
-      state = _check(e);
+      state = _check(e.first);
       if (!state) _action();
     });
   }

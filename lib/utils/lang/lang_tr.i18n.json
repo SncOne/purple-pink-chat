@@ -9,6 +9,9 @@
     "getStarted":"Başlayalım!",
     "email":"Email",
     "password":"Şifre",
+    "forgotPw":"Şifremi unuttum",
     "appIntro":"Uygulama hakkında bilgi xxxx xxx xx xxxxx uygulamanın adını ekleyerek belirt",
-    "save": "Kaydet"
+    "save": "Kaydet",
+    "dontHaveAccount":"Hesabın yok mu?",
+    "register":"Kayıt Ol"
 }
