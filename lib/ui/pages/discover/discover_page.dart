@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:catt_catt/core/services/auth_service.dart';
 import 'package:catt_catt/ui/shared/widgets/profile_card.dart';
+import 'package:catt_catt/utils/app_router.dart';
+import 'package:catt_catt/utils/extensions.dart';
 import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -34,8 +36,9 @@ class DiscoverPage extends HookConsumerWidget {
           children: [
             const ProfileCard(),
             ElevatedButton(
-              onPressed: () async {
-                await auth.logout();
+              onPressed: () {
+                context.showLoading(auth.logout);
+                context.router.replace(const WelcomeRoute());
               },
               child: Text(t.logout),
             )

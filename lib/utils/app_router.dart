@@ -58,15 +58,6 @@ class AuthGuard extends AutoRouteGuard {
 
     if (user != null) {
       resolver.next(true);
-      if (user.displayName != null && user.displayName!.isNotEmpty) {
-        Print.warning(user);
-        if (context != null) {
-          Utils.show.toast(
-            context,
-            t.hello(name: user.displayName!),
-          );
-        }
-      }
     } else {
       resolver.redirect(const WelcomeRoute(), replace: true);
     }
@@ -80,7 +71,7 @@ class CreateProfileGuard extends AutoRouteGuard {
     final user = const AuthService().user;
 
     if (user != null) {
-      Print.error(user.displayName);
+      Print.info(user.displayName);
       if (user.displayName != null && user.displayName!.isNotEmpty) {
         resolver.next(true);
         if (context != null) {

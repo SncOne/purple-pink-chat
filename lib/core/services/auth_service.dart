@@ -80,8 +80,7 @@ final class AuthService {
     String? sexualOrientation,
   }) async {
     if (user != null) {
-      _auth.currentUser?.updateDisplayName('$firstName $lastName');
-
+      user!.updateDisplayName('$firstName $lastName');
       storeInfo.set({
         "profileImages": profileImages ?? [],
         "firstName": firstName ?? '',

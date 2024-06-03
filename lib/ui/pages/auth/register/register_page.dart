@@ -6,6 +6,7 @@ import 'package:catt_catt/ui/shared/widgets/touchable_opacity.dart';
 import 'package:catt_catt/utils/app_router.dart';
 import 'package:catt_catt/utils/assets.dart';
 import 'package:catt_catt/utils/constants.dart';
+import 'package:catt_catt/utils/extensions.dart';
 import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:catt_catt/utils/styles.dart';
 import 'package:flutter/material.dart';
@@ -105,15 +106,17 @@ class RegisterPage extends HookConsumerWidget {
                   ],
                 ),
               ),
-              onTap: () async {
-                await auth.register(
-                  email: email.text,
-                  password: password.text,
-                  context: context,
-                );
-                if (context.mounted) {
-                  context.router.replace(const CreateProfileRoute());
-                }
+              onTap: () {
+                context.showLoading(() async {
+                  await auth.register(
+                    email: email.text,
+                    password: password.text,
+                    context: context,
+                  );
+                  if (context.mounted) {
+                    context.router.replace(const CreateProfileRoute());
+                  }
+                });
               },
             ),
           ],

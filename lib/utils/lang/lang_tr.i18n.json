@@ -13,5 +13,10 @@
     "appIntro":"Uygulama hakkında bilgi xxxx xxx xx xxxxx uygulamanın adını ekleyerek belirt",
     "save": "Kaydet",
     "dontHaveAccount":"Hesabın yok mu?",
-    "register":"Kayıt Ol"
+    "register":"Kayıt Ol",
+    "name":"İsim",
+    "lastName":"Soyisim",
+    "about":"Hakkında",
+    "birthDate":"Doğum Tarihi",
+    "location":"Lokasyon"
 }

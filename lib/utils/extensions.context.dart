@@ -8,6 +8,8 @@ extension ContextExtension on BuildContext {
   Locale get locale => Localizations.localeOf(this);
 
   FocusScopeNode get focusScopeNode => FocusScope.of(this);
+
+  OverlayState get overlay => Overlay.of(this);
 }
 
 extension CheckNull on Object? {
@@ -78,4 +80,24 @@ extension FocusScopeNodeExtension on BuildContext {
   bool nextFocus() => focusScopeNode.nextFocus();
   bool previousFocus() => focusScopeNode.previousFocus();
   void requestFocus([FocusNode? node]) => focusScopeNode.requestFocus(node);
+}
+
+extension LoadingExtension on BuildContext {
+  /// ```dart
+  /// final res = context.showLoading((){
+  /// /* Some Code */
+  /// });
+  /// ```
+  Future<T> showLoading<T>(Future<T> Function() callback) async {
+    final entry = OverlayEntry(builder: (_) => const LoadingOverlay());
+    try {
+      overlay.insert(entry);
+      final res = await callback();
+      entry.remove();
+      return res;
+    } catch (e) {
+      entry.remove();
+      rethrow;
+    }
+  }
 }

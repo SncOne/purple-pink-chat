@@ -23,7 +23,7 @@ class HomePage extends HookConsumerWidget {
       },
       builder: (context, child) {
         final tabsRouter = AutoTabsRouter.of(context);
-        Print.error(child);
+        Print.warning(child);
         return CustomBottomNavigationBar(tabsRouter, child);
       },
     );

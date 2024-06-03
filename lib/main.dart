@@ -9,16 +9,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:upgrader/upgrader.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/providers/provider_logger.dart';
 import 'firebase_options.dart';
-import 'ui/shared/widgets/loading_overlay.dart';
 import 'utils/constants.dart';
 import 'utils/extensions.dart';
 import 'utils/utils.dart';
@@ -58,30 +57,28 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       useInheritedMediaQuery: true,
       builder: (context, child) {
-        return LoadingOverlay(
-          child: Directionality(
-            textDirection: TextDirection.ltr,
-            child: MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              title: C.title,
-              restorationScopeId: C.restorationScopeId,
-              builder: (context, widget) {
-                return MediaQuery(
-                  data: context.mediaQuery
-                      .copyWith(textScaler: const TextScaler.linear(1)),
-                  child: DevicePreview.appBuilder(context, widget),
-                );
-              },
-              routerConfig: _appRouter.config(),
-              locale: TranslationProvider.of(context).flutterLocale,
-              supportedLocales: AppLocaleUtils.supportedLocales,
-              localizationsDelegates: const [
-                ...GlobalMaterialLocalizations.delegates,
-                GlobalWidgetsLocalizations.delegate,
-                CountryLocalizations.delegate,
-                FormBuilderLocalizations.delegate,
-              ],
-            ),
+        return Directionality(
+          textDirection: TextDirection.ltr,
+          child: MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            title: C.title,
+            restorationScopeId: C.restorationScopeId,
+            builder: (context, widget) {
+              return MediaQuery(
+                data: context.mediaQuery
+                    .copyWith(textScaler: const TextScaler.linear(1)),
+                child: DevicePreview.appBuilder(context, widget),
+              );
+            },
+            routerConfig: _appRouter.config(),
+            locale: TranslationProvider.of(context).flutterLocale,
+            supportedLocales: AppLocaleUtils.supportedLocales,
+            localizationsDelegates: const [
+              ...GlobalMaterialLocalizations.delegates,
+              GlobalWidgetsLocalizations.delegate,
+              CountryLocalizations.delegate,
+              FormBuilderLocalizations.delegate,
+            ],
           ),
         );
       },

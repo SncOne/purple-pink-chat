@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 26 (13 per locale)
+/// Strings: 36 (18 per locale)
 ///
-/// Built on 2024-06-02 at 17:47 UTC
+/// Built on 2024-06-03 at 22:20 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -160,6 +160,11 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get save => 'Save';
 	String get dontHaveAccount => 'Don’t have an account?';
 	String get register => 'Sign Up';
+	String get name => 'Name';
+	String get lastName => 'Last Name';
+	String get about => 'About';
+	String get birthDate => 'Birth Date';
+	String get location => 'Location';
 }
 
 // Path: loginState
@@ -209,6 +214,11 @@ class _StringsTr implements Translations {
 	@override String get save => 'Kaydet';
 	@override String get dontHaveAccount => 'Hesabın yok mu?';
 	@override String get register => 'Kayıt Ol';
+	@override String get name => 'İsim';
+	@override String get lastName => 'Soyisim';
+	@override String get about => 'Hakkında';
+	@override String get birthDate => 'Doğum Tarihi';
+	@override String get location => 'Lokasyon';
 }
 
 // Path: loginState
@@ -241,6 +251,11 @@ extension on Translations {
 			case 'save': return 'Save';
 			case 'dontHaveAccount': return 'Don’t have an account?';
 			case 'register': return 'Sign Up';
+			case 'name': return 'Name';
+			case 'lastName': return 'Last Name';
+			case 'about': return 'About';
+			case 'birthDate': return 'Birth Date';
+			case 'location': return 'Location';
 			default: return null;
 		}
 	}
@@ -262,6 +277,11 @@ extension on _StringsTr {
 			case 'save': return 'Kaydet';
 			case 'dontHaveAccount': return 'Hesabın yok mu?';
 			case 'register': return 'Kayıt Ol';
+			case 'name': return 'İsim';
+			case 'lastName': return 'Soyisim';
+			case 'about': return 'Hakkında';
+			case 'birthDate': return 'Doğum Tarihi';
+			case 'location': return 'Lokasyon';
 			default: return null;
 		}
 	}

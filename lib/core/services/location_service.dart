@@ -2,14 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final locationService = Provider((_) => LocationService());
+final locationService = Provider((_) => const LocationService());
 
-class LocationService {
-  late LocationSettings locationSettings;
+final class LocationService {
+  const LocationService();
 
-  Future<Position> determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
+  void settings() {
+    LocationSettings locationSettings;
     if (defaultTargetPlatform == TargetPlatform.android) {
       locationSettings = AndroidSettings(
         accuracy: LocationAccuracy.high,
@@ -38,6 +37,11 @@ class LocationService {
         distanceFilter: 100,
       );
     }
+  }
+
+  Future<Position> determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       return Future.error('Location services are disabled.');
