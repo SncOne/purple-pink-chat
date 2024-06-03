@@ -11,6 +11,18 @@ final passwordController = Provider.autoDispose<TextEditingController>((ref) {
   return ref.useTextEditingController();
 });
 
+final nameController = Provider.autoDispose<TextEditingController>((ref) {
+  return ref.useTextEditingController();
+});
+
+final lastNameController = Provider.autoDispose<TextEditingController>((ref) {
+  return ref.useTextEditingController();
+});
+
+final aboutController = Provider.autoDispose<TextEditingController>((ref) {
+  return ref.useTextEditingController();
+});
+
 final authProvider = Provider.autoDispose<AuthService>((ref) {
   return ref.state;
 });

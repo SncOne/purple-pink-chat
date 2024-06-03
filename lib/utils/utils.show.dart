@@ -98,15 +98,24 @@ class _Show {
           child: Flash<T>(
             controller: c,
             position: FlashPosition.bottom,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              child: Text(
-                text,
-                style: textStyle ??
-                    const TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                    ),
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 30.0),
+              decoration: BoxDecoration(
+                color: bgColor ?? Colors.deepPurple,
+                borderRadius: borderRadius ?? S.borderRadius.radius16,
+              ),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                child: Text(
+                  text,
+                  style: textStyle ??
+                      const TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        decoration: TextDecoration.none,
+                      ),
+                ),
               ),
             ),
           ),

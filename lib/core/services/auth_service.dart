@@ -71,26 +71,28 @@ final class AuthService {
     List<String>? profileImages,
     String? firstName,
     String? lastName,
-    String? sex,
+    String? gender,
     String? birthDate,
     String? location,
     List<String>? hobiesAndInterests,
-    String? relationship,
-    String? relationshipSex,
+    String? interestedGender,
+    String? lookingFor,
+    String? sexualOrientation,
   }) async {
     if (user != null) {
-      _auth.currentUser?.updateDisplayName(firstName);
+      _auth.currentUser?.updateDisplayName('$firstName $lastName');
 
       storeInfo.set({
         "profileImages": profileImages ?? [],
         "firstName": firstName ?? '',
         "lastName": lastName ?? '',
-        "sex": sex ?? '',
+        "gender": gender ?? '',
         "birthDate": birthDate ?? '',
         "location": location ?? '',
         "hobiesAndInterests": hobiesAndInterests ?? [],
-        "relationship": relationship ?? '',
-        "relationshipSex": relationshipSex ?? '',
+        "interestedGender": interestedGender ?? '',
+        "lookingFor": lookingFor ?? '',
+        "sexualOrientation": sexualOrientation ?? '',
       });
     }
   }
@@ -113,11 +115,15 @@ final class AuthService {
 
       return createdUser;
     } on FirebaseAuthException catch (e) {
-      Utils.show.toast(context, e.message!);
+      if (context.mounted) {
+        Utils.show.toast(context, e.message!);
+      }
       return null;
     } catch (e) {
       Print.error("Unexpected error during registration: $e");
-      Utils.show.toast(context, e.toString());
+      if (context.mounted) {
+        Utils.show.toast(context, e.toString());
+      }
       return null;
     }
   }
@@ -129,7 +135,9 @@ final class AuthService {
     try {
       await _auth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
-      Utils.show.toast(context, e.message!);
+      if (context.mounted) {
+        Utils.show.toast(context, e.message!);
+      }
     }
   }
 
@@ -145,7 +153,9 @@ final class AuthService {
 
       await _auth.currentUser?.updatePassword(newPassword);
     } on FirebaseAuthException catch (e) {
-      Utils.show.toast(context, e.message!);
+      if (context.mounted) {
+        Utils.show.toast(context, e.message!);
+      }
     }
   }
 
@@ -156,7 +166,9 @@ final class AuthService {
     try {
       await _auth.currentUser?.delete();
     } on FirebaseAuthException catch (e) {
-      Utils.show.toast(context, e.message!);
+      if (context.mounted) {
+        Utils.show.toast(context, e.message!);
+      }
     }
   }
 
