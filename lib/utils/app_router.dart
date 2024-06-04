@@ -51,37 +51,33 @@ class AppRouter extends _$AppRouter {
 
 class AuthGuard extends AutoRouteGuard {
   @override
-  void onNavigation(NavigationResolver resolver, StackRouter router) async {
+  void onNavigation(NavigationResolver resolver, StackRouter router) {
     const auth = AuthService();
-    final user = await auth.getUser();
-    if (user != null) {
-      resolver.next(true);
-    } else {
+    if (auth.user == null) {
       resolver.redirect(const WelcomeRoute(), replace: true);
+      return;
     }
+    resolver.next(true);
   }
 }
 
 class CreateProfileGuard extends AutoRouteGuard {
   @override
-  void onNavigation(NavigationResolver resolver, StackRouter router) async {
+  void onNavigation(NavigationResolver resolver, StackRouter router) {
     final context = router.navigatorKey.currentContext;
     const auth = AuthService();
-    final user = await auth.getUser();
-
-    if (user != null) {
-      if (auth.user?.displayName != null &&
-          auth.user!.displayName!.isNotEmpty) {
-        resolver.next(true);
-        if (context!.mounted) {
-          Utils.show.toast(context, t.hello(name: auth.user!.displayName!));
-        }
-      } else {
-        resolver.redirect(const CreateProfileRoute(), replace: true);
-      }
-    } else {
+    if (auth.user == null) {
       resolver.redirect(const WelcomeRoute(), replace: true);
+      return;
     }
+    if ((auth.user?.displayName ?? '').isEmpty) {
+      resolver.redirect(const CreateProfileRoute(), replace: true);
+      return;
+    }
+    if (context!.mounted) {
+      Utils.show.toast(context, t.hello(name: auth.user!.displayName!));
+    }
+    resolver.next();
   }
 }
 

@@ -34,14 +34,15 @@ final animationController = Provider.autoDispose<AnimationController>((ref) {
 
 final authServiceProvider = Provider((ref) => const AuthService());
 
-final userProvider = FutureProvider<UserModel>((ref) async {
-  final authService = ref.watch(authServiceProvider);
+final userProvider = FutureProvider.autoDispose<UserModel>((ref) async {
+  final authService = ref.read(authServiceProvider);
   final userData = await authService.getUser();
   return UserModel.fromJson(userData);
 });
 
-final profilesProvider = FutureProvider<List<UserModel>>((ref) async {
-  final authService = ref.watch(authServiceProvider);
+final profilesProvider =
+    FutureProvider.autoDispose<List<UserModel>>((ref) async {
+  final authService = ref.read(authServiceProvider);
   final userModels = await authService.getProfiles();
   return userModels ?? [];
 });

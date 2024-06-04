@@ -81,8 +81,8 @@ final class AuthService {
     String? sexualOrientation,
   }) async {
     if (user != null) {
-      user!.updateDisplayName('$firstName $lastName');
-      storeInfo.set({
+      await user!.updateDisplayName('$firstName $lastName');
+      await storeInfo.set({
         "uid": user!.uid,
         "firstName": firstName ?? '',
         "lastName": lastName ?? '',
@@ -126,11 +126,6 @@ final class AuthService {
         email: email,
         password: password,
       );
-
-      // Uncomment this section to store additional user data in Firestore
-      // await _store.collection('users').doc(createdUser.user?.uid).set({
-      //   "email": email,
-      // });
 
       return createdUser;
     } on FirebaseAuthException catch (e) {
