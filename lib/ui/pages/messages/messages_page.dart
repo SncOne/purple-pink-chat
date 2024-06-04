@@ -17,10 +17,11 @@ class MessagesPage extends HookConsumerWidget {
           ElevatedButton(
               onPressed: () {
                 Utils.show.bottomSheet(
-                    context,
-                    const Column(
-                      children: [],
-                    ));
+                  context,
+                  const Column(
+                    children: [],
+                  ),
+                );
               },
               child: SvgPicture.asset(R.icons.settings))
         ],

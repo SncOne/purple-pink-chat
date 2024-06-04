@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:catt_catt/core/models/user.dart';
 import 'package:catt_catt/utils/print.dart';
 import 'package:catt_catt/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -82,9 +83,10 @@ final class AuthService {
     if (user != null) {
       user!.updateDisplayName('$firstName $lastName');
       storeInfo.set({
-        "profileImages": profileImages ?? [],
+        "uid": user!.uid,
         "firstName": firstName ?? '',
         "lastName": lastName ?? '',
+        "profileImages": profileImages ?? [],
         "gender": gender ?? '',
         "birthDate": birthDate ?? '',
         "location": location ?? '',
@@ -94,6 +96,24 @@ final class AuthService {
         "sexualOrientation": sexualOrientation ?? '',
       });
     }
+  }
+
+  Future<List<UserModel>>? getProfiles() async {
+    final usersProfileList = <UserModel>[];
+    if (user != null) {
+      final usersProfilesQuery =
+          _store.collection('users').where('uid', isNotEqualTo: user!.uid);
+
+      final usersProfilesSnapshot = await usersProfilesQuery.get();
+
+      final usersProfiles = usersProfilesSnapshot.docs;
+
+      for (var doc in usersProfiles) {
+        Print.warning(doc.data());
+        usersProfileList.add(UserModel.fromJson(doc.data()));
+      }
+    }
+    return usersProfileList;
   }
 
   Future<UserCredential?> register({

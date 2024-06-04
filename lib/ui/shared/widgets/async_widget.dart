@@ -1,3 +1,4 @@
+import 'package:catt_catt/utils/print.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -18,7 +19,12 @@ class AsyncWidget<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return data.when(
       data: builder,
-      error: error ?? (_, __) => const Center(child: Text('err')),
+      error: error ??
+          (e, err) {
+            Print.error(e);
+            Print.warning(err);
+            return const Center(child: Text('err'));
+          },
       loading: () {
         return loading ?? const Center(child: CircularProgressIndicator());
       },

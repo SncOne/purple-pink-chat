@@ -1,3 +1,4 @@
+import 'package:catt_catt/core/models/user.dart';
 import 'package:catt_catt/core/services/auth_service.dart';
 import 'package:catt_catt/utils/extensions.dart';
 import 'package:flutter/material.dart';
@@ -29,4 +30,18 @@ final authProvider = Provider.autoDispose<AuthService>((ref) {
 
 final animationController = Provider.autoDispose<AnimationController>((ref) {
   return ref.useAnimationController();
+});
+
+final authServiceProvider = Provider((ref) => const AuthService());
+
+final userProvider = FutureProvider<UserModel>((ref) async {
+  final authService = ref.watch(authServiceProvider);
+  final userData = await authService.getUser();
+  return UserModel.fromJson(userData);
+});
+
+final profilesProvider = FutureProvider<List<UserModel>>((ref) async {
+  final authService = ref.watch(authServiceProvider);
+  final userModels = await authService.getProfiles();
+  return userModels ?? [];
 });

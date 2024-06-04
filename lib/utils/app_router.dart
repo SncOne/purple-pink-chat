@@ -15,7 +15,6 @@ import 'package:catt_catt/ui/pages/welcome/welcome_page.dart';
 import 'package:catt_catt/ui/shared/pages/no_connection/no_connection_page.dart';
 import 'package:catt_catt/ui/shared/pages/not_found/not_found_page.dart';
 import 'package:catt_catt/utils/lang/strings.g.dart';
-import 'package:catt_catt/utils/print.dart';
 import 'package:catt_catt/utils/utils.dart';
 
 part 'app_router.gr.dart';
@@ -52,10 +51,9 @@ class AppRouter extends _$AppRouter {
 
 class AuthGuard extends AutoRouteGuard {
   @override
-  void onNavigation(NavigationResolver resolver, StackRouter router) {
-    final context = router.navigatorKey.currentContext;
-    final user = const AuthService().user;
-
+  void onNavigation(NavigationResolver resolver, StackRouter router) async {
+    const auth = AuthService();
+    final user = await auth.getUser();
     if (user != null) {
       resolver.next(true);
     } else {
@@ -66,19 +64,17 @@ class AuthGuard extends AutoRouteGuard {
 
 class CreateProfileGuard extends AutoRouteGuard {
   @override
-  void onNavigation(NavigationResolver resolver, StackRouter router) {
+  void onNavigation(NavigationResolver resolver, StackRouter router) async {
     final context = router.navigatorKey.currentContext;
-    final user = const AuthService().user;
+    const auth = AuthService();
+    final user = await auth.getUser();
 
     if (user != null) {
-      Print.info(user.displayName);
-      if (user.displayName != null && user.displayName!.isNotEmpty) {
+      if (auth.user?.displayName != null &&
+          auth.user!.displayName!.isNotEmpty) {
         resolver.next(true);
-        if (context != null) {
-          Utils.show.toast(
-            context,
-            t.hello(name: user.displayName!),
-          );
+        if (context!.mounted) {
+          Utils.show.toast(context, t.hello(name: auth.user!.displayName!));
         }
       } else {
         resolver.redirect(const CreateProfileRoute(), replace: true);

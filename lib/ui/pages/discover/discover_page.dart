@@ -23,9 +23,10 @@ class DiscoverPage extends HookConsumerWidget {
         title: const Text('Discover'),
         actions: [
           ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 Utils.show.dialog(
                     context, const Empty.dialog(content: Text('Filterr')));
+                await auth.getProfiles();
               },
               child: SvgPicture.asset(R.icons.filter))
         ],

@@ -510,13 +510,15 @@ class CreateProfilePage extends HookConsumerWidget {
                               lookingFor: lookingFor.value,
                               sexualOrientation: sexualOrientation.value,
                             );
+                            await auth.getUser();
                           } catch (e) {
                             if (context.mounted) {
                               Utils.show.toast(context, 'Error: $e');
                             }
-                          }
-                          if (context.mounted) {
-                            context.router.replace(const HomeRoute());
+                          } finally {
+                            if (context.mounted) {
+                              context.router.replace(const HomeRoute());
+                            }
                           }
                         },
                       );
