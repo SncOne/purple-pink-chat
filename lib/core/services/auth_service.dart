@@ -94,6 +94,11 @@ final class AuthService {
         "interestedGender": interestedGender ?? '',
         "lookingFor": lookingFor ?? '',
         "sexualOrientation": sexualOrientation ?? '',
+        "isAdmin": false, //For admin account
+        "matchedIDs": [],
+        "likedIDs": [],
+        "subscription":
+            false, //For no subs its false it will turn true when its subscribed
       });
     }
   }
