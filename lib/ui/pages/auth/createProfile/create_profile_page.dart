@@ -14,6 +14,7 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -39,6 +40,8 @@ class CreateProfilePage extends HookConsumerWidget {
     final interestedGender = useState<String>('');
     final sexualOrientation = useState<String>('');
     final lookingFor = useState<String>('');
+
+    final formKey = GlobalKey<FormBuilderState>();
 
     void pickImage(int index) {
       context.showLoading(() async {
@@ -75,8 +78,13 @@ class CreateProfilePage extends HookConsumerWidget {
       });
     }
 
-    String? ageValidator(DateTime? date) {
-      if (date == null) return 'Please enter your birth date';
+    void removeImage(int index) {
+      imageFiles.value.removeAt(index);
+      imageFiles.value = List.from(imageFiles.value);
+    }
+
+    bool ageValidator(DateTime? date) {
+      if (date == null) return false;
       final today = DateTime.now();
       final age = today.year - date.year;
       final isBeforeBirthdayThisYear = (today.month < date.month) ||
@@ -84,9 +92,57 @@ class CreateProfilePage extends HookConsumerWidget {
       final adjustedAge = isBeforeBirthdayThisYear ? age - 1 : age;
 
       if (adjustedAge < 18) {
-        return 'You must be over 18';
+        return true;
       }
-      return null;
+      return false;
+    }
+
+    void saveProfile() {
+      if (name.text.isNotEmpty &&
+          lastname.text.isNotEmpty &&
+          birthDate.value.isNotNull &&
+          imageFiles.isNotNull) {
+        if (ageValidator(birthDate.value)) {
+          Utils.show.toast(context, "18 yaşından büyük olmalısın.");
+        } else {
+          context.showLoading(
+            () async {
+              try {
+                List<String> imageUrls = [];
+                for (var image in imageFiles.value) {
+                  String imageUrl = await auth.uploadImage(
+                      pickedFile: image, context: context);
+                  imageUrls.add(imageUrl);
+                }
+                await auth.updateProfile(
+                  firstName: name.text,
+                  lastName: lastname.text,
+                  profileImages: imageUrls,
+                  birthDate: birthDate.value.toString(),
+                  location: selectedCountry.value,
+                  hobiesAndInterests: hobbies.value,
+                  gender: gender.value,
+                  interestedGender: interestedGender.value,
+                  lookingFor: lookingFor.value,
+                  sexualOrientation: sexualOrientation.value,
+                );
+                await auth.getUser();
+              } catch (e) {
+                if (context.mounted) {
+                  Utils.show.toast(context, 'Error: $e');
+                }
+              } finally {
+                if (context.mounted) {
+                  context.router.replace(const HomeRoute());
+                }
+              }
+            },
+          );
+        }
+      } else {
+        Utils.show.toast(context,
+            "Fotoğraf, İsim, Soyisim ve Doğum Tarihi alanları zorunludur.");
+      }
     }
 
     return Scaffold(
@@ -99,437 +155,423 @@ class CreateProfilePage extends HookConsumerWidget {
       ),
       body: Padding(
         padding: S.edgeInsets.all24,
-        child: IntroductionScreen(
-          key: introKey,
-          pages: [
-            PageViewModel(
-              titleWidget: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  t.login.toUpperCase(),
-                  style: const TextStyle(
-                    color: Colors.deepPurple,
-                    fontSize: 15,
+        child: FormBuilder(
+          key: formKey,
+          child: IntroductionScreen(
+            key: introKey,
+            pages: [
+              PageViewModel(
+                titleWidget: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    t.login.toUpperCase(),
+                    style: const TextStyle(
+                      color: Colors.deepPurple,
+                      fontSize: 15,
+                    ),
+                    textAlign: TextAlign.left,
                   ),
-                  textAlign: TextAlign.left,
                 ),
-              ),
-              bodyWidget: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Wrap(
-                    spacing: 8.0,
-                    runSpacing: 8.0,
-                    children: List.generate(6, (index) {
-                      return Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () => pickImage(index),
-                            child: Container(
-                              width: 100,
-                              height: 100,
-                              color: Colors.deepPurple,
-                              child: index < imageFiles.value.length
-                                  ? Image.file(
-                                      File(imageFiles.value[index].path),
-                                      fit: BoxFit.cover,
-                                    )
-                                  : const Icon(
-                                      Icons.add_a_photo,
-                                      size: 40,
-                                      color: Colors.white70,
-                                    ),
+                bodyWidget: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Wrap(
+                      spacing: 8.0,
+                      runSpacing: 8.0,
+                      children: List.generate(6, (index) {
+                        return Stack(
+                          children: [
+                            GestureDetector(
+                              onTap: () => pickImage(index),
+                              child: Container(
+                                width: 100,
+                                height: 100,
+                                color: Colors.deepPurple,
+                                child: index < imageFiles.value.length
+                                    ? Image.file(
+                                        File(imageFiles.value[index].path),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : const Icon(
+                                        Icons.add_a_photo,
+                                        size: 40,
+                                        color: Colors.white70,
+                                      ),
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text('Image ${index + 1}'),
-                        ],
-                      );
-                    }),
-                  ),
-                  S.sizedBox.h24,
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                          decoration: BoxDecoration(
-                            color: const Color(0xff52388A),
-                            borderRadius: S.borderRadius.radius50,
-                          ),
-                          child: TextField(
-                            controller: name,
-                            style: const TextStyle(
-                                fontSize: 12, color: Colors.white),
-                            decoration: InputDecoration(
-                              hintText: t.name,
-                              contentPadding: S.edgeInsets.all20,
-                              border: InputBorder.none,
-                              hintStyle: const TextStyle(
+                            if (index < imageFiles.value.length)
+                              Positioned(
+                                right: 0,
+                                top: 0,
+                                child: GestureDetector(
+                                  onTap: () => removeImage(index),
+                                  child: const Icon(
+                                    Icons.close,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                            const SizedBox(height: 8),
+                            Text('Image ${index + 1}'),
+                          ],
+                        );
+                      }),
+                    ),
+                    S.sizedBox.h24,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                            decoration: BoxDecoration(
+                              color: const Color(0xff52388A),
+                              borderRadius: S.borderRadius.radius50,
+                            ),
+                            child: FormBuilderTextField(
+                              name: 'firstName',
+                              controller: name,
+                              style: const TextStyle(
                                   fontSize: 12, color: Colors.white),
+                              decoration: InputDecoration(
+                                hintText: t.name,
+                                contentPadding: S.edgeInsets.all20,
+                                border: InputBorder.none,
+                                hintStyle: const TextStyle(
+                                    fontSize: 12, color: Colors.white),
+                              ),
+                              validator: FormBuilderValidators.required(),
                             ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                          decoration: BoxDecoration(
-                            color: const Color(0xff52388A),
-                            borderRadius: S.borderRadius.radius50,
-                          ),
-                          child: TextField(
-                            controller: lastname,
-                            style: const TextStyle(
-                                fontSize: 12, color: Colors.white),
-                            decoration: InputDecoration(
-                              hintText: t.lastName,
-                              contentPadding: S.edgeInsets.all20,
-                              border: InputBorder.none,
-                              hintStyle: const TextStyle(
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                            decoration: BoxDecoration(
+                              color: const Color(0xff52388A),
+                              borderRadius: S.borderRadius.radius50,
+                            ),
+                            child: FormBuilderTextField(
+                              name: 'lastName',
+                              controller: lastname,
+                              style: const TextStyle(
                                   fontSize: 12, color: Colors.white),
+                              decoration: InputDecoration(
+                                hintText: t.lastName,
+                                contentPadding: S.edgeInsets.all20,
+                                border: InputBorder.none,
+                                hintStyle: const TextStyle(
+                                    fontSize: 12, color: Colors.white),
+                              ),
+                              validator: FormBuilderValidators.required(),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  S.sizedBox.h24,
-                  Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        padding: WidgetStateProperty.all(S.edgeInsets.all20),
-                        backgroundColor: WidgetStateProperty.all<Color>(
-                            const Color(0xff52388A)),
-                        foregroundColor:
-                            WidgetStateProperty.all<Color>(Colors.white),
-                      ),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(selectedCountry.value),
-                      ),
-                      onPressed: () => showCountryPicker(
-                        context: context,
-                        showPhoneCode: false,
-                        onSelect: (Country country) {
-                          selectedCountry.value =
-                              country.displayNameNoCountryCode;
-                        },
-                      ),
-                    ),
-                  ),
-                  S.sizedBox.h24,
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: FormBuilderDateTimePicker(
-                      name: "birthDate",
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      decoration: InputDecoration(
-                        hintText: t.birthDate,
-                        contentPadding: S.edgeInsets.all20,
-                        hintStyle: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                        ),
-                        fillColor: const Color(0xff52388A),
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderRadius: S.borderRadius.radius50,
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                      initialValue: birthDate.value,
-                      validator: ageValidator,
-                      firstDate: DateTime(1960),
-                      lastDate: DateTime.now(),
-                      inputType: InputType.date,
-                      initialEntryMode: DatePickerEntryMode.calendarOnly,
-                      format: DateFormat('yyyy-MM-dd'),
-                      onChanged: (value) => birthDate.value = value,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            PageViewModel(
-              titleWidget: const Text(
-                'Select Your Hobbies and Interests',
-                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
-              ),
-              bodyWidget: Column(
-                children: [
-                  ChipsChoice<String>.multiple(
-                    value: hobbies.value,
-                    onChanged: (val) => hobbies.value = val,
-                    wrapped: true,
-                    choiceCheckmark: true,
-                    choiceStyle: C2ChipStyle.filled(
-                      borderWidth: 1,
-                      borderStyle: BorderStyle.solid,
-                      foregroundColor: Colors.deepPurple,
-                      color: Colors.grey[300],
-                      selectedStyle: const C2ChipStyle(
-                        borderColor: Colors.deepPurple,
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.deepPurple,
-                      ),
-                    ),
-                    choiceItems: C2Choice.listFrom<String, String>(
-                      source: [
-                        'Wrestling',
-                        'Sailing',
-                        'Triathlon',
-                        'Sauna',
-                        'Comedy',
-                        'Gym & Fitness',
-                        'Gaming',
-                        'Book',
-                        'Cripto',
-                        'NFT',
-                        'Football',
-                        'Basketball',
-                        'Volleyball',
-                        'Gliding',
-                        'Climbing',
-                        'Diving',
-                        'Movies',
-                        'TV Shows',
-                        'Anime',
-                        'Technology',
-                        'Music',
-                        'Traveling',
-                        'Cooking',
-                        'Meditation',
-                        'Hunting',
-                        'Swimming'
                       ],
-                      value: (i, v) => v,
-                      label: (i, v) => v,
                     ),
-                  ),
-                  S.sizedBox.h24,
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                    decoration: BoxDecoration(
-                      color: const Color(0xff52388A),
-                      borderRadius: S.borderRadius.radius16,
+                    S.sizedBox.h24,
+                    Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          padding: WidgetStateProperty.all(S.edgeInsets.all20),
+                          backgroundColor: WidgetStateProperty.all<Color>(
+                              const Color(0xff52388A)),
+                          foregroundColor:
+                              WidgetStateProperty.all<Color>(Colors.white),
+                        ),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(selectedCountry.value),
+                        ),
+                        onPressed: () => showCountryPicker(
+                          context: context,
+                          showPhoneCode: false,
+                          onSelect: (Country country) {
+                            selectedCountry.value = country.name;
+                          },
+                        ),
+                      ),
                     ),
-                    child: TextField(
-                      controller: about,
-                      style: const TextStyle(fontSize: 12, color: Colors.white),
-                      minLines: 4,
-                      maxLines: 8,
-                      decoration: InputDecoration(
-                        hintText: t.about,
-                        contentPadding: S.edgeInsets.all20,
-                        border: InputBorder.none,
-                        hintStyle:
+                    S.sizedBox.h24,
+                    Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xff52388A),
+                        borderRadius: S.borderRadius.radius50,
+                      ),
+                      child: FormBuilderDateTimePicker(
+                        name: 'birthDate',
+                        initialValue: birthDate.value,
+                        style:
                             const TextStyle(fontSize: 12, color: Colors.white),
+                        decoration: InputDecoration(
+                          hintText: t.birthDate,
+                          contentPadding: S.edgeInsets.all20,
+                          border: InputBorder.none,
+                          hintStyle: const TextStyle(
+                              fontSize: 12, color: Colors.white),
+                        ),
+                        inputType: InputType.date,
+                        format: DateFormat('yyyy-MM-dd'),
+                        onChanged: (val) => birthDate.value = val,
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            PageViewModel(
-              titleWidget: const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Looking For',
-                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                  ],
                 ),
               ),
-              bodyWidget: Column(
-                children: [
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Your Gender',
-                      style: TextStyle(fontSize: 14, color: Colors.deepPurple),
+              PageViewModel(
+                titleWidget: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    t.register.toUpperCase(),
+                    style: const TextStyle(
+                      color: Colors.deepPurple,
+                      fontSize: 15,
                     ),
+                    textAlign: TextAlign.left,
                   ),
-                  ChipsChoice<String>.single(
-                    value: gender.value,
-                    onChanged: (val) => gender.value = val,
-                    wrapped: true,
-                    choiceCheckmark: true,
-                    choiceStyle: C2ChipStyle.filled(
-                      borderWidth: 1,
-                      borderStyle: BorderStyle.solid,
-                      foregroundColor: Colors.deepPurple,
-                      color: Colors.grey[300],
-                      selectedStyle: const C2ChipStyle(
-                        borderColor: Colors.deepPurple,
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.deepPurple,
+                ),
+                bodyWidget: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                      decoration: BoxDecoration(
+                        color: const Color(0xff52388A),
+                        borderRadius: S.borderRadius.radius12,
+                      ),
+                      child: FormBuilderTextField(
+                        name: 'about',
+                        controller: about,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.white,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: t.about,
+                          contentPadding: S.edgeInsets.all20,
+                          border: InputBorder.none,
+                          hintStyle: const TextStyle(
+                              fontSize: 12, color: Colors.white),
+                        ),
+                        maxLines: 3,
                       ),
                     ),
-                    choiceItems: C2Choice.listFrom<String, String>(
-                      source: [
-                        'Male',
-                        'Female',
-                      ],
-                      value: (i, v) => v,
-                      label: (i, v) => v,
-                    ),
-                  ),
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Gender You Are Interested',
-                      style: TextStyle(fontSize: 14, color: Colors.deepPurple),
-                    ),
-                  ),
-                  ChipsChoice<String>.single(
-                    value: interestedGender.value,
-                    onChanged: (val) => interestedGender.value = val,
-                    wrapped: true,
-                    choiceCheckmark: true,
-                    choiceStyle: C2ChipStyle.filled(
-                      borderWidth: 1,
-                      borderStyle: BorderStyle.solid,
-                      foregroundColor: Colors.deepPurple,
-                      color: Colors.grey[300],
-                      selectedStyle: const C2ChipStyle(
-                        borderColor: Colors.deepPurple,
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.deepPurple,
+                    ChipsChoice<String>.multiple(
+                      value: hobbies.value,
+                      onChanged: (val) => hobbies.value = val,
+                      wrapped: true,
+                      choiceCheckmark: true,
+                      choiceStyle: C2ChipStyle.filled(
+                        borderWidth: 1,
+                        borderStyle: BorderStyle.solid,
+                        foregroundColor: Colors.deepPurple,
+                        color: Colors.grey[300],
+                        selectedStyle: const C2ChipStyle(
+                          borderColor: Colors.deepPurple,
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.deepPurple,
+                        ),
+                      ),
+                      choiceItems: C2Choice.listFrom<String, String>(
+                        source: [
+                          'Wrestling',
+                          'Sailing',
+                          'Triathlon',
+                          'Sauna',
+                          'Comedy',
+                          'Gym & Fitness',
+                          'Gaming',
+                          'Book',
+                          'Cripto',
+                          'NFT',
+                          'Football',
+                          'Basketball',
+                          'Volleyball',
+                          'Gliding',
+                          'Climbing',
+                          'Diving',
+                          'Movies',
+                          'TV Shows',
+                          'Anime',
+                          'Technology',
+                          'Music',
+                          'Traveling',
+                          'Cooking',
+                          'Meditation',
+                          'Hunting',
+                          'Swimming'
+                        ],
+                        value: (i, v) => v,
+                        label: (i, v) => v,
                       ),
                     ),
-                    choiceItems: C2Choice.listFrom<String, String>(
-                      source: [
-                        'Male',
-                        'Female',
-                      ],
-                      value: (i, v) => v,
-                      label: (i, v) => v,
-                    ),
+                  ],
+                ),
+              ),
+              PageViewModel(
+                titleWidget: const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Your Gender',
+                    style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                   ),
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Your Sexual Orientation',
-                      style: TextStyle(fontSize: 14, color: Colors.deepPurple),
-                    ),
-                  ),
-                  ChipsChoice<String>.single(
-                    value: sexualOrientation.value,
-                    onChanged: (val) => sexualOrientation.value = val,
-                    wrapped: true,
-                    choiceCheckmark: true,
-                    choiceStyle: C2ChipStyle.filled(
-                      borderWidth: 1,
-                      borderStyle: BorderStyle.solid,
-                      foregroundColor: Colors.deepPurple,
-                      color: Colors.grey[300],
-                      selectedStyle: const C2ChipStyle(
-                        borderColor: Colors.deepPurple,
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.deepPurple,
+                ),
+                bodyWidget: Column(
+                  children: [
+                    ChipsChoice<String>.single(
+                      value: gender.value,
+                      onChanged: (val) => gender.value = val,
+                      wrapped: true,
+                      choiceCheckmark: true,
+                      choiceStyle: C2ChipStyle.filled(
+                        borderWidth: 1,
+                        borderStyle: BorderStyle.solid,
+                        foregroundColor: Colors.deepPurple,
+                        color: Colors.grey[300],
+                        selectedStyle: const C2ChipStyle(
+                          borderColor: Colors.deepPurple,
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.deepPurple,
+                        ),
+                      ),
+                      choiceItems: C2Choice.listFrom<String, String>(
+                        source: [
+                          'Male',
+                          'Female',
+                        ],
+                        value: (i, v) => v,
+                        label: (i, v) => v,
                       ),
                     ),
-                    choiceItems: C2Choice.listFrom<String, String>(
-                      source: [
-                        'Straight',
-                        'Gay',
-                        'Lesbian',
-                        'Bisexual',
-                        'Asexual',
-                        'Demisexual',
-                        'Pansexual',
-                        'Bicurious',
-                        'Queer',
-                      ],
-                      value: (i, v) => v,
-                      label: (i, v) => v,
-                    ),
-                  ),
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'You Are Looking For',
-                      style: TextStyle(fontSize: 14, color: Colors.deepPurple),
-                    ),
-                  ),
-                  ChipsChoice<String>.single(
-                    value: lookingFor.value,
-                    onChanged: (val) => lookingFor.value = val,
-                    wrapped: true,
-                    choiceCheckmark: true,
-                    choiceStyle: C2ChipStyle.filled(
-                      borderWidth: 1,
-                      borderStyle: BorderStyle.solid,
-                      foregroundColor: Colors.deepPurple,
-                      color: Colors.grey[300],
-                      selectedStyle: const C2ChipStyle(
-                        borderColor: Colors.deepPurple,
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.deepPurple,
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Gender You Are Interested',
+                        style:
+                            TextStyle(fontSize: 14, color: Colors.deepPurple),
                       ),
                     ),
-                    choiceItems: C2Choice.listFrom<String, String>(
-                      source: [
-                        'Long-term Partner',
-                        'Short-term Fun',
-                        'Long-term Open Relationship',
-                        'Short-term Open Relationship',
-                        'New Friends',
-                        'Still Figuring It Out',
-                      ],
-                      value: (i, v) => v,
-                      label: (i, v) => v,
+                    ChipsChoice<String>.single(
+                      value: interestedGender.value,
+                      onChanged: (val) => interestedGender.value = val,
+                      wrapped: true,
+                      choiceCheckmark: true,
+                      choiceStyle: C2ChipStyle.filled(
+                        borderWidth: 1,
+                        borderStyle: BorderStyle.solid,
+                        foregroundColor: Colors.deepPurple,
+                        color: Colors.grey[300],
+                        selectedStyle: const C2ChipStyle(
+                          borderColor: Colors.deepPurple,
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.deepPurple,
+                        ),
+                      ),
+                      choiceItems: C2Choice.listFrom<String, String>(
+                        source: [
+                          'Male',
+                          'Female',
+                        ],
+                        value: (i, v) => v,
+                        label: (i, v) => v,
+                      ),
                     ),
-                  ),
-                  ElevatedButton(
-                    child: Text(t.save),
-                    onPressed: () {
-                      context.showLoading(
-                        () async {
-                          try {
-                            List<String> imageUrls = [];
-                            for (var image in imageFiles.value) {
-                              String imageUrl = await auth.uploadImage(
-                                  pickedFile: image, context: context);
-                              imageUrls.add(imageUrl);
-                            }
-                            await auth.updateProfile(
-                              firstName: name.text,
-                              lastName: lastname.text,
-                              profileImages: imageUrls,
-                              birthDate: birthDate.value.toString(),
-                              location: selectedCountry.value,
-                              hobiesAndInterests: hobbies.value,
-                              gender: gender.value,
-                              interestedGender: interestedGender.value,
-                              lookingFor: lookingFor.value,
-                              sexualOrientation: sexualOrientation.value,
-                            );
-                            await auth.getUser();
-                          } catch (e) {
-                            if (context.mounted) {
-                              Utils.show.toast(context, 'Error: $e');
-                            }
-                          } finally {
-                            if (context.mounted) {
-                              context.router.replace(const HomeRoute());
-                            }
-                          }
-                        },
-                      );
-                    },
-                  ),
-                ],
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Your Sexual Orientation',
+                        style:
+                            TextStyle(fontSize: 14, color: Colors.deepPurple),
+                      ),
+                    ),
+                    ChipsChoice<String>.single(
+                      value: sexualOrientation.value,
+                      onChanged: (val) => sexualOrientation.value = val,
+                      wrapped: true,
+                      choiceCheckmark: true,
+                      choiceStyle: C2ChipStyle.filled(
+                        borderWidth: 1,
+                        borderStyle: BorderStyle.solid,
+                        foregroundColor: Colors.deepPurple,
+                        color: Colors.grey[300],
+                        selectedStyle: const C2ChipStyle(
+                          borderColor: Colors.deepPurple,
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.deepPurple,
+                        ),
+                      ),
+                      choiceItems: C2Choice.listFrom<String, String>(
+                        source: [
+                          'Straight',
+                          'Gay',
+                          'Lesbian',
+                          'Bisexual',
+                          'Asexual',
+                          'Demisexual',
+                          'Pansexual',
+                          'Bicurious',
+                          'Queer',
+                        ],
+                        value: (i, v) => v,
+                        label: (i, v) => v,
+                      ),
+                    ),
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'You Are Looking For',
+                        style:
+                            TextStyle(fontSize: 14, color: Colors.deepPurple),
+                      ),
+                    ),
+                    ChipsChoice<String>.single(
+                      value: lookingFor.value,
+                      onChanged: (val) => lookingFor.value = val,
+                      wrapped: true,
+                      choiceCheckmark: true,
+                      choiceStyle: C2ChipStyle.filled(
+                        borderWidth: 1,
+                        borderStyle: BorderStyle.solid,
+                        foregroundColor: Colors.deepPurple,
+                        color: Colors.grey[300],
+                        selectedStyle: const C2ChipStyle(
+                          borderColor: Colors.deepPurple,
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.deepPurple,
+                        ),
+                      ),
+                      choiceItems: C2Choice.listFrom<String, String>(
+                        source: [
+                          'Long-term Partner',
+                          'Short-term Fun',
+                          'Long-term Open Relationship',
+                          'Short-term Open Relationship',
+                          'New Friends',
+                          'Still Figuring It Out',
+                        ],
+                        value: (i, v) => v,
+                        label: (i, v) => v,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+            onDone: saveProfile,
+            showNextButton: true,
+            showDoneButton: true,
+            next: const Icon(Icons.arrow_forward),
+            done: Text(
+              t.save.toUpperCase(),
+              style: const TextStyle(
+                color: Colors.deepPurple,
+                fontWeight: FontWeight.w600,
               ),
             ),
-          ],
-          showNextButton: false,
-          showDoneButton: false,
+          ),
         ),
       ),
     );

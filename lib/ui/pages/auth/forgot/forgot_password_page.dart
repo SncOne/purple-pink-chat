@@ -9,6 +9,8 @@ import 'package:catt_catt/utils/constants.dart';
 import 'package:catt_catt/utils/extensions.dart';
 import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:catt_catt/utils/styles.dart';
+import 'package:catt_catt/utils/utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -103,17 +105,22 @@ class ForgotPasswordPage extends HookConsumerWidget {
                     ],
                   ),
                 ),
-                onTap: () {
+                onTap: () async {
                   final validated = formKey.currentState!.validate();
                   if (validated) {
-                    email.clear();
-
-                    context.showLoading(() async {
-                      await auth.forgotPw(email.text, context);
-                      if (context.mounted) {
-                        context.router.replace(const LoginRoute());
-                      }
-                    });
+                    try {
+                      context.showLoading(() async {
+                        await auth.forgotPw(email.text, context);
+                        if (context.mounted) {
+                          email.clear();
+                          Utils.show.toast(context, 'Please Check Your Email!');
+                          context.router.replace(const LoginRoute());
+                        }
+                      });
+                    } on FirebaseAuthException catch (e) {
+                      // Show the error message but do not navigate
+                      Utils.show.toast(context, e.message!);
+                    }
                   }
                 },
               ),

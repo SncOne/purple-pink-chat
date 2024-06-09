@@ -97,6 +97,8 @@ final class AuthService {
         "isAdmin": false, //For admin account
         "matchedIDs": [],
         "likedIDs": [],
+        "currentLocation":
+            "", //Use Geolocator in here to show how far away currently they are
         "subscription":
             false, //For no subs its false it will turn true when its subscribed
       });
