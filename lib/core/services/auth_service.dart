@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:catt_catt/core/models/user.dart';
+import 'package:catt_catt/core/services/location_service.dart';
 import 'package:catt_catt/utils/print.dart';
 import 'package:catt_catt/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,6 +19,8 @@ final class AuthService {
   FirebaseAuth get _auth => FirebaseAuth.instance;
   FirebaseFirestore get _store => FirebaseFirestore.instance;
   FirebaseStorage get _storage => FirebaseStorage.instance;
+
+  LocationService get _locationService => const LocationService();
 
   User? get user => _auth.currentUser;
   get storeInfo => _store.collection('users').doc(user?.uid);
@@ -68,7 +71,7 @@ final class AuthService {
     }
   }
 
-  Future updateProfile({
+  Future createProfile({
     List<String>? profileImages,
     String? firstName,
     String? lastName,
@@ -81,6 +84,11 @@ final class AuthService {
     String? sexualOrientation,
   }) async {
     if (user != null) {
+      final currentPosition = await _locationService.determinePosition();
+      final currentLocation = {
+        'latitude': currentPosition.latitude,
+        'longitude': currentPosition.longitude,
+      };
       await user!.updateDisplayName('$firstName $lastName');
       await storeInfo.set({
         "uid": user!.uid,
@@ -97,8 +105,7 @@ final class AuthService {
         "isAdmin": false, //For admin account
         "matchedIDs": [],
         "likedIDs": [],
-        "currentLocation":
-            "", //Use Geolocator in here to show how far away currently they are
+        "currentLocation": currentLocation,
         "subscription":
             false, //For no subs its false it will turn true when its subscribed
       });

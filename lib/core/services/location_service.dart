@@ -8,7 +8,7 @@ final class LocationService {
   const LocationService();
 
   void settings() {
-    LocationSettings locationSettings;
+    LocationSettings locationSettings; //TODO: stream position
     if (defaultTargetPlatform == TargetPlatform.android) {
       locationSettings = AndroidSettings(
         accuracy: LocationAccuracy.high,

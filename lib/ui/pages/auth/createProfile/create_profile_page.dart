@@ -27,7 +27,6 @@ class CreateProfilePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final introKey = useMemoized(GlobalKey<IntroductionScreenState>.new);
     final name = ref.watch(nameController);
     final lastname = ref.watch(lastNameController);
     final auth = ref.watch(authService);
@@ -42,6 +41,7 @@ class CreateProfilePage extends HookConsumerWidget {
     final lookingFor = useState<String>('');
 
     final formKey = GlobalKey<FormBuilderState>();
+    final introKey = useMemoized(GlobalKey<IntroductionScreenState>.new);
 
     void pickImage(int index) {
       context.showLoading(() async {
@@ -114,7 +114,7 @@ class CreateProfilePage extends HookConsumerWidget {
                       pickedFile: image, context: context);
                   imageUrls.add(imageUrl);
                 }
-                await auth.updateProfile(
+                await auth.createProfile(
                   firstName: name.text,
                   lastName: lastname.text,
                   profileImages: imageUrls,
@@ -566,9 +566,15 @@ class CreateProfilePage extends HookConsumerWidget {
             onDone: saveProfile,
             showNextButton: true,
             showDoneButton: true,
-            next: const Icon(Icons.arrow_forward),
+            next: Text(
+              t.next.toUpperCase(),
+              style: const TextStyle(
+                color: Colors.deepPurple,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             done: Text(
-              t.save.toUpperCase(),
+              t.done.toUpperCase(),
               style: const TextStyle(
                 color: Colors.deepPurple,
                 fontWeight: FontWeight.w600,

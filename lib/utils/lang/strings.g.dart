@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 36 (18 per locale)
+/// Strings: 40 (20 per locale)
 ///
-/// Built on 2024-06-04 at 14:05 UTC
+/// Built on 2024-06-09 at 16:47 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -165,6 +165,8 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get about => 'About';
 	String get birthDate => 'Birth Date';
 	String get location => 'Location';
+	String get next => 'Next';
+	String get done => 'Done';
 }
 
 // Path: loginState
@@ -219,6 +221,8 @@ class _StringsTr implements Translations {
 	@override String get about => 'Hakkında';
 	@override String get birthDate => 'Doğum Tarihi';
 	@override String get location => 'Lokasyon';
+	@override String get next => 'İlerle';
+	@override String get done => 'Bitir';
 }
 
 // Path: loginState
@@ -256,6 +260,8 @@ extension on Translations {
 			case 'about': return 'About';
 			case 'birthDate': return 'Birth Date';
 			case 'location': return 'Location';
+			case 'next': return 'Next';
+			case 'done': return 'Done';
 			default: return null;
 		}
 	}
@@ -282,6 +288,8 @@ extension on _StringsTr {
 			case 'about': return 'Hakkında';
 			case 'birthDate': return 'Doğum Tarihi';
 			case 'location': return 'Lokasyon';
+			case 'next': return 'İlerle';
+			case 'done': return 'Bitir';
 			default: return null;
 		}
 	}

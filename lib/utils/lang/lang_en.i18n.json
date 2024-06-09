@@ -18,6 +18,8 @@
     "lastName":"Last Name",
     "about":"About",
     "birthDate":"Birth Date",
-    "location":"Location"
+    "location":"Location",
+    "next":"Next",
+    "done":"Done"
    
 }

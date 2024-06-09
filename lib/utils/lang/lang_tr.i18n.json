@@ -18,5 +18,7 @@
     "lastName":"Soyisim",
     "about":"Hakkında",
     "birthDate":"Doğum Tarihi",
-    "location":"Lokasyon"
+    "location":"Lokasyon",
+    "next":"İlerle",
+    "done":"Bitir"
 }
