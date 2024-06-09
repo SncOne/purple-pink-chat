@@ -68,6 +68,7 @@ class ForgotPasswordPage extends HookConsumerWidget {
                   name: 'email',
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.done,
+                  style: const TextStyle(fontSize: 12, color: Colors.white),
                   decoration: InputDecoration(
                     hintText: t.email,
                     contentPadding: S.edgeInsets.all20,

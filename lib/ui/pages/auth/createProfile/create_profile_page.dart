@@ -101,7 +101,7 @@ class CreateProfilePage extends HookConsumerWidget {
       if (name.text.isNotEmpty &&
           lastname.text.isNotEmpty &&
           birthDate.value.isNotNull &&
-          imageFiles.isNotNull) {
+          imageFiles.value.isNotEmpty) {
         if (ageValidator(birthDate.value)) {
           Utils.show.toast(context, "18 yaşından büyük olmalısın.");
         } else {
@@ -232,6 +232,7 @@ class CreateProfilePage extends HookConsumerWidget {
                             ),
                             child: FormBuilderTextField(
                               name: 'firstName',
+                              textInputAction: TextInputAction.next,
                               controller: name,
                               style: const TextStyle(
                                   fontSize: 12, color: Colors.white),
@@ -256,6 +257,7 @@ class CreateProfilePage extends HookConsumerWidget {
                             child: FormBuilderTextField(
                               name: 'lastName',
                               controller: lastname,
+                              textInputAction: TextInputAction.done,
                               style: const TextStyle(
                                   fontSize: 12, color: Colors.white),
                               decoration: InputDecoration(
@@ -345,6 +347,7 @@ class CreateProfilePage extends HookConsumerWidget {
                       child: FormBuilderTextField(
                         name: 'about',
                         controller: about,
+                        textInputAction: TextInputAction.done,
                         style: const TextStyle(
                           fontSize: 12,
                           color: Colors.white,

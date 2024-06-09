@@ -65,6 +65,7 @@ class LoginPage extends HookConsumerWidget {
                   name: 'email',
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
+                  style: const TextStyle(fontSize: 12, color: Colors.white),
                   decoration: InputDecoration(
                     hintText: t.email,
                     contentPadding: S.edgeInsets.all20,
@@ -87,6 +88,7 @@ class LoginPage extends HookConsumerWidget {
                 child: FormBuilderTextField(
                   controller: password,
                   name: 'password',
+                  style: const TextStyle(fontSize: 12, color: Colors.white),
                   decoration: InputDecoration(
                     hintText: t.password,
                     contentPadding: S.edgeInsets.all20,
