@@ -44,7 +44,12 @@ final class LocationService {
     LocationPermission permission;
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
+      Future.delayed(
+        const Duration(seconds: 3),
+        () async => await Geolocator.openLocationSettings(),
+      );
+      return Future.error(
+          'Your Location services are disabled. You need to open it before you can continue. Dont worry we will send you there!');
     }
 
     permission = await Geolocator.checkPermission();

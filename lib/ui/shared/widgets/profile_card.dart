@@ -53,6 +53,7 @@ class ProfileCard extends HookConsumerWidget {
                             CustomImage.network(
                               userData[index].profileImages.first,
                               height: 600,
+                              width: 500,
                               borderRadius: S.borderRadius.radius12,
                               boxShadow: const [
                                 BoxShadow(
