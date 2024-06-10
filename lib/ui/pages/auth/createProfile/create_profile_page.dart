@@ -46,13 +46,20 @@ class CreateProfilePage extends HookConsumerWidget {
     void pickImage(int index) {
       context.showLoading(() async {
         final picker = ImagePicker();
-        final selectedImage =
-            await picker.pickImage(source: ImageSource.gallery);
+        final selectedImage = await picker.pickImage(
+          source: ImageSource.gallery,
+          imageQuality: 25,
+        );
         if (selectedImage != null) {
           try {
             final File imageFile = File(selectedImage.path);
             final inputImage = InputImage.fromFile(imageFile);
-            final faceDetector = FaceDetector(options: FaceDetectorOptions());
+            final faceDetector = FaceDetector(
+              options: FaceDetectorOptions(
+                performanceMode: FaceDetectorMode.accurate,
+                minFaceSize: 0.6,
+              ),
+            );
             final List<Face> faces =
                 await faceDetector.processImage(inputImage);
 
@@ -159,6 +166,7 @@ class CreateProfilePage extends HookConsumerWidget {
           key: formKey,
           child: IntroductionScreen(
             key: introKey,
+            hideBottomOnKeyboard: true,
             pages: [
               PageViewModel(
                 titleWidget: Align(
@@ -366,6 +374,7 @@ class CreateProfilePage extends HookConsumerWidget {
                       value: hobbies.value,
                       onChanged: (val) => hobbies.value = val,
                       wrapped: true,
+                      runSpacing: 6,
                       choiceCheckmark: true,
                       choiceStyle: C2ChipStyle.filled(
                         borderWidth: 1,

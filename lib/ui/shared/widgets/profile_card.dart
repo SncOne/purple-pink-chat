@@ -33,13 +33,17 @@ class ProfileCard extends HookConsumerWidget {
               : CardSwiper(
                   cardsCount: userData.length,
                   backCardOffset: const Offset(0, 30),
+                  isLoop: false,
                   onSwipe: (
                     int previousIndex,
                     int? currentIndex,
                     CardSwiperDirection direction,
                   ) {
                     if (direction == CardSwiperDirection.left) {
-                    } else if (direction == CardSwiperDirection.right) {}
+                      //TODO:Handle Dislike
+                    } else if (direction == CardSwiperDirection.right) {
+                      //TODO: Handle Like
+                    }
                     return true;
                   },
                   allowedSwipeDirection: const AllowedSwipeDirection.symmetric(
