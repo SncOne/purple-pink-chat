@@ -146,13 +146,13 @@ final class AuthService {
       if (context.mounted) {
         Utils.show.toast(context, e.message!);
       }
-      return null;
+      rethrow;
     } catch (e) {
       Print.error("Unexpected error during registration: $e");
       if (context.mounted) {
         Utils.show.toast(context, e.toString());
       }
-      return null;
+      rethrow;
     }
   }
 

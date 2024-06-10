@@ -62,4 +62,15 @@ final class LocationService {
     }
     return await Geolocator.getCurrentPosition();
   }
+
+  Future<double> findDistance({required Position position}) async {
+    final currentPosition = await determinePosition();
+    double distanceBetween = Geolocator.distanceBetween(
+        currentPosition.latitude,
+        currentPosition.longitude,
+        position.latitude,
+        position.longitude);
+    distanceBetween = (distanceBetween / 1000).floorToDouble();
+    return distanceBetween;
+  }
 }

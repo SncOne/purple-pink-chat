@@ -28,6 +28,7 @@ class _Show {
         duration: const Duration(milliseconds: 250),
         padding: EdgeInsets.only(bottom: MediaQuery.of(c).viewInsets.bottom),
         child: Material(
+          color: Colors.deepPurple,
           borderRadius:
               borderRadius ?? const BorderRadius.all(Radius.circular(16)),
           child: child,
@@ -73,6 +74,13 @@ class _Show {
       _isDialogOpen = false;
       return res;
     });
+  }
+
+  void settings(BuildContext context, Widget widget) {
+    Utils.show.bottomSheet(
+      context,
+      widget,
+    );
   }
 
   Future<T?> toast<T>(

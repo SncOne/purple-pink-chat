@@ -19,7 +19,7 @@ class ProfilePage extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Profile"),
+        title: const Text("UPDATE PROFILE"),
         actions: [
           IconButton(
             icon: SvgPicture.asset(R.icons.edit),
@@ -30,81 +30,115 @@ class ProfilePage extends HookConsumerWidget {
         ],
       ),
       body: Padding(
-        padding: S.edgeInsets.all20,
+        padding: const EdgeInsets.all(20),
         child: AsyncWidget<UserModel>(
           data: userAsyncValue,
           builder: (userData) {
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  backgroundColor: Colors.grey[200],
-                  radius: 60,
-                  backgroundImage: NetworkImage(userData.profileImages.first),
+                Center(
+                  child: Stack(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 50),
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.deepPurple,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          children: [
+                            S.sizedBox.h46,
+                            Text(
+                              '${userData.firstName} ${userData.lastName}',
+                              style: S.textStyles.font16White,
+                            ),
+                            S.sizedBox.h6,
+                            Text(
+                              userData.location,
+                              style: S.textStyles.font16White,
+                            ),
+                            S.sizedBox.h6,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '${userData.gender} / ',
+                                  style: S.textStyles.font16White,
+                                ),
+                                Text(
+                                  '${(DateTime.now().difference(userData.birthDate).inDays ~/ 365).toString()} years old',
+                                  style: S.textStyles.font16White,
+                                ),
+                              ],
+                            ),
+                            S.sizedBox.h6,
+                            Text(
+                              'XXXXXXXX XXXX\nXXXX XXXXXXX XXXXX\nXXXXX XXXXXXX XXXX XXXXX',
+                              textAlign: TextAlign.center,
+                              style: S.textStyles.font16White,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: CircleAvatar(
+                          radius: 50,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: S.borderRadius.radius50,
+                              border: Border.all(
+                                color: Colors.deepPurple,
+                                width: 3,
+                              ),
+                            ),
+                            child: ClipOval(
+                              child: CustomImage.network(
+                                userData.profileImages.first,
+                                fit: BoxFit.cover,
+                                width: 100,
+                                height: 100,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      '${userData.firstName} ${userData.lastName}',
-                    ),
-                    Text(
-                      userData.gender,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    const Icon(Icons.location_pin),
-                    const SizedBox(width: 5),
-                    Text(userData.location),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    const Icon(Icons.interests),
-                    const SizedBox(width: 5),
-                    Expanded(
-                      child: Text(
-                        userData.hobiesAndInterests.isNotEmpty
-                            ? userData.hobiesAndInterests.join(', ')
-                            : 'No interests',
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    const Icon(Icons.heart_broken),
-                    const SizedBox(width: 5),
-                    Text(userData.lookingFor),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    const Icon(Icons.arrow_drop_down),
-                    const SizedBox(width: 5),
-                    Text(userData.sexualOrientation),
-                  ],
-                ),
-                Wrap(
-                  spacing: 13.2,
-                  runSpacing: 12.8,
-                  children: List.generate(
-                    userData.profileImages.length,
-                    (image) => CustomImage.network(
-                      userData.profileImages[image],
-                      memCacheWidth: 170,
-                      memCacheHeight: 170,
-                      height: 170,
-                      width: 170,
-                    ),
+                const Text(
+                  'Hobbies & Interest',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                )
+                ),
+                const SizedBox(height: 10),
+                Wrap(
+                  spacing: 10,
+                  children: userData.hobiesAndInterests.map((interest) {
+                    return Chip(
+                      label: Text(interest),
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(height: 20),
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: userData.profileImages.map((image) {
+                    return CustomImage.network(
+                      image,
+                      height: 150,
+                      width: 150,
+                    );
+                  }).toList(),
+                ),
               ],
             );
           },

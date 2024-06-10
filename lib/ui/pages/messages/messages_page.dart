@@ -1,9 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:catt_catt/ui/shared/pages/settings/settings_page.dart';
+import 'package:catt_catt/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:catt_catt/utils/assets.dart';
-import 'package:catt_catt/utils/utils.dart';
 
 @RoutePage()
 class MessagesPage extends HookConsumerWidget {
@@ -16,12 +17,7 @@ class MessagesPage extends HookConsumerWidget {
         actions: [
           ElevatedButton(
               onPressed: () {
-                Utils.show.bottomSheet(
-                  context,
-                  const Column(
-                    children: [],
-                  ),
-                );
+                Utils.show.settings(context, const SettingsWidget());
               },
               child: SvgPicture.asset(R.icons.settings))
         ],
