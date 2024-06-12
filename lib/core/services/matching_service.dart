@@ -1,6 +1,7 @@
 import 'package:catt_catt/core/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final matchingService = Provider((_) => MatchingService());
@@ -72,10 +73,26 @@ class MatchingService {
     final toUser = await getUserProfile(toUserId);
     final matchedUser = await getUserProfile(matchedUserId);
 
+    // Assuming you have a collection to store notifications
     await _store.collection('notifications').add({
-      'toUserId': toUserId,
+      'toUserId': toUser.uid,
       'message': 'You have matched with ${matchedUser.firstName}!',
       'timestamp': FieldValue.serverTimestamp(),
     });
+
+    // Get the FCM token for the user
+    final tokenSnapshot = await _store.collection('users').doc(toUserId).get();
+    final token = tokenSnapshot.data()?['fcmToken'] as String?;
+
+    if (token != null) {
+      final fcm = FirebaseMessaging.instance;
+      await fcm.sendMessage(
+        to: token,
+        data: {
+          'title': 'New Match!',
+          'body': 'You have matched with ${matchedUser.firstName}!',
+        },
+      );
+    }
   }
 }
