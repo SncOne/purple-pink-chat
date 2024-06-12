@@ -57,7 +57,7 @@ class CreateProfilePage extends HookConsumerWidget {
             final faceDetector = FaceDetector(
               options: FaceDetectorOptions(
                 performanceMode: FaceDetectorMode.accurate,
-                minFaceSize: 0.6,
+                minFaceSize: 0.7,
               ),
             );
             final List<Face> faces =

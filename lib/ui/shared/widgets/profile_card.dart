@@ -1,5 +1,6 @@
 import 'package:catt_catt/core/models/user.dart';
 import 'package:catt_catt/core/providers/providers.dart';
+import 'package:catt_catt/core/services/matching_service.dart';
 import 'package:catt_catt/ui/shared/widgets/async_widget.dart';
 import 'package:catt_catt/ui/shared/widgets/custom_image.dart';
 import 'package:catt_catt/utils/styles.dart';
@@ -13,6 +14,8 @@ class ProfileCard extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsyncValue = ref.watch(profilesProvider);
+    final currentUser = ref.watch(userProvider);
+    final matchingProvider = ref.watch(matchingService);
 
     return Flexible(
       child: AsyncWidget<List<UserModel>>(
@@ -40,9 +43,9 @@ class ProfileCard extends HookConsumerWidget {
                     CardSwiperDirection direction,
                   ) {
                     if (direction == CardSwiperDirection.left) {
-                      //TODO:Handle Dislike
                     } else if (direction == CardSwiperDirection.right) {
-                      //TODO: Handle Like
+                      matchingProvider.addToLikedList(
+                          userData[previousIndex].uid, currentUser.value!.uid);
                     }
                     return true;
                   },

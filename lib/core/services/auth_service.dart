@@ -114,7 +114,19 @@ final class AuthService {
 
   Future<List<UserModel>>? getProfiles() async {
     final usersProfileList = <UserModel>[];
+    final likedUserIds = <String>[];
+
     if (user != null) {
+      final likedListSnapshot = await _store
+          .collection('users')
+          .doc(user!.uid)
+          .collection('likedList')
+          .get();
+
+      for (var doc in likedListSnapshot.docs) {
+        likedUserIds.add(doc.id);
+      }
+
       final usersProfilesQuery =
           _store.collection('users').where('uid', isNotEqualTo: user!.uid);
 
@@ -123,8 +135,9 @@ final class AuthService {
       final usersProfiles = usersProfilesSnapshot.docs;
 
       for (var doc in usersProfiles) {
-        Print.warning(doc.data());
-        usersProfileList.add(UserModel.fromJson(doc.data()));
+        if (!likedUserIds.contains(doc.id)) {
+          usersProfileList.add(UserModel.fromJson(doc.data()));
+        }
       }
     }
     return usersProfileList;

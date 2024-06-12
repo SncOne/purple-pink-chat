@@ -1,14 +1,13 @@
+import 'package:catt_catt/core/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final matchingService = Provider.autoDispose((_) => MatchingService());
+final matchingService = Provider((_) => MatchingService());
 
 class MatchingService {
   FirebaseAuth get _auth => FirebaseAuth.instance;
   FirebaseFirestore get _store => FirebaseFirestore.instance;
-  FirebaseStorage get _storage => FirebaseStorage.instance;
 
   User? get user => _auth.currentUser;
 
@@ -36,16 +35,47 @@ class MatchingService {
         .snapshots();
   }
 
-  Future addToLikedList(userId, currentUserId) async {
-    await _store
-        .collection('users')
-        .doc(currentUserId)
-        .collection('likedList')
-        .add(userId);
-    await _store
-        .collection('users')
-        .doc(userId)
-        .collection('likesYouList')
-        .add(currentUserId);
+  Future<void> addToLikedList(String toUserId, String currentUserId) async {
+    final currentUserDoc = _store.collection('users').doc(currentUserId);
+    final toUserDoc = _store.collection('users').doc(toUserId);
+
+    await currentUserDoc.collection('likedList').doc(toUserId).set({});
+    await toUserDoc.collection('likesYouList').doc(currentUserId).set({});
+
+    // Check if mutual like exists
+    final mutualLike =
+        await toUserDoc.collection('likedList').doc(currentUserId).get();
+
+    if (mutualLike.exists) {
+      // Add to matchedList for both users
+      await currentUserDoc.collection('matchedList').doc(toUserId).set({});
+      await toUserDoc.collection('matchedList').doc(currentUserId).set({});
+
+      // Send notifications
+      await sendMatchNotification(currentUserId, toUserId);
+      await sendMatchNotification(toUserId, currentUserId);
+    }
+  }
+
+  Future<UserModel> getUserProfile(String userId) async {
+    final userProfiles = await _store.collection('users').doc(userId).get();
+    final data = userProfiles.data();
+    if (data != null) {
+      return UserModel.fromJson(data);
+    } else {
+      throw Future.error('User profile not found');
+    }
+  }
+
+  Future<void> sendMatchNotification(
+      String toUserId, String matchedUserId) async {
+    final toUser = await getUserProfile(toUserId);
+    final matchedUser = await getUserProfile(matchedUserId);
+
+    await _store.collection('notifications').add({
+      'toUserId': toUserId,
+      'message': 'You have matched with ${matchedUser.firstName}!',
+      'timestamp': FieldValue.serverTimestamp(),
+    });
   }
 }

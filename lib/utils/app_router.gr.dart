@@ -42,7 +42,7 @@ abstract class _$AppRouter extends RootStackRouter {
     LikesRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const LikesPage(),
+        child: LikesPage(),
       );
     },
     LoginRoute.name: (routeData) {
