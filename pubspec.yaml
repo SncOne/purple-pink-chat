@@ -13,20 +13,23 @@ dependencies:
   auto_route: ^8.1.3
   cached_network_image: ^3.3.1
   chips_choice: ^3.0.1
-  cloud_firestore: ^4.17.5
+  cloud_firestore: ^5.0.1
   connectivity_plus: ^6.0.3
   country_picker: ^2.0.26
-  device_preview: ^1.1.0
-  firebase_analytics: ^10.10.7
-  firebase_auth: ^4.20.0
-  firebase_core: ^2.32.0
-  firebase_messaging: ^14.9.4
-  firebase_storage: ^11.7.7
+  device_preview: ^1.2.0
+  firebase_analytics: ^11.0.1
+  firebase_auth: ^5.1.0
+  firebase_core: ^3.1.0
+  firebase_messaging: ^15.0.1
+  firebase_storage: ^12.0.1
   flash: ^3.1.0
   flutter:
     sdk: flutter
   flutter_card_swiper: ^7.0.1
-  flutter_form_builder: ^9.2.1
+  flutter_chat_types: ^3.6.2
+  flutter_chat_ui: ^1.6.14
+  flutter_firebase_chat_core: ^1.6.8
+  flutter_form_builder: ^9.3.0
   flutter_hooks: ^0.20.5
   flutter_localizations:
     sdk: flutter
@@ -49,11 +52,11 @@ dependencies:
   slang: ^3.31.0
   slang_flutter: ^3.31.0
   upgrader: ^10.3.0
-  url_launcher: ^6.2.6
+  url_launcher: ^6.3.0
 
 dev_dependencies:
   auto_route_generator: ^8.0.0
-  build_runner: ^2.4.9
+  build_runner: ^2.4.11
   custom_lint: ^0.6.4
   flutter_launcher_icons: ^0.13.1
   flutter_lints: ^4.0.0

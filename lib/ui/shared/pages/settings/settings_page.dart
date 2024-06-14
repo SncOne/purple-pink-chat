@@ -36,12 +36,17 @@ class SettingsWidget extends StatelessWidget {
           onTap: () {},
         ),
         ListTile(
+          title: const Text('Terms of Use'),
+          trailing: const Icon(Icons.arrow_forward),
+          onTap: () {},
+        ),
+        ListTile(
           title: const Text('Help Center'),
           trailing: const Icon(Icons.arrow_forward),
           onTap: () {},
         ),
         ListTile(
-          title: const Text('About (name of the app)'),
+          title: const Text('About (Love Lens)'),
           trailing: const Icon(Icons.arrow_forward),
           onTap: () {},
         ),

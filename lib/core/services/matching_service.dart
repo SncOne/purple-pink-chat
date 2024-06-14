@@ -2,6 +2,8 @@ import 'package:catt_catt/core/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final matchingService = Provider((_) => MatchingService());
@@ -43,16 +45,22 @@ class MatchingService {
     await currentUserDoc.collection('likedList').doc(toUserId).set({});
     await toUserDoc.collection('likesYouList').doc(currentUserId).set({});
 
-    // Check if mutual like exists
     final mutualLike =
         await toUserDoc.collection('likedList').doc(currentUserId).get();
 
     if (mutualLike.exists) {
-      // Add to matchedList for both users
       await currentUserDoc.collection('matchedList').doc(toUserId).set({});
       await toUserDoc.collection('matchedList').doc(currentUserId).set({});
-
-      // Send notifications
+      final userIds = [toUserId, currentUserId]..sort();
+      await _store.collection('rooms').add({
+        'createdAt': FieldValue.serverTimestamp(),
+        'imageUrl': null,
+        'name': null,
+        'type': types.RoomType.direct.toShortString(),
+        'updatedAt': FieldValue.serverTimestamp(),
+        'userIds': userIds,
+        'userRoles': null,
+      });
       await sendMatchNotification(currentUserId, toUserId);
       await sendMatchNotification(toUserId, currentUserId);
     }
@@ -73,14 +81,12 @@ class MatchingService {
     final toUser = await getUserProfile(toUserId);
     final matchedUser = await getUserProfile(matchedUserId);
 
-    // Assuming you have a collection to store notifications
     await _store.collection('notifications').add({
       'toUserId': toUser.uid,
       'message': 'You have matched with ${matchedUser.firstName}!',
       'timestamp': FieldValue.serverTimestamp(),
     });
 
-    // Get the FCM token for the user
     final tokenSnapshot = await _store.collection('users').doc(toUserId).get();
     final token = tokenSnapshot.data()?['fcmToken'] as String?;
 
