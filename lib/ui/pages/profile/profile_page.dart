@@ -15,8 +15,6 @@ class ProfilePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userAsyncValue = ref.watch(userProvider);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("UPDATE PROFILE"),
@@ -34,7 +32,7 @@ class ProfilePage extends HookConsumerWidget {
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: AsyncWidget<UserModel>(
-            data: userAsyncValue,
+            data: ref.watch(userProvider),
             builder: (userData) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,6 +102,7 @@ class ProfilePage extends HookConsumerWidget {
                                   fit: BoxFit.cover,
                                   width: 100,
                                   height: 100,
+                                  memCacheHeight: 200,
                                 ),
                               ),
                             ),
@@ -138,6 +137,8 @@ class ProfilePage extends HookConsumerWidget {
                         image,
                         height: 150,
                         width: 150,
+                        memCacheHeight: 300,
+                        fit: BoxFit.cover,
                       );
                     }).toList(),
                   ),

@@ -101,9 +101,9 @@ class LikesList extends ConsumerWidget {
                       Expanded(
                         child: CustomImage.network(
                           user.profileImages.first,
-                          width: 250,
-                          height: 100,
+                          width: double.maxFinite,
                           fit: BoxFit.cover,
+                          memCacheHeight: 300,
                         ),
                       ),
                       Text('${user.firstName} ${user.lastName}'),
