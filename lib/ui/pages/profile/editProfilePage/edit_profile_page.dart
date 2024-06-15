@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:catt_catt/core/providers/providers.dart';
 import 'package:catt_catt/core/services/auth_service.dart';
+import 'package:catt_catt/ui/shared/widgets/custom_image.dart';
 import 'package:catt_catt/utils/app_router.dart';
 import 'package:catt_catt/utils/constants.dart';
 import 'package:catt_catt/utils/extensions.dart';
@@ -22,14 +23,16 @@ import 'package:intl/intl.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
 @RoutePage()
-class CreateProfilePage extends HookConsumerWidget {
-  const CreateProfilePage({super.key});
+class EditProfilePage extends HookConsumerWidget {
+  const EditProfilePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final name = ref.watch(nameController);
     final lastname = ref.watch(lastNameController);
     final auth = ref.watch(authService);
+
+    final currentUser = useMemoized(() => ref.read(userProvider).value);
 
     final selectedCountry = useState('Location');
     final birthDate = useState<DateTime?>(null);
@@ -44,7 +47,23 @@ class CreateProfilePage extends HookConsumerWidget {
 
     final formKey = GlobalKey<FormBuilderState>();
     final introKey = useMemoized(GlobalKey<IntroductionScreenState>.new);
-
+    useEffect(() {
+      if (currentUser != null) {
+        name.text = currentUser.firstName;
+        lastname.text = currentUser.lastName;
+        about.text = currentUser.about ?? '';
+        selectedCountry.value = currentUser.location;
+        birthDate.value = currentUser.birthDate;
+        imageFiles.value =
+            currentUser.profileImages.map((url) => XFile(url)).toList();
+        hobbies.value = currentUser.hobiesAndInterests;
+        gender.value = currentUser.gender;
+        interestedGender.value = currentUser.interestedGender;
+        sexualOrientation.value = currentUser.sexualOrientation;
+        lookingFor.value = currentUser.lookingFor;
+      }
+      return null;
+    }, [currentUser]);
     void pickImage(int index) {
       context.showLoading(() async {
         final picker = ImagePicker();
@@ -89,6 +108,7 @@ class CreateProfilePage extends HookConsumerWidget {
 
     void removeImage(int index) {
       deletedImages.value.add(imageFiles.value[index].path);
+
       imageFiles.value.removeAt(index);
       imageFiles.value = List.from(imageFiles.value);
     }
@@ -128,7 +148,7 @@ class CreateProfilePage extends HookConsumerWidget {
                   await auth.deleteImage(imagePath);
                 }
 
-                await auth.createProfile(
+                auth.editProfile(
                   firstName: name.text,
                   lastName: lastname.text,
                   profileImages: imageUrls,
@@ -141,13 +161,15 @@ class CreateProfilePage extends HookConsumerWidget {
                   sexualOrientation: sexualOrientation.value,
                   about: about.text,
                 );
+
+                await auth.getUser();
               } catch (e) {
                 if (context.mounted) {
                   Utils.show.toast(context, 'Error: $e');
                 }
               } finally {
                 if (context.mounted) {
-                  context.router.replace(const HomeRoute());
+                  context.router.replace(const ProfileRoute());
                 }
               }
             },
@@ -203,10 +225,19 @@ class CreateProfilePage extends HookConsumerWidget {
                                 height: 100,
                                 color: Colors.deepPurple,
                                 child: index < imageFiles.value.length
-                                    ? Image.file(
-                                        File(imageFiles.value[index].path),
-                                        fit: BoxFit.cover,
-                                      )
+                                    ? (Uri.tryParse(imageFiles
+                                                    .value[index].path)
+                                                ?.isAbsolute ??
+                                            false
+                                        ? CustomImage.network(
+                                            imageFiles.value[index].path,
+                                            fit: BoxFit.cover,
+                                            memCacheHeight: 200,
+                                          )
+                                        : Image.file(
+                                            File(imageFiles.value[index].path),
+                                            fit: BoxFit.cover,
+                                          ))
                                     : const Icon(
                                         Icons.add_a_photo,
                                         size: 40,

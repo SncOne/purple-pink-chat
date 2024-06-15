@@ -10,6 +10,7 @@ import 'package:catt_catt/ui/pages/likes/likes_page.dart';
 import 'package:catt_catt/ui/pages/messages/messages_page.dart';
 import 'package:catt_catt/ui/pages/chat/chat_page.dart';
 import 'package:catt_catt/ui/pages/onboarding/onboarding_page.dart';
+import 'package:catt_catt/ui/pages/profile/editProfilePage/edit_profile_page.dart';
 import 'package:catt_catt/ui/pages/profile/profile_page.dart';
 import 'package:catt_catt/ui/pages/splash/splash_page.dart';
 import 'package:catt_catt/ui/pages/welcome/welcome_page.dart';
@@ -33,6 +34,7 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: LoginRoute.page),
         AutoRoute(page: RegisterRoute.page),
         AutoRoute(page: CreateProfileRoute.page),
+        AutoRoute(page: EditProfileRoute.page),
         AutoRoute(page: ForgotPasswordRoute.page),
         AutoRoute(
           page: HomeRoute.page,

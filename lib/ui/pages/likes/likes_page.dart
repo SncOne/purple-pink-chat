@@ -32,14 +32,95 @@ class LikesPage extends ConsumerWidget {
             LikesList(
               stream: matchingServiceProvider
                   .getLikesYouList(matchingServiceProvider.user!.uid),
+              onTap: (user) {
+                // Diyalog açma işlemi
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('${user.firstName} ${user.lastName}'),
+                    content: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('İsmi: ${user.firstName}'),
+                          Text('Location: ${user.location}'),
+                          // Diğer bilgileri ekleyin
+                        ],
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Close'),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
             LikesList(
               stream: matchingServiceProvider
                   .getLikedList(matchingServiceProvider.user!.uid),
+              onTap: (user) {
+                // Diyalog açma işlemi
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('${user.firstName} ${user.lastName}'),
+                    content: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('İsmi: ${user.firstName}'),
+                          Text('Location: ${user.location}'),
+                          // Diğer bilgileri ekleyin
+                        ],
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Close'),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
             LikesList(
               stream: matchingServiceProvider
                   .getMatchedList(matchingServiceProvider.user!.uid),
+              onTap: (user) {
+                // Diyalog açma işlemi
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('${user.firstName} ${user.lastName}'),
+                    content: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('İsmi: ${user.firstName}'),
+                          Text('Location: ${user.location}'),
+                          // Diğer bilgileri ekleyin
+                        ],
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Close'),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -50,8 +131,8 @@ class LikesPage extends ConsumerWidget {
 
 class LikesList extends ConsumerWidget {
   final Stream<QuerySnapshot> stream;
-
-  const LikesList({required this.stream, super.key});
+  final Function(UserModel) onTap;
+  const LikesList({required this.stream, required this.onTap, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -95,19 +176,22 @@ class LikesList extends ConsumerWidget {
 
                 final user = profileSnapshot.data!;
 
-                return Card(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: CustomImage.network(
-                          user.profileImages.first,
-                          width: double.maxFinite,
-                          fit: BoxFit.cover,
-                          memCacheHeight: 300,
+                return GestureDetector(
+                  onTap: () => onTap(user),
+                  child: Card(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: CustomImage.network(
+                            user.profileImages.first,
+                            width: double.maxFinite,
+                            fit: BoxFit.cover,
+                            memCacheHeight: 300,
+                          ),
                         ),
-                      ),
-                      Text('${user.firstName} ${user.lastName}'),
-                    ],
+                        Text('${user.firstName} ${user.lastName}'),
+                      ],
+                    ),
                   ),
                 );
               },

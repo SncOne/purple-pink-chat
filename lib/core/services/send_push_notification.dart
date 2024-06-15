@@ -29,8 +29,8 @@ Future<void> sendPushNotification({
     TokenMessage(
       token: deviceToken,
       notification: Notification(
-        title: 'Hello',
-        body: 'World',
+        title: title,
+        body: body,
       ),
     ),
   );

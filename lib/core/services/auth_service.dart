@@ -56,11 +56,28 @@ final class AuthService {
     return userData;
   }
 
+  Stream<UserModel> getUserStream() async* {
+    final userDoc = _store.collection("users").doc(user!.uid).snapshots();
+    yield* userDoc.map((doc) {
+      if (doc.exists) {
+        return UserModel.fromJson(doc.data()!);
+      } else {
+        throw Future.error('User document does not exist');
+      }
+    });
+  }
+
   Future getToken() async {
     final fcmToken = await FirebaseMessaging.instance.getToken();
     if (user != null) {
-      await storeInfo.update({'fcmToken': fcmToken});
+      await _store
+          .collection('users')
+          .doc(user?.uid)
+          .update({'fcmToken': fcmToken});
+      Print.warning(user?.uid);
+      final info = await storeInfo.get();
       Print.error(fcmToken, 'hello');
+      Print.error(info, 'info');
     }
   }
 
@@ -77,6 +94,15 @@ final class AuthService {
     } catch (e) {
       log('Error updating user display name: $e');
       rethrow;
+    }
+  }
+
+  Future<void> deleteImage(String imagePath) async {
+    try {
+      final ref = FirebaseStorage.instance.refFromURL(imagePath);
+      await ref.delete();
+    } catch (e) {
+      throw Exception('Error deleting image: $e');
     }
   }
 
@@ -118,6 +144,39 @@ final class AuthService {
         "currentLocation": currentLocation,
         "subscription": false,
         //For no subs its false it will turn true when its subscribed
+      });
+    }
+  }
+
+  Future editProfile({
+    List<String>? profileImages,
+    String? firstName,
+    String? lastName,
+    String? gender,
+    String? birthDate,
+    String? location,
+    List<String>? hobiesAndInterests,
+    String? interestedGender,
+    String? lookingFor,
+    String? sexualOrientation,
+    String? about,
+  }) async {
+    if (user != null) {
+      if (user!.displayName != '$firstName $lastName') {
+        await user!.updateDisplayName('$firstName $lastName');
+      }
+      await storeInfo.update({
+        "firstName": firstName ?? '',
+        "lastName": lastName ?? '',
+        "profileImages": profileImages ?? [],
+        "gender": gender ?? '',
+        "birthDate": birthDate ?? '',
+        "location": location ?? '',
+        "hobiesAndInterests": hobiesAndInterests ?? [],
+        "interestedGender": interestedGender ?? '',
+        "lookingFor": lookingFor ?? '',
+        "sexualOrientation": sexualOrientation ?? '',
+        "about": about ?? '',
       });
     }
   }

@@ -34,7 +34,6 @@ mixin _$UserModel {
   bool get isAdmin => throw _privateConstructorUsedError;
   Location get currentLocation => throw _privateConstructorUsedError;
   List<String> get hobiesAndInterests => throw _privateConstructorUsedError;
-  @JsonKey(name: 'birthDate')
   DateTime get birthDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -63,7 +62,7 @@ abstract class $UserModelCopyWith<$Res> {
       bool isAdmin,
       Location currentLocation,
       List<String> hobiesAndInterests,
-      @JsonKey(name: 'birthDate') DateTime birthDate});
+      DateTime birthDate});
 
   $LocationCopyWith<$Res> get currentLocation;
 }
@@ -193,7 +192,7 @@ abstract class _$$UserModelImplCopyWith<$Res>
       bool isAdmin,
       Location currentLocation,
       List<String> hobiesAndInterests,
-      @JsonKey(name: 'birthDate') DateTime birthDate});
+      DateTime birthDate});
 
   @override
   $LocationCopyWith<$Res> get currentLocation;
@@ -309,7 +308,7 @@ class _$UserModelImpl implements _UserModel {
       required this.isAdmin,
       required this.currentLocation,
       required final List<String> hobiesAndInterests,
-      @JsonKey(name: 'birthDate') required this.birthDate})
+      required this.birthDate})
       : _profileImages = profileImages,
         _hobiesAndInterests = hobiesAndInterests;
 
@@ -358,7 +357,6 @@ class _$UserModelImpl implements _UserModel {
   }
 
   @override
-  @JsonKey(name: 'birthDate')
   final DateTime birthDate;
 
   @override
@@ -435,22 +433,21 @@ class _$UserModelImpl implements _UserModel {
 
 abstract class _UserModel implements UserModel {
   const factory _UserModel(
-          {required final String sexualOrientation,
-          required final String lastName,
-          required final String firstName,
-          required final List<String> profileImages,
-          required final String uid,
-          required final String gender,
-          required final String interestedGender,
-          required final String lookingFor,
-          required final String location,
-          final String? about,
-          required final bool subscription,
-          required final bool isAdmin,
-          required final Location currentLocation,
-          required final List<String> hobiesAndInterests,
-          @JsonKey(name: 'birthDate') required final DateTime birthDate}) =
-      _$UserModelImpl;
+      {required final String sexualOrientation,
+      required final String lastName,
+      required final String firstName,
+      required final List<String> profileImages,
+      required final String uid,
+      required final String gender,
+      required final String interestedGender,
+      required final String lookingFor,
+      required final String location,
+      final String? about,
+      required final bool subscription,
+      required final bool isAdmin,
+      required final Location currentLocation,
+      required final List<String> hobiesAndInterests,
+      required final DateTime birthDate}) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$UserModelImpl.fromJson;
@@ -484,7 +481,6 @@ abstract class _UserModel implements UserModel {
   @override
   List<String> get hobiesAndInterests;
   @override
-  @JsonKey(name: 'birthDate')
   DateTime get birthDate;
   @override
   @JsonKey(ignore: true)

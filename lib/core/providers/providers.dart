@@ -39,7 +39,10 @@ final userProvider = FutureProvider.autoDispose<UserModel>((ref) async {
   final userData = await authService.getUser();
   return UserModel.fromJson(userData);
 });
-
+final userStreamProvider = StreamProvider.autoDispose<UserModel>((ref) {
+  final authServiceController = ref.watch(authService);
+  return authServiceController.getUserStream();
+});
 final profilesProvider = StreamProvider.autoDispose<List<UserModel>>((ref) {
   final authService = ref.read(authServiceProvider);
   return authService.getProfilesStream();
