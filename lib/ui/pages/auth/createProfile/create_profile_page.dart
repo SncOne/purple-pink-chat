@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:catt_catt/core/providers/providers.dart';
 import 'package:catt_catt/core/services/auth_service.dart';
+import 'package:catt_catt/ui/shared/widgets/custom_image.dart';
 import 'package:catt_catt/utils/app_router.dart';
 import 'package:catt_catt/utils/constants.dart';
 import 'package:catt_catt/utils/extensions.dart';
@@ -30,6 +31,9 @@ class CreateProfilePage extends HookConsumerWidget {
     final name = ref.watch(nameController);
     final lastname = ref.watch(lastNameController);
     final auth = ref.watch(authService);
+
+    final currentUser = useMemoized(() => ref.read(userProvider).value);
+
     final selectedCountry = useState('Location');
     final birthDate = useState<DateTime?>(null);
     final about = ref.watch(aboutController);
@@ -42,7 +46,23 @@ class CreateProfilePage extends HookConsumerWidget {
 
     final formKey = GlobalKey<FormBuilderState>();
     final introKey = useMemoized(GlobalKey<IntroductionScreenState>.new);
-
+    useEffect(() {
+      if (currentUser != null) {
+        name.text = currentUser.firstName;
+        lastname.text = currentUser.lastName;
+        about.text = currentUser.about ?? '';
+        selectedCountry.value = currentUser.location;
+        birthDate.value = currentUser.birthDate;
+        imageFiles.value =
+            currentUser.profileImages.map((url) => XFile(url)).toList();
+        hobbies.value = currentUser.hobiesAndInterests;
+        gender.value = currentUser.gender;
+        interestedGender.value = currentUser.interestedGender;
+        sexualOrientation.value = currentUser.sexualOrientation;
+        lookingFor.value = currentUser.lookingFor;
+      }
+      return null;
+    }, [currentUser]);
     void pickImage(int index) {
       context.showLoading(() async {
         final picker = ImagePicker();
@@ -72,13 +92,13 @@ class CreateProfilePage extends HookConsumerWidget {
               imageFiles.value = List.from(imageFiles.value);
             } else {
               if (context.mounted) {
-                Utils.show.toast(context, 'No face detected in the image');
+                Utils.show.toast(context, t.noFaceDetected);
               }
             }
             faceDetector.close();
           } catch (e) {
             if (context.mounted) {
-              Utils.show.toast(context, 'Error detecting face: $e');
+              Utils.show.toast(context, '${t.noFaceDetected}: $e');
             }
           }
         }
@@ -110,7 +130,7 @@ class CreateProfilePage extends HookConsumerWidget {
           birthDate.value.isNotNull &&
           imageFiles.value.isNotEmpty) {
         if (ageValidator(birthDate.value)) {
-          Utils.show.toast(context, "18 yaşından büyük olmalısın.");
+          Utils.show.toast(context, t.above18);
         } else {
           context.showLoading(
             () async {
@@ -132,6 +152,7 @@ class CreateProfilePage extends HookConsumerWidget {
                   interestedGender: interestedGender.value,
                   lookingFor: lookingFor.value,
                   sexualOrientation: sexualOrientation.value,
+                  about: about.text,
                 );
                 await auth.getUser();
               } catch (e) {
@@ -147,8 +168,7 @@ class CreateProfilePage extends HookConsumerWidget {
           );
         }
       } else {
-        Utils.show.toast(context,
-            "Fotoğraf, İsim, Soyisim ve Doğum Tarihi alanları zorunludur.");
+        Utils.show.toast(context, t.validationProfile);
       }
     }
 
@@ -172,7 +192,7 @@ class CreateProfilePage extends HookConsumerWidget {
                 titleWidget: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    t.login.toUpperCase(),
+                    t.infoAboutYou.toUpperCase(),
                     style: const TextStyle(
                       color: Colors.deepPurple,
                       fontSize: 15,
@@ -197,10 +217,13 @@ class CreateProfilePage extends HookConsumerWidget {
                                 height: 100,
                                 color: Colors.deepPurple,
                                 child: index < imageFiles.value.length
-                                    ? Image.file(
-                                        File(imageFiles.value[index].path),
-                                        fit: BoxFit.cover,
-                                      )
+                                    ? currentUser != null
+                                        ? CustomImage.network(
+                                            currentUser.profileImages[index])
+                                        : Image.file(
+                                            File(imageFiles.value[index].path),
+                                            fit: BoxFit.cover,
+                                          )
                                     : const Icon(
                                         Icons.add_a_photo,
                                         size: 40,
@@ -336,7 +359,7 @@ class CreateProfilePage extends HookConsumerWidget {
                 titleWidget: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    t.register.toUpperCase(),
+                    t.hobbies.toUpperCase(),
                     style: const TextStyle(
                       color: Colors.deepPurple,
                       fontSize: 15,
@@ -367,7 +390,7 @@ class CreateProfilePage extends HookConsumerWidget {
                           hintStyle: const TextStyle(
                               fontSize: 12, color: Colors.white),
                         ),
-                        maxLines: 3,
+                        maxLines: 5,
                       ),
                     ),
                     ChipsChoice<String>.multiple(
@@ -388,34 +411,7 @@ class CreateProfilePage extends HookConsumerWidget {
                         ),
                       ),
                       choiceItems: C2Choice.listFrom<String, String>(
-                        source: [
-                          'Wrestling',
-                          'Sailing',
-                          'Triathlon',
-                          'Sauna',
-                          'Comedy',
-                          'Gym & Fitness',
-                          'Gaming',
-                          'Book',
-                          'Cripto',
-                          'NFT',
-                          'Football',
-                          'Basketball',
-                          'Volleyball',
-                          'Gliding',
-                          'Climbing',
-                          'Diving',
-                          'Movies',
-                          'TV Shows',
-                          'Anime',
-                          'Technology',
-                          'Music',
-                          'Traveling',
-                          'Cooking',
-                          'Meditation',
-                          'Hunting',
-                          'Swimming'
-                        ],
+                        source: t.hobbyList,
                         value: (i, v) => v,
                         label: (i, v) => v,
                       ),
@@ -424,11 +420,12 @@ class CreateProfilePage extends HookConsumerWidget {
                 ),
               ),
               PageViewModel(
-                titleWidget: const Align(
+                titleWidget: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Your Gender',
-                    style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                    t.gender,
+                    style:
+                        const TextStyle(fontSize: 16, color: Colors.deepPurple),
                   ),
                 ),
                 bodyWidget: Column(
@@ -450,20 +447,17 @@ class CreateProfilePage extends HookConsumerWidget {
                         ),
                       ),
                       choiceItems: C2Choice.listFrom<String, String>(
-                        source: [
-                          'Male',
-                          'Female',
-                        ],
+                        source: t.genderList,
                         value: (i, v) => v,
                         label: (i, v) => v,
                       ),
                     ),
-                    const Align(
+                    Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Gender You Are Interested',
-                        style:
-                            TextStyle(fontSize: 14, color: Colors.deepPurple),
+                        t.interestedGender,
+                        style: const TextStyle(
+                            fontSize: 14, color: Colors.deepPurple),
                       ),
                     ),
                     ChipsChoice<String>.single(
@@ -483,20 +477,17 @@ class CreateProfilePage extends HookConsumerWidget {
                         ),
                       ),
                       choiceItems: C2Choice.listFrom<String, String>(
-                        source: [
-                          'Male',
-                          'Female',
-                        ],
+                        source: t.genderList,
                         value: (i, v) => v,
                         label: (i, v) => v,
                       ),
                     ),
-                    const Align(
+                    Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Your Sexual Orientation',
-                        style:
-                            TextStyle(fontSize: 14, color: Colors.deepPurple),
+                        t.sexualOrientation,
+                        style: const TextStyle(
+                            fontSize: 14, color: Colors.deepPurple),
                       ),
                     ),
                     ChipsChoice<String>.single(
@@ -516,27 +507,17 @@ class CreateProfilePage extends HookConsumerWidget {
                         ),
                       ),
                       choiceItems: C2Choice.listFrom<String, String>(
-                        source: [
-                          'Straight',
-                          'Gay',
-                          'Lesbian',
-                          'Bisexual',
-                          'Asexual',
-                          'Demisexual',
-                          'Pansexual',
-                          'Bicurious',
-                          'Queer',
-                        ],
+                        source: t.sexualOrientationList,
                         value: (i, v) => v,
                         label: (i, v) => v,
                       ),
                     ),
-                    const Align(
+                    Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'You Are Looking For',
-                        style:
-                            TextStyle(fontSize: 14, color: Colors.deepPurple),
+                        t.lookingFor,
+                        style: const TextStyle(
+                            fontSize: 14, color: Colors.deepPurple),
                       ),
                     ),
                     ChipsChoice<String>.single(
@@ -556,14 +537,7 @@ class CreateProfilePage extends HookConsumerWidget {
                         ),
                       ),
                       choiceItems: C2Choice.listFrom<String, String>(
-                        source: [
-                          'Long-term Partner',
-                          'Short-term Fun',
-                          'Long-term Open Relationship',
-                          'Short-term Open Relationship',
-                          'New Friends',
-                          'Still Figuring It Out',
-                        ],
+                        source: t.lookingForList,
                         value: (i, v) => v,
                         label: (i, v) => v,
                       ),

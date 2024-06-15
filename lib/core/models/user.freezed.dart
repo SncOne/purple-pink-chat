@@ -29,6 +29,10 @@ mixin _$UserModel {
   String get interestedGender => throw _privateConstructorUsedError;
   String get lookingFor => throw _privateConstructorUsedError;
   String get location => throw _privateConstructorUsedError;
+  String? get about => throw _privateConstructorUsedError;
+  bool get subscription => throw _privateConstructorUsedError;
+  bool get isAdmin => throw _privateConstructorUsedError;
+  Location get currentLocation => throw _privateConstructorUsedError;
   List<String> get hobiesAndInterests => throw _privateConstructorUsedError;
   @JsonKey(name: 'birthDate')
   DateTime get birthDate => throw _privateConstructorUsedError;
@@ -54,8 +58,14 @@ abstract class $UserModelCopyWith<$Res> {
       String interestedGender,
       String lookingFor,
       String location,
+      String? about,
+      bool subscription,
+      bool isAdmin,
+      Location currentLocation,
       List<String> hobiesAndInterests,
       @JsonKey(name: 'birthDate') DateTime birthDate});
+
+  $LocationCopyWith<$Res> get currentLocation;
 }
 
 /// @nodoc
@@ -80,6 +90,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? interestedGender = null,
     Object? lookingFor = null,
     Object? location = null,
+    Object? about = freezed,
+    Object? subscription = null,
+    Object? isAdmin = null,
+    Object? currentLocation = null,
     Object? hobiesAndInterests = null,
     Object? birthDate = null,
   }) {
@@ -120,6 +134,22 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as String,
+      about: freezed == about
+          ? _value.about
+          : about // ignore: cast_nullable_to_non_nullable
+              as String?,
+      subscription: null == subscription
+          ? _value.subscription
+          : subscription // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isAdmin: null == isAdmin
+          ? _value.isAdmin
+          : isAdmin // ignore: cast_nullable_to_non_nullable
+              as bool,
+      currentLocation: null == currentLocation
+          ? _value.currentLocation
+          : currentLocation // ignore: cast_nullable_to_non_nullable
+              as Location,
       hobiesAndInterests: null == hobiesAndInterests
           ? _value.hobiesAndInterests
           : hobiesAndInterests // ignore: cast_nullable_to_non_nullable
@@ -129,6 +159,14 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           : birthDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $LocationCopyWith<$Res> get currentLocation {
+    return $LocationCopyWith<$Res>(_value.currentLocation, (value) {
+      return _then(_value.copyWith(currentLocation: value) as $Val);
+    });
   }
 }
 
@@ -150,8 +188,15 @@ abstract class _$$UserModelImplCopyWith<$Res>
       String interestedGender,
       String lookingFor,
       String location,
+      String? about,
+      bool subscription,
+      bool isAdmin,
+      Location currentLocation,
       List<String> hobiesAndInterests,
       @JsonKey(name: 'birthDate') DateTime birthDate});
+
+  @override
+  $LocationCopyWith<$Res> get currentLocation;
 }
 
 /// @nodoc
@@ -174,6 +219,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? interestedGender = null,
     Object? lookingFor = null,
     Object? location = null,
+    Object? about = freezed,
+    Object? subscription = null,
+    Object? isAdmin = null,
+    Object? currentLocation = null,
     Object? hobiesAndInterests = null,
     Object? birthDate = null,
   }) {
@@ -214,6 +263,22 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as String,
+      about: freezed == about
+          ? _value.about
+          : about // ignore: cast_nullable_to_non_nullable
+              as String?,
+      subscription: null == subscription
+          ? _value.subscription
+          : subscription // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isAdmin: null == isAdmin
+          ? _value.isAdmin
+          : isAdmin // ignore: cast_nullable_to_non_nullable
+              as bool,
+      currentLocation: null == currentLocation
+          ? _value.currentLocation
+          : currentLocation // ignore: cast_nullable_to_non_nullable
+              as Location,
       hobiesAndInterests: null == hobiesAndInterests
           ? _value._hobiesAndInterests
           : hobiesAndInterests // ignore: cast_nullable_to_non_nullable
@@ -239,6 +304,10 @@ class _$UserModelImpl implements _UserModel {
       required this.interestedGender,
       required this.lookingFor,
       required this.location,
+      this.about,
+      required this.subscription,
+      required this.isAdmin,
+      required this.currentLocation,
       required final List<String> hobiesAndInterests,
       @JsonKey(name: 'birthDate') required this.birthDate})
       : _profileImages = profileImages,
@@ -271,6 +340,14 @@ class _$UserModelImpl implements _UserModel {
   final String lookingFor;
   @override
   final String location;
+  @override
+  final String? about;
+  @override
+  final bool subscription;
+  @override
+  final bool isAdmin;
+  @override
+  final Location currentLocation;
   final List<String> _hobiesAndInterests;
   @override
   List<String> get hobiesAndInterests {
@@ -286,7 +363,7 @@ class _$UserModelImpl implements _UserModel {
 
   @override
   String toString() {
-    return 'UserModel(sexualOrientation: $sexualOrientation, lastName: $lastName, firstName: $firstName, profileImages: $profileImages, uid: $uid, gender: $gender, interestedGender: $interestedGender, lookingFor: $lookingFor, location: $location, hobiesAndInterests: $hobiesAndInterests, birthDate: $birthDate)';
+    return 'UserModel(sexualOrientation: $sexualOrientation, lastName: $lastName, firstName: $firstName, profileImages: $profileImages, uid: $uid, gender: $gender, interestedGender: $interestedGender, lookingFor: $lookingFor, location: $location, about: $about, subscription: $subscription, isAdmin: $isAdmin, currentLocation: $currentLocation, hobiesAndInterests: $hobiesAndInterests, birthDate: $birthDate)';
   }
 
   @override
@@ -310,6 +387,12 @@ class _$UserModelImpl implements _UserModel {
                 other.lookingFor == lookingFor) &&
             (identical(other.location, location) ||
                 other.location == location) &&
+            (identical(other.about, about) || other.about == about) &&
+            (identical(other.subscription, subscription) ||
+                other.subscription == subscription) &&
+            (identical(other.isAdmin, isAdmin) || other.isAdmin == isAdmin) &&
+            (identical(other.currentLocation, currentLocation) ||
+                other.currentLocation == currentLocation) &&
             const DeepCollectionEquality()
                 .equals(other._hobiesAndInterests, _hobiesAndInterests) &&
             (identical(other.birthDate, birthDate) ||
@@ -329,6 +412,10 @@ class _$UserModelImpl implements _UserModel {
       interestedGender,
       lookingFor,
       location,
+      about,
+      subscription,
+      isAdmin,
+      currentLocation,
       const DeepCollectionEquality().hash(_hobiesAndInterests),
       birthDate);
 
@@ -357,6 +444,10 @@ abstract class _UserModel implements UserModel {
           required final String interestedGender,
           required final String lookingFor,
           required final String location,
+          final String? about,
+          required final bool subscription,
+          required final bool isAdmin,
+          required final Location currentLocation,
           required final List<String> hobiesAndInterests,
           @JsonKey(name: 'birthDate') required final DateTime birthDate}) =
       _$UserModelImpl;
@@ -383,6 +474,14 @@ abstract class _UserModel implements UserModel {
   @override
   String get location;
   @override
+  String? get about;
+  @override
+  bool get subscription;
+  @override
+  bool get isAdmin;
+  @override
+  Location get currentLocation;
+  @override
   List<String> get hobiesAndInterests;
   @override
   @JsonKey(name: 'birthDate')
@@ -390,5 +489,160 @@ abstract class _UserModel implements UserModel {
   @override
   @JsonKey(ignore: true)
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+Location _$LocationFromJson(Map<String, dynamic> json) {
+  return _Location.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Location {
+  double get latitude => throw _privateConstructorUsedError;
+  double get longitude => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $LocationCopyWith<Location> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $LocationCopyWith<$Res> {
+  factory $LocationCopyWith(Location value, $Res Function(Location) then) =
+      _$LocationCopyWithImpl<$Res, Location>;
+  @useResult
+  $Res call({double latitude, double longitude});
+}
+
+/// @nodoc
+class _$LocationCopyWithImpl<$Res, $Val extends Location>
+    implements $LocationCopyWith<$Res> {
+  _$LocationCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? latitude = null,
+    Object? longitude = null,
+  }) {
+    return _then(_value.copyWith(
+      latitude: null == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      longitude: null == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as double,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$LocationImplCopyWith<$Res>
+    implements $LocationCopyWith<$Res> {
+  factory _$$LocationImplCopyWith(
+          _$LocationImpl value, $Res Function(_$LocationImpl) then) =
+      __$$LocationImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({double latitude, double longitude});
+}
+
+/// @nodoc
+class __$$LocationImplCopyWithImpl<$Res>
+    extends _$LocationCopyWithImpl<$Res, _$LocationImpl>
+    implements _$$LocationImplCopyWith<$Res> {
+  __$$LocationImplCopyWithImpl(
+      _$LocationImpl _value, $Res Function(_$LocationImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? latitude = null,
+    Object? longitude = null,
+  }) {
+    return _then(_$LocationImpl(
+      latitude: null == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      longitude: null == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$LocationImpl implements _Location {
+  const _$LocationImpl({required this.latitude, required this.longitude});
+
+  factory _$LocationImpl.fromJson(Map<String, dynamic> json) =>
+      _$$LocationImplFromJson(json);
+
+  @override
+  final double latitude;
+  @override
+  final double longitude;
+
+  @override
+  String toString() {
+    return 'Location(latitude: $latitude, longitude: $longitude)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$LocationImpl &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude) &&
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, latitude, longitude);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$LocationImplCopyWith<_$LocationImpl> get copyWith =>
+      __$$LocationImplCopyWithImpl<_$LocationImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$LocationImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _Location implements Location {
+  const factory _Location(
+      {required final double latitude,
+      required final double longitude}) = _$LocationImpl;
+
+  factory _Location.fromJson(Map<String, dynamic> json) =
+      _$LocationImpl.fromJson;
+
+  @override
+  double get latitude;
+  @override
+  double get longitude;
+  @override
+  @JsonKey(ignore: true)
+  _$$LocationImplCopyWith<_$LocationImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

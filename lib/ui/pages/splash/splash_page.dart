@@ -4,7 +4,6 @@ import 'package:catt_catt/utils/app_router.dart';
 import 'package:catt_catt/utils/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:upgrader/upgrader.dart';
 
 @RoutePage()
 class SplashPage extends HookWidget {
@@ -16,11 +15,8 @@ class SplashPage extends HookWidget {
       context.replaceRoute(const HomeRoute());
     });
     return Scaffold(
-      body: UpgradeAlert(
-        upgrader: Upgrader(),
-        child: Center(
-          child: CustomImage.asset(R.images.logo),
-        ),
+      body: Center(
+        child: CustomImage.asset(R.images.logo),
       ),
     );
   }

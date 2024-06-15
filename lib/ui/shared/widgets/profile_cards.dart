@@ -1,12 +1,13 @@
-import 'package:catt_catt/core/models/user.dart';
 import 'package:catt_catt/core/providers/providers.dart';
 import 'package:catt_catt/core/services/matching_service.dart';
 import 'package:catt_catt/ui/shared/widgets/async_widget.dart';
 import 'package:catt_catt/ui/shared/widgets/profile_card.dart';
 import 'package:catt_catt/ui/shared/widgets/profile_card_provider.dart';
+import 'package:catt_catt/utils/print.dart';
 import 'package:catt_catt/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ProfileCards extends HookConsumerWidget {
@@ -16,7 +17,8 @@ class ProfileCards extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUser = ref.read(userProvider);
     final matchingProvider = ref.read(matchingService);
-    return AsyncWidget<List<UserModel>>(
+    final lastCard = useState(false);
+    return AsyncWidget(
       data: ref.watch(profilesProvider),
       builder: (userData) {
         if (userData.isEmpty) {
@@ -27,21 +29,27 @@ class ProfileCards extends HookConsumerWidget {
             height: 500,
             alignment: Alignment.center,
             child: Text(
-              'Hi unfortunately there isnt any cool person in here yet check later on',
+              'Hi unfortunately there isn\'t any cool person in here yet, check later on',
               style: S.textStyles.font18BoldWhite,
             ),
           );
         }
+
         return CardSwiper(
-          cardsCount: userData.length,
+          cardsCount: userData.length + 1,
           backCardOffset: const Offset(0, 30),
           isLoop: false,
           numberOfCardsDisplayed: 1,
+          isDisabled: lastCard.value,
           onSwipe: (
             int previousIndex,
             int? currentIndex,
             CardSwiperDirection direction,
           ) {
+            Print.info(previousIndex, userData.length.toString());
+            if (previousIndex > userData.length - 2) {
+              lastCard.value = true;
+            }
             if (direction == CardSwiperDirection.left) {
             } else if (direction == CardSwiperDirection.right) {
               matchingProvider.addToLikedList(
@@ -54,6 +62,20 @@ class ProfileCards extends HookConsumerWidget {
             vertical: false,
           ),
           cardBuilder: (context, index, percentThresholdX, percentThresholdY) {
+            if (index == userData.length) {
+              return Container(
+                color: Colors.deepPurple,
+                padding: S.edgeInsets.all20,
+                margin: S.edgeInsets.all20,
+                height: double.maxFinite / 0.2,
+                alignment: Alignment.center,
+                child: Text(
+                  'No more profiles available',
+                  style: S.textStyles.font18BoldWhite,
+                ),
+              );
+            }
+
             return ProviderScope(
               overrides: [
                 profileCardProvider.overrideWithValue(userData[index]),

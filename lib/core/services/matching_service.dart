@@ -1,7 +1,8 @@
 import 'package:catt_catt/core/models/user.dart';
+import 'package:catt_catt/core/services/send_push_notification.dart';
+import 'package:catt_catt/utils/print.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -89,15 +90,13 @@ class MatchingService {
 
     final tokenSnapshot = await _store.collection('users').doc(toUserId).get();
     final token = tokenSnapshot.data()?['fcmToken'] as String?;
-
+    Print.warning(token);
     if (token != null) {
-      final fcm = FirebaseMessaging.instance;
-      await fcm.sendMessage(
-        to: token,
-        data: {
-          'title': 'New Match!',
-          'body': 'You have matched with ${matchedUser.firstName}!',
-        },
+      Print.error(token);
+      await sendPushNotification(
+        deviceToken: token,
+        title: 'New Match!',
+        body: 'You have matched with ${matchedUser.firstName}!',
       );
     }
   }

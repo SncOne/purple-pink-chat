@@ -22,10 +22,6 @@ Future<ProviderContainer> init() async {
 
   // MobileAds.instance.initialize();
 
-  if (!kReleaseMode) {
-    await Upgrader.clearSavedSettings();
-  }
-
   await Hive.initFlutter();
 
   if (!Hive.isBoxOpen(C.hive.app)) {

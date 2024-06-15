@@ -3,15 +3,18 @@ import 'dart:convert';
 import 'package:catt_catt/utils/print.dart';
 import 'package:http/http.dart' as http;
 
-Future<void> sendPushNotification(final String deviceToken) async {
+Future<void> sendPushNotification(
+    {required String deviceToken,
+    required String title,
+    required String body}) async {
   const serverKey = '';
   const apiUrl = 'https://fcm.googleapis.com/fcm/send';
 
   final notification = <String, dynamic>{
     'to': deviceToken,
     'notification': {
-      'title': 'title',
-      'body': 'body',
+      'title': title,
+      'body': body,
     },
     'data': {},
   };

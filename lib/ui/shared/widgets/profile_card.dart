@@ -1,7 +1,6 @@
 import 'package:catt_catt/ui/shared/widgets/custom_image.dart';
 import 'package:catt_catt/ui/shared/widgets/profile_card_like_status.dart';
 import 'package:catt_catt/ui/shared/widgets/profile_card_provider.dart';
-import 'package:catt_catt/utils/print.dart';
 import 'package:catt_catt/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,7 +11,6 @@ class ProfileCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final user = ref.watch(profileCardProvider);
-    Print.log(user.lastName, 'HHHHHH');
     return Column(
       children: [
         Stack(

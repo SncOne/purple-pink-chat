@@ -59,7 +59,7 @@ class _Show {
           padding: EdgeInsets.only(bottom: context.bottom),
           child: Center(
             child: SizedBox(
-              width: 340.w,
+              width: 340,
               child: Material(
                 borderRadius:
                     borderRadius ?? const BorderRadius.all(Radius.circular(16)),
@@ -105,7 +105,7 @@ class _Show {
           alignment: Alignment.bottomCenter,
           child: Flash<T>(
             controller: c,
-            position: FlashPosition.bottom,
+            position: FlashPosition.top,
             child: Container(
               margin: const EdgeInsets.only(bottom: 30.0),
               decoration: BoxDecoration(

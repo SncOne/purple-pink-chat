@@ -19,6 +19,11 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
       interestedGender: json['interestedGender'] as String,
       lookingFor: json['lookingFor'] as String,
       location: json['location'] as String,
+      about: json['about'] as String?,
+      subscription: json['subscription'] as bool,
+      isAdmin: json['isAdmin'] as bool,
+      currentLocation:
+          Location.fromJson(json['currentLocation'] as Map<String, dynamic>),
       hobiesAndInterests: (json['hobiesAndInterests'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
@@ -36,6 +41,22 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
       'interestedGender': instance.interestedGender,
       'lookingFor': instance.lookingFor,
       'location': instance.location,
+      'about': instance.about,
+      'subscription': instance.subscription,
+      'isAdmin': instance.isAdmin,
+      'currentLocation': instance.currentLocation,
       'hobiesAndInterests': instance.hobiesAndInterests,
       'birthDate': instance.birthDate.toIso8601String(),
+    };
+
+_$LocationImpl _$$LocationImplFromJson(Map<String, dynamic> json) =>
+    _$LocationImpl(
+      latitude: (json['latitude'] as num).toDouble(),
+      longitude: (json['longitude'] as num).toDouble(),
+    );
+
+Map<String, dynamic> _$$LocationImplToJson(_$LocationImpl instance) =>
+    <String, dynamic>{
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
     };

@@ -82,6 +82,8 @@ final class AuthService {
     String? interestedGender,
     String? lookingFor,
     String? sexualOrientation,
+    String? about,
+    bool? isAdmin,
   }) async {
     if (user != null) {
       final currentPosition = await _locationService.determinePosition();
@@ -102,17 +104,16 @@ final class AuthService {
         "interestedGender": interestedGender ?? '',
         "lookingFor": lookingFor ?? '',
         "sexualOrientation": sexualOrientation ?? '',
+        "about": about ?? '',
         "isAdmin": false, //For admin account
-        "matchedIDs": [],
-        "likedIDs": [],
         "currentLocation": currentLocation,
-        "subscription":
-            false, //For no subs its false it will turn true when its subscribed
+        "subscription": false,
+        //For no subs its false it will turn true when its subscribed
       });
     }
   }
 
-  Future<List<UserModel>>? getProfiles() async {
+  Stream<List<UserModel>> getProfilesStream() async* {
     final usersProfileList = <UserModel>[];
     final likedUserIds = <String>[];
 
@@ -130,17 +131,22 @@ final class AuthService {
       final usersProfilesQuery =
           _store.collection('users').where('uid', isNotEqualTo: user!.uid);
 
-      final usersProfilesSnapshot = await usersProfilesQuery.get();
+      final usersProfilesSnapshot = usersProfilesQuery.snapshots();
 
-      final usersProfiles = usersProfilesSnapshot.docs;
+      await for (var snapshot in usersProfilesSnapshot) {
+        final usersProfiles = snapshot.docs;
 
-      for (var doc in usersProfiles) {
-        if (!likedUserIds.contains(doc.id)) {
-          usersProfileList.add(UserModel.fromJson(doc.data()));
+        for (var doc in usersProfiles) {
+          if (!likedUserIds.contains(doc.id)) {
+            usersProfileList.add(UserModel.fromJson(doc.data()));
+          }
         }
+
+        yield usersProfileList;
       }
+    } else {
+      yield usersProfileList;
     }
-    return usersProfileList;
   }
 
   Future<UserCredential?> register({
@@ -200,17 +206,9 @@ final class AuthService {
     }
   }
 
-  Future<void> deleteAccount(
-    String email,
-    BuildContext context,
-  ) async {
-    try {
-      await _auth.currentUser?.delete();
-    } on FirebaseAuthException catch (e) {
-      if (context.mounted) {
-        Utils.show.toast(context, e.message!);
-      }
-    }
+  Future<void> deleteAccount() async {
+    _store.collection("users").doc(_auth.currentUser?.uid).delete();
+    _auth.currentUser?.delete();
   }
 
   Future<void> logout() async {

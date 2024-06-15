@@ -21,8 +21,8 @@ class AsyncWidget<T> extends StatelessWidget {
       data: builder,
       error: error ??
           (e, err) {
-            Print.error(e);
-            Print.warning(err);
+            Print.error(e, 'e');
+            Print.warning(err, 'err');
             return const Center(child: Text('err'));
           },
       loading: () {

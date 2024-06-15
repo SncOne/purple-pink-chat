@@ -1,9 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:catt_catt/core/models/user.dart';
 import 'package:catt_catt/core/providers/providers.dart';
+import 'package:catt_catt/core/services/auth_service.dart';
 import 'package:catt_catt/ui/shared/widgets/async_widget.dart';
 import 'package:catt_catt/ui/shared/widgets/custom_image.dart';
+import 'package:catt_catt/utils/app_router.dart';
 import 'package:catt_catt/utils/assets.dart';
+import 'package:catt_catt/utils/extensions.dart';
+import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:catt_catt/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,14 +21,21 @@ class ProfilePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("UPDATE PROFILE"),
+        title: Text(t.updateProfile),
         actions: [
           IconButton(
             icon: SvgPicture.asset(R.icons.edit),
             onPressed: () {
-              // Push to edit profile page
+              context.pushRoute(const CreateProfileRoute());
             },
           ),
+          ElevatedButton(
+            onPressed: () {
+              context.showLoading(ref.read(authService).logout);
+              context.router.replace(const WelcomeRoute());
+            },
+            child: Text(t.logout),
+          )
         ],
       ),
       body: Padding(
@@ -75,7 +86,7 @@ class ProfilePage extends HookConsumerWidget {
                               ),
                               S.sizedBox.h6,
                               Text(
-                                'XXXXXXXX XXXX\nXXXX XXXXXXX XXXXX\nXXXXX XXXXXXX XXXX XXXXX',
+                                userData.about ?? '',
                                 textAlign: TextAlign.center,
                                 style: S.textStyles.font16White,
                               ),
@@ -112,9 +123,9 @@ class ProfilePage extends HookConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  const Text(
-                    'Hobbies & Interest',
-                    style: TextStyle(
+                  Text(
+                    t.hobbies,
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),

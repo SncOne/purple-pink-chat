@@ -16,9 +16,9 @@ class HomePage extends ConsumerWidget {
       lazyLoad: true,
       routes: const [
         DiscoverRoute(),
-        ProfileRoute(),
-        LikesRoute(),
         MessagesRoute(),
+        LikesRoute(),
+        ProfileRoute(),
       ],
       transitionBuilder: (_, child, __) => child,
       bottomNavigationBuilder: (final _, final __) {

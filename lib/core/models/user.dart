@@ -17,10 +17,25 @@ abstract class UserModel with _$UserModel {
     required String interestedGender,
     required String lookingFor,
     required String location,
+    String? about,
+    required bool subscription,
+    required bool isAdmin,
+    required Location currentLocation,
     required List<String> hobiesAndInterests,
-    @JsonKey(name: 'birthDate') required DateTime birthDate,
+    required DateTime birthDate,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
+}
+
+@freezed
+abstract class Location with _$Location {
+  const factory Location({
+    required double latitude,
+    required double longitude,
+  }) = _Location;
+
+  factory Location.fromJson(Map<String, dynamic> json) =>
+      _$LocationFromJson(json);
 }
