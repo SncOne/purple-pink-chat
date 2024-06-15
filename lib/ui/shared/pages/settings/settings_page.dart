@@ -82,19 +82,21 @@ class SettingsWidget extends ConsumerWidget {
             color: Colors.white,
           ),
           onTap: () {
-            AlertDialog(
-              scrollable: true,
-              title: Text(
-                t.privacyPolicy,
-                style: S.textStyles.font16White,
-              ),
-              content: const Text(C.privacyPolicy),
-              actions: <Widget>[
-                TouchableOpacity(
-                  child: const Text('Close'),
-                  onTap: () => context.maybePop(),
-                ),
-              ],
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  scrollable: true,
+                  title: Text(t.privacyPolicy),
+                  content: const Text(C.privacyPolicy),
+                  actions: <Widget>[
+                    TouchableOpacity(
+                      child: const Text('Close'),
+                      onTap: () => Navigator.of(context).pop(),
+                    ),
+                  ],
+                );
+              },
             );
           },
         ),
@@ -108,16 +110,21 @@ class SettingsWidget extends ConsumerWidget {
             color: Colors.white,
           ),
           onTap: () {
-            AlertDialog(
-              scrollable: true,
-              title: Text(t.termsOfUse),
-              content: const Text(C.termsOfUse),
-              actions: <Widget>[
-                TouchableOpacity(
-                  child: const Text('Close'),
-                  onTap: () => context.maybePop(),
-                ),
-              ],
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  scrollable: true,
+                  title: Text(t.termsOfUse),
+                  content: const Text(C.termsOfUse),
+                  actions: <Widget>[
+                    TouchableOpacity(
+                      child: const Text('Close'),
+                      onTap: () => Navigator.of(context).pop(),
+                    ),
+                  ],
+                );
+              },
             );
           },
         ),

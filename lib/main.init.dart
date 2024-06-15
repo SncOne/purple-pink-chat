@@ -31,6 +31,7 @@ Future<ProviderContainer> init() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await NotificationService().requestNotificationPermission();
 
   // container.read(dynamicLinksServiceProvider);
 

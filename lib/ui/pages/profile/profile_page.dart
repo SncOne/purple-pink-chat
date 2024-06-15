@@ -4,13 +4,14 @@ import 'package:catt_catt/core/providers/providers.dart';
 import 'package:catt_catt/core/services/auth_service.dart';
 import 'package:catt_catt/ui/shared/widgets/async_widget.dart';
 import 'package:catt_catt/ui/shared/widgets/custom_image.dart';
+import 'package:catt_catt/ui/shared/widgets/image_viewer.dart';
 import 'package:catt_catt/utils/app_router.dart';
 import 'package:catt_catt/utils/assets.dart';
 import 'package:catt_catt/utils/extensions.dart';
 import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:catt_catt/utils/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 @RoutePage()
@@ -97,23 +98,38 @@ class ProfilePage extends HookConsumerWidget {
                           top: 0,
                           left: 0,
                           right: 0,
-                          child: CircleAvatar(
-                            radius: 50,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: S.borderRadius.radius50,
-                                border: Border.all(
-                                  color: Colors.deepPurple,
-                                  width: 3,
+                          child: Hero(
+                            tag: userData.profileImages.first,
+                            child: CircleAvatar(
+                              radius: 50,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: S.borderRadius.radius50,
+                                  border: Border.all(
+                                    color: Colors.deepPurple,
+                                    width: 3,
+                                  ),
                                 ),
-                              ),
-                              child: ClipOval(
-                                child: CustomImage.network(
-                                  userData.profileImages.first,
-                                  fit: BoxFit.cover,
-                                  width: 100,
-                                  height: 100,
-                                  memCacheHeight: 200,
+                                child: ClipOval(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (_) => ImageViewerPage(
+                                            imageUrl:
+                                                userData.profileImages.first,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: CustomImage.network(
+                                      userData.profileImages.first,
+                                      fit: BoxFit.cover,
+                                      width: 100,
+                                      height: 100,
+                                      memCacheHeight: 200,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -144,12 +160,24 @@ class ProfilePage extends HookConsumerWidget {
                     spacing: 10,
                     runSpacing: 10,
                     children: userData.profileImages.map((image) {
-                      return CustomImage.network(
-                        image,
-                        height: 150,
-                        width: 150,
-                        memCacheHeight: 300,
-                        fit: BoxFit.cover,
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => ImageViewerPage(imageUrl: image),
+                            ),
+                          );
+                        },
+                        child: Hero(
+                          tag: image,
+                          child: CustomImage.network(
+                            image,
+                            height: 150,
+                            width: 150,
+                            memCacheHeight: 300,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       );
                     }).toList(),
                   ),

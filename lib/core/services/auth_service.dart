@@ -7,6 +7,7 @@ import 'package:catt_catt/utils/print.dart';
 import 'package:catt_catt/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -53,6 +54,14 @@ final class AuthService {
     }
     final userData = userDoc.data();
     return userData;
+  }
+
+  Future getToken() async {
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    if (user != null) {
+      await storeInfo.update({'fcmToken': fcmToken});
+      Print.error(fcmToken, 'hello');
+    }
   }
 
   Future<String> uploadImage({
@@ -207,8 +216,9 @@ final class AuthService {
   }
 
   Future<void> deleteAccount() async {
-    _store.collection("users").doc(_auth.currentUser?.uid).delete();
-    _auth.currentUser?.delete();
+    await _store.collection("users").doc(_auth.currentUser?.uid).delete();
+    await _auth.currentUser?.delete();
+    await logout();
   }
 
   Future<void> logout() async {

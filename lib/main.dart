@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:catt_catt/core/services/notification_service.dart';
 import 'package:catt_catt/utils/app_router.dart';
 import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:country_picker/country_picker.dart';

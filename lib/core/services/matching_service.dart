@@ -89,8 +89,9 @@ class MatchingService {
     });
 
     final tokenSnapshot = await _store.collection('users').doc(toUserId).get();
+    Print.warning(tokenSnapshot.data(), "here");
     final token = tokenSnapshot.data()?['fcmToken'] as String?;
-    Print.warning(token);
+    Print.warning(token, "here2");
     if (token != null) {
       Print.error(token);
       await sendPushNotification(

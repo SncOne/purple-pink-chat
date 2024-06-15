@@ -17,6 +17,15 @@ extension CheckNull on Object? {
   bool get isNotNull => this != null;
 }
 
+String generateRandomString(int length) {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  final random = Random();
+  return String.fromCharCodes(
+    List.generate(
+        length, (index) => chars.codeUnitAt(random.nextInt(chars.length))),
+  );
+}
+
 extension EditController on AutoDisposeRef {
   TextEditingController useTextEditingController() {
     final controller = TextEditingController();
