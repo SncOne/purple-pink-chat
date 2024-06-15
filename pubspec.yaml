@@ -16,6 +16,7 @@ dependencies:
   cloud_firestore: ^5.0.1
   connectivity_plus: ^6.0.3
   country_picker: ^2.0.26
+  dart_firebase_admin: ^0.3.1
   firebase_analytics: ^11.0.1
   firebase_auth: ^5.1.0
   firebase_core: ^3.1.0
@@ -30,6 +31,7 @@ dependencies:
   flutter_firebase_chat_core: ^1.6.8
   flutter_form_builder: ^9.3.0
   flutter_hooks: ^0.20.5
+  flutter_local_notifications: ^17.1.2
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.10+1
@@ -37,7 +39,7 @@ dependencies:
   freezed_annotation: ^2.4.1
   geolocator: ^12.0.0
   google_mlkit_face_detection: ^0.11.0
-  flutter_local_notifications: ^17.1.2
+  googleapis_auth: ^1.6.0
   hive_flutter: ^1.1.0
   hooks_riverpod: ^2.5.1
   http: ^1.2.1
@@ -81,3 +83,4 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/animations/
+    - key.json

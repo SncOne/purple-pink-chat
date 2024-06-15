@@ -43,17 +43,17 @@ class MatchingService {
     final currentUserDoc = _store.collection('users').doc(currentUserId);
     final toUserDoc = _store.collection('users').doc(toUserId);
 
-    await currentUserDoc.collection('likedList').doc(toUserId).set({});
-    await toUserDoc.collection('likesYouList').doc(currentUserId).set({});
+    currentUserDoc.collection('likedList').doc(toUserId).set({});
+    toUserDoc.collection('likesYouList').doc(currentUserId).set({});
 
     final mutualLike =
         await toUserDoc.collection('likedList').doc(currentUserId).get();
 
     if (mutualLike.exists) {
-      await currentUserDoc.collection('matchedList').doc(toUserId).set({});
-      await toUserDoc.collection('matchedList').doc(currentUserId).set({});
+      currentUserDoc.collection('matchedList').doc(toUserId).set({});
+      toUserDoc.collection('matchedList').doc(currentUserId).set({});
       final userIds = [toUserId, currentUserId]..sort();
-      await _store.collection('rooms').add({
+      _store.collection('rooms').add({
         'createdAt': FieldValue.serverTimestamp(),
         'imageUrl': null,
         'name': null,
@@ -62,8 +62,8 @@ class MatchingService {
         'userIds': userIds,
         'userRoles': null,
       });
-      await sendMatchNotification(currentUserId, toUserId);
-      await sendMatchNotification(toUserId, currentUserId);
+      sendMatchNotification(currentUserId, toUserId);
+      sendMatchNotification(toUserId, currentUserId);
     }
   }
 

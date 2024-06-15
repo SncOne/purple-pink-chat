@@ -1,33 +1,38 @@
 import 'dart:convert';
 
 import 'package:catt_catt/utils/print.dart';
-import 'package:http/http.dart' as http;
+import 'package:dart_firebase_admin/dart_firebase_admin.dart';
+import 'package:dart_firebase_admin/messaging.dart';
+import 'package:flutter/services.dart';
+import 'package:googleapis_auth/auth_io.dart';
 
-Future<void> sendPushNotification(
-    {required String deviceToken,
-    required String title,
-    required String body}) async {
-  const serverKey = '';
-  const apiUrl = 'https://fcm.googleapis.com/fcm/send';
-
-  final notification = <String, dynamic>{
-    'to': deviceToken,
-    'notification': {
-      'title': title,
-      'body': body,
-    },
-    'data': {},
-  };
-
-  final response = await http.post(
-    Uri.parse(apiUrl),
-    headers: <String, String>{
-      'Content-Type': 'application/json',
-      'Authorization': 'key=$serverKey',
-    },
-    body: jsonEncode(notification),
+Future<void> sendPushNotification({
+  required String deviceToken,
+  required String title,
+  required String body,
+}) async {
+  final String res = await rootBundle.loadString('key.json');
+  final data = await json.decode(res);
+  final credentials = ServiceAccountCredentials.fromJson(data);
+  final firebaseAdmin = FirebaseAdminApp.initializeApp(
+    'catt-catt',
+    Credential.fromServiceAccountParams(
+      clientId: '113110539568147441495',
+      email: credentials.email,
+      privateKey: credentials.privateKey,
+    ),
   );
 
-  Print.info('FCM Response status: ${response.statusCode}');
-  Print.info('FCM Response body: ${response.body}');
+  final messaging = Messaging(firebaseAdmin);
+
+  final response = await messaging.send(
+    TokenMessage(
+      token: deviceToken,
+      notification: Notification(
+        title: 'Hello',
+        body: 'World',
+      ),
+    ),
+  );
+  Print.info(response);
 }
