@@ -92,7 +92,7 @@ class SettingsWidget extends ConsumerWidget {
                   actions: <Widget>[
                     TouchableOpacity(
                       child: const Text('Close'),
-                      onTap: () => Navigator.of(context).pop(),
+                      onTap: () => context.maybePop(),
                     ),
                   ],
                 );
@@ -120,7 +120,7 @@ class SettingsWidget extends ConsumerWidget {
                   actions: <Widget>[
                     TouchableOpacity(
                       child: const Text('Close'),
-                      onTap: () => Navigator.of(context).pop(),
+                      onTap: () => context.maybePop(),
                     ),
                   ],
                 );

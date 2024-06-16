@@ -77,6 +77,22 @@ class MatchingService {
     }
   }
 
+  Future<String?> getRoomId(String userId1, String userId2) async {
+    final roomSnapshot = await FirebaseFirestore.instance
+        .collection('rooms')
+        .where('userIds', arrayContains: userId1)
+        .get();
+
+    for (var doc in roomSnapshot.docs) {
+      List users = doc['userIds'];
+      if (users.contains(userId2)) {
+        return doc.id;
+      }
+    }
+
+    return null; // Eğer oda bulunamazsa
+  }
+
   Future<void> sendMatchNotification(
       String toUserId, String matchedUserId) async {
     final toUser = await getUserProfile(toUserId);

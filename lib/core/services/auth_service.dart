@@ -56,6 +56,13 @@ final class AuthService {
     return userData;
   }
 
+  Future<UserModel> getUserWithID(String id) async {
+    final userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(id).get();
+    final userData = userDoc.data();
+    return UserModel.fromJson(userData!);
+  }
+
   Stream<UserModel> getUserStream() async* {
     final userDoc = _store.collection("users").doc(user!.uid).snapshots();
     yield* userDoc.map((doc) {

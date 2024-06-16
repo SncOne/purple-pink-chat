@@ -1,14 +1,18 @@
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:catt_catt/utils/print.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:path_provider/path_provider.dart';
 
 @RoutePage()
 class ChatPage extends HookConsumerWidget {
@@ -16,6 +20,38 @@ class ChatPage extends HookConsumerWidget {
   const ChatPage({required this.room, super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    FlutterSoundRecorder? audioRecorder;
+    final isRecording = useState(false);
+
+    Future<void> startRecording() async {
+      audioRecorder = FlutterSoundRecorder();
+      await audioRecorder!.openRecorder();
+      final status = await Permission.microphone.request();
+      if (status != PermissionStatus.granted) {
+        throw RecordingPermissionException('Microphone permission not granted');
+      }
+
+      final directory = await getTemporaryDirectory();
+      final path =
+          '${directory.path}/${DateTime.now().millisecondsSinceEpoch}.aac';
+
+      try {
+        await audioRecorder!.startRecorder(toFile: path);
+        isRecording.value = true;
+      } catch (e) {
+        Future.error("Error: $e");
+      }
+    }
+
+    Future<String?> stopRecording() async {
+      if (audioRecorder != null && audioRecorder!.isRecording) {
+        final uri = await audioRecorder!.stopRecorder();
+        isRecording.value = false;
+        return uri;
+      }
+      return null;
+    }
+
     void handleImageSelection() async {
       final result = await ImagePicker().pickMultiImage(
         imageQuality: 70,
@@ -23,35 +59,32 @@ class ChatPage extends HookConsumerWidget {
         limit: 4,
       );
 
-      if (result != null) {
-        for (var element in result) {
-          final file = File(element.path);
-          final size = file.lengthSync();
-          final bytes = await element.readAsBytes();
-          final image = await decodeImageFromList(bytes);
-          final name = element.name;
+      for (var element in result) {
+        final file = File(element.path);
+        final size = file.lengthSync();
+        final bytes = await element.readAsBytes();
+        final image = await decodeImageFromList(bytes);
+        final name = element.name;
 
-          try {
-            final reference = FirebaseStorage.instance.ref(name);
-            await reference.putFile(file);
-            final uri = await reference.getDownloadURL();
+        try {
+          final reference = FirebaseStorage.instance.ref(name);
+          await reference.putFile(file);
+          final uri = await reference.getDownloadURL();
 
-            final message = types.PartialImage(
-              height: image.height.toDouble(),
-              name: name,
-              size: size,
-              uri: uri,
-              width: image.width.toDouble(),
-            );
+          final message = types.PartialImage(
+            height: image.height.toDouble(),
+            name: name,
+            size: size,
+            uri: uri,
+            width: image.width.toDouble(),
+          );
 
-            FirebaseChatCore.instance.sendMessage(
-              message,
-              room.id,
-            );
-          } catch (e) {
-            print("Error uploading image: $e");
-            // Handle the error as per your requirement
-          }
+          FirebaseChatCore.instance.sendMessage(
+            message,
+            room.id,
+          );
+        } catch (e) {
+          Future.error("Error uploading image: $e");
         }
       }
     }
@@ -65,8 +98,6 @@ class ChatPage extends HookConsumerWidget {
       if (result != null) {
         final file = File(result.path);
         final size = file.lengthSync();
-        final bytes = await result.readAsBytes();
-        final video = await decodeImageFromList(bytes);
         final name = result.name;
 
         try {
@@ -75,73 +106,86 @@ class ChatPage extends HookConsumerWidget {
           final uri = await reference.getDownloadURL();
 
           final message = types.PartialVideo(
-            height: video.height.toDouble(),
+            height: 0,
             name: name,
             size: size,
             uri: uri,
-            width: video.width.toDouble(),
+            width: 0,
           );
 
           FirebaseChatCore.instance.sendMessage(
             message,
             room.id,
           );
-        } finally {}
+        } catch (e) {
+          Future.error("Error uploading video: $e");
+        }
       }
     }
 
     void handleAudioSelection() async {
-      final audioRecorder = FlutterSound();
-      final encoder = Codec.aacMP4;
+      await startRecording();
 
-      // try {
-      //   // Start recording audio
-      //   String path = await audioRecorder.startRecorder(
-      //     codec: encoder,
-      //     sampleRate: 44100,
-      //     bitRate: 128000,
-      //   );
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Recording...'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const CircularProgressIndicator(),
+                  const SizedBox(height: 20),
+                  const Text('Recording in progress...'),
+                  TextButton(
+                    onPressed: () async {
+                      final uri = await stopRecording();
+                      if (uri != null) {
+                        final file = File(uri);
+                        final size = file.lengthSync();
+                        final duration = DateTime.now().millisecondsSinceEpoch;
+                        final name =
+                            DateTime.now().millisecondsSinceEpoch.toString();
 
-      //   // You may want to have a UI to indicate recording is in progress
+                        final reference =
+                            FirebaseStorage.instance.ref('$name.aac');
+                        await reference.putFile(file);
+                        final downloadUri = await reference.getDownloadURL();
 
-      //   // Here you would typically have some UI to stop recording
-      //   // For example, have a button to stop recording and call:
-      //   // await audioRecorder.stopRecorder();
+                        final message = types.PartialAudio(
+                          duration: Duration(milliseconds: duration),
+                          name: name,
+                          size: size,
+                          uri: downloadUri,
+                        );
 
-      //   final file = File(path);
-      //   final size = file.lengthSync();
-      //   final name = DateTime.now().millisecondsSinceEpoch.toString();
-
-      //   // Upload audio file to Firebase Storage
-      //   final reference = FirebaseStorage.instance.ref('audios/$name.mp4');
-      //   await reference.putFile(file);
-      //   final uri = await reference.getDownloadURL();
-
-      //   // Create a message object
-      //   final message = types.PartialAudio(
-      //     duration: Duration(seconds: 15), // Duration of the audio
-      //     name: name, // Name of the audio file
-      //     size: size, // Size of the audio file
-      //     uri: uri, // Download URL of the audio file
-      //   );
-
-      //   // Send the message
-      //   FirebaseChatCore.instance.sendMessage(
-      //     message,
-      //     room.id,
-      //   );
-      // } catch (e) {
-      //   print("Error: $e");
-      //   // Handle error, maybe show a snackbar or dialog
-      // }
+                        FirebaseChatCore.instance.sendMessage(
+                          message,
+                          room.id,
+                        );
+                      }
+                      if (context.mounted) {
+                        context.maybePop();
+                      }
+                    },
+                    child: const Text('Stop Recording'),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      }
     }
 
-    void handleAtachmentPressed() {
+    void handleAttachmentPressed() {
       showModalBottomSheet<void>(
         context: context,
         builder: (BuildContext context) => SafeArea(
           child: SizedBox(
-            height: 144,
+            height: 200,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
@@ -205,6 +249,24 @@ class ChatPage extends HookConsumerWidget {
       );
     }
 
+    Widget audioMessageBuilder(types.AudioMessage message,
+        {required int messageWidth}) {
+      return Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.grey[300],
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Audio message: ${message.name}'),
+            Text('Duration: ${message.duration} seconds'),
+          ],
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(room.name.toString()),
@@ -217,12 +279,16 @@ class ChatPage extends HookConsumerWidget {
           stream: FirebaseChatCore.instance.messages(snapshot.data!),
           builder: (context, snapshot) => Chat(
             messages: snapshot.data ?? [],
-            onAttachmentPressed: handleAtachmentPressed,
+            onAttachmentPressed: handleAttachmentPressed,
             onPreviewDataFetched: handlePreviewDataFetched,
             onSendPressed: handleSendPressed,
             user: types.User(
               id: FirebaseChatCore.instance.firebaseUser?.uid ?? '',
             ),
+            audioMessageBuilder: (p0, {required messageWidth}) {
+              Print.error(messageWidth);
+              return audioMessageBuilder(p0, messageWidth: messageWidth);
+            },
           ),
         ),
       ),

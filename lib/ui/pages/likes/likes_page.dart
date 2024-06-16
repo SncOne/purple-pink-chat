@@ -1,10 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:auto_route/auto_route.dart';
 import 'package:catt_catt/core/models/user.dart';
 import 'package:catt_catt/core/services/matching_service.dart';
 import 'package:catt_catt/ui/shared/widgets/custom_image.dart';
+import 'package:catt_catt/utils/app_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 @RoutePage()
 class LikesPage extends ConsumerWidget {
@@ -51,13 +55,34 @@ class LikesPage extends ConsumerWidget {
                     actions: [
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          context.maybePop();
                         },
                         child: const Text('Close'),
                       ),
                     ],
                   ),
                 );
+              },
+              onChatTap: (user) async {
+                final currentUser = matchingServiceProvider.user!;
+                final roomId = await matchingServiceProvider.getRoomId(
+                    currentUser.uid, user.uid); // Odayı bulma işlemi
+
+                if (roomId != null) {
+                  final room = types.Room(
+                    type: types.RoomType.direct,
+                    id: roomId,
+                    name: "${user.firstName} ${user.lastName}",
+                    users: const [],
+                  );
+
+                  context.router.push(ChatRoute(room: room));
+                } else {
+                  // Oda bulunamazsa hata göster
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Chat room not found')),
+                  );
+                }
               },
             ),
             LikesList(
@@ -82,13 +107,34 @@ class LikesPage extends ConsumerWidget {
                     actions: [
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          context.maybePop();
                         },
                         child: const Text('Close'),
                       ),
                     ],
                   ),
                 );
+              },
+              onChatTap: (user) async {
+                final currentUser = matchingServiceProvider.user!;
+                final roomId = await matchingServiceProvider.getRoomId(
+                    currentUser.uid, user.uid); // Odayı bulma işlemi
+
+                if (roomId != null) {
+                  final room = types.Room(
+                    type: types.RoomType.direct,
+                    id: roomId,
+                    name: "${user.firstName} ${user.lastName}",
+                    users: const [],
+                  );
+
+                  context.router.push(ChatRoute(room: room));
+                } else {
+                  // Oda bulunamazsa hata göster
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Chat room not found')),
+                  );
+                }
               },
             ),
             LikesList(
@@ -113,13 +159,34 @@ class LikesPage extends ConsumerWidget {
                     actions: [
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          context.maybePop();
                         },
                         child: const Text('Close'),
                       ),
                     ],
                   ),
                 );
+              },
+              onChatTap: (user) async {
+                final currentUser = matchingServiceProvider.user!;
+                final roomId = await matchingServiceProvider.getRoomId(
+                    currentUser.uid, user.uid); // Odayı bulma işlemi
+
+                if (roomId != null) {
+                  final room = types.Room(
+                    type: types.RoomType.direct,
+                    id: roomId,
+                    name: "${user.firstName} ${user.lastName}",
+                    users: const [],
+                  );
+
+                  context.router.push(ChatRoute(room: room));
+                } else {
+                  // Oda bulunamazsa hata göster
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Chat room not found')),
+                  );
+                }
               },
             ),
           ],
@@ -132,7 +199,14 @@ class LikesPage extends ConsumerWidget {
 class LikesList extends ConsumerWidget {
   final Stream<QuerySnapshot> stream;
   final Function(UserModel) onTap;
-  const LikesList({required this.stream, required this.onTap, super.key});
+  final Function(UserModel) onChatTap;
+
+  const LikesList({
+    required this.stream,
+    required this.onTap,
+    required this.onChatTap,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -178,6 +252,7 @@ class LikesList extends ConsumerWidget {
 
                 return GestureDetector(
                   onTap: () => onTap(user),
+                  onLongPress: () => onChatTap(user),
                   child: Card(
                     child: Column(
                       children: [

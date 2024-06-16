@@ -47,3 +47,8 @@ final profilesProvider = StreamProvider.autoDispose<List<UserModel>>((ref) {
   final authService = ref.read(authServiceProvider);
   return authService.getProfilesStream();
 });
+final userProviderWithID =
+    FutureProvider.family<UserModel, String>((ref, userId) async {
+  final authService = ref.read(authServiceProvider);
+  return authService.getUserWithID(userId);
+});
