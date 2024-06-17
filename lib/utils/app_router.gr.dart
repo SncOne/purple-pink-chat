@@ -91,6 +91,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const OnboardingPage(),
       );
     },
+    ProfileDetailsRoute.name: (routeData) {
+      final args = routeData.argsAs<ProfileDetailsRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: ProfileDetailsPage(
+          user: args.user,
+          key: args.key,
+        ),
+      );
+    },
     ProfileRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -307,6 +317,44 @@ class OnboardingRoute extends PageRouteInfo<void> {
   static const String name = 'OnboardingRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ProfileDetailsPage]
+class ProfileDetailsRoute extends PageRouteInfo<ProfileDetailsRouteArgs> {
+  ProfileDetailsRoute({
+    required UserModel user,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          ProfileDetailsRoute.name,
+          args: ProfileDetailsRouteArgs(
+            user: user,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'ProfileDetailsRoute';
+
+  static const PageInfo<ProfileDetailsRouteArgs> page =
+      PageInfo<ProfileDetailsRouteArgs>(name);
+}
+
+class ProfileDetailsRouteArgs {
+  const ProfileDetailsRouteArgs({
+    required this.user,
+    this.key,
+  });
+
+  final UserModel user;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'ProfileDetailsRouteArgs{user: $user, key: $key}';
+  }
 }
 
 /// generated route for

@@ -75,9 +75,21 @@ class ProfileCard extends ConsumerWidget {
                       ],
                       borderRadius: S.borderRadius.radius16,
                     ),
-                    child: Text(
-                      '${(DateTime.now().difference(user.birthDate).inDays ~/ 365).toString()} years old',
-                      style: S.textStyles.font16White,
+                    child: Row(
+                      children: [
+                        Text(
+                          '${(DateTime.now().difference(user.birthDate).inDays ~/ 365).toString()} years old',
+                          style: S.textStyles.font16White,
+                        ),
+                        user.isAdmin
+                            ? const Icon(
+                                Icons.check_circle_outline_outlined,
+                                color: Colors.deepPurple,
+                              )
+                            : const Icon(
+                                Icons.check_circle_rounded,
+                              )
+                      ],
                     ),
                   )
                 ],

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:catt_catt/core/models/user.dart';
 import 'package:catt_catt/core/services/auth_service.dart';
 import 'package:catt_catt/ui/pages/auth/createProfile/create_profile_page.dart';
 import 'package:catt_catt/ui/pages/auth/forgot/forgot_password_page.dart';
@@ -11,6 +12,7 @@ import 'package:catt_catt/ui/pages/messages/messages_page.dart';
 import 'package:catt_catt/ui/pages/chat/chat_page.dart';
 import 'package:catt_catt/ui/pages/onboarding/onboarding_page.dart';
 import 'package:catt_catt/ui/pages/profile/editProfilePage/edit_profile_page.dart';
+import 'package:catt_catt/ui/pages/profile/profileDetails/profile_details_page.dart';
 import 'package:catt_catt/ui/pages/profile/profile_page.dart';
 import 'package:catt_catt/ui/pages/splash/splash_page.dart';
 import 'package:catt_catt/ui/pages/welcome/welcome_page.dart';
@@ -52,6 +54,7 @@ class AppRouter extends _$AppRouter {
         ),
         AutoRoute(page: OnboardingRoute.page),
         AutoRoute(page: ChatRoute.page),
+        AutoRoute(page: ProfileDetailsRoute.page),
       ];
 }
 

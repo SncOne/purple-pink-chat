@@ -169,7 +169,7 @@ class ProfilePage extends HookConsumerWidget {
                           );
                         },
                         child: Hero(
-                          tag: image,
+                          tag: generateRandomString(15),
                           child: CustomImage.network(
                             image,
                             height: 150,

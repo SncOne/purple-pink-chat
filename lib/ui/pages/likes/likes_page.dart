@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:ui';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:catt_catt/core/models/user.dart';
 import 'package:catt_catt/core/services/matching_service.dart';
@@ -8,7 +10,6 @@ import 'package:catt_catt/utils/app_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 @RoutePage()
 class LikesPage extends ConsumerWidget {
@@ -36,158 +37,23 @@ class LikesPage extends ConsumerWidget {
             LikesList(
               stream: matchingServiceProvider
                   .getLikesYouList(matchingServiceProvider.user!.uid),
-              onTap: (user) {
-                // Diyalog açma işlemi
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text('${user.firstName} ${user.lastName}'),
-                    content: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('İsmi: ${user.firstName}'),
-                          Text('Location: ${user.location}'),
-                          // Diğer bilgileri ekleyin
-                        ],
-                      ),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          context.maybePop();
-                        },
-                        child: const Text('Close'),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              onChatTap: (user) async {
-                final currentUser = matchingServiceProvider.user!;
-                final roomId = await matchingServiceProvider.getRoomId(
-                    currentUser.uid, user.uid); // Odayı bulma işlemi
-
-                if (roomId != null) {
-                  final room = types.Room(
-                    type: types.RoomType.direct,
-                    id: roomId,
-                    name: "${user.firstName} ${user.lastName}",
-                    users: const [],
-                  );
-
-                  context.router.push(ChatRoute(room: room));
-                } else {
-                  // Oda bulunamazsa hata göster
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Chat room not found')),
-                  );
-                }
-              },
+              onTap: (user) =>
+                  context.pushRoute(ProfileDetailsRoute(user: user)),
+              isObsecured: true,
             ),
             LikesList(
               stream: matchingServiceProvider
                   .getLikedList(matchingServiceProvider.user!.uid),
-              onTap: (user) {
-                // Diyalog açma işlemi
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text('${user.firstName} ${user.lastName}'),
-                    content: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('İsmi: ${user.firstName}'),
-                          Text('Location: ${user.location}'),
-                          // Diğer bilgileri ekleyin
-                        ],
-                      ),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          context.maybePop();
-                        },
-                        child: const Text('Close'),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              onChatTap: (user) async {
-                final currentUser = matchingServiceProvider.user!;
-                final roomId = await matchingServiceProvider.getRoomId(
-                    currentUser.uid, user.uid); // Odayı bulma işlemi
-
-                if (roomId != null) {
-                  final room = types.Room(
-                    type: types.RoomType.direct,
-                    id: roomId,
-                    name: "${user.firstName} ${user.lastName}",
-                    users: const [],
-                  );
-
-                  context.router.push(ChatRoute(room: room));
-                } else {
-                  // Oda bulunamazsa hata göster
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Chat room not found')),
-                  );
-                }
-              },
+              onTap: (user) =>
+                  context.pushRoute(ProfileDetailsRoute(user: user)),
+              isObsecured: false,
             ),
             LikesList(
               stream: matchingServiceProvider
                   .getMatchedList(matchingServiceProvider.user!.uid),
-              onTap: (user) {
-                // Diyalog açma işlemi
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text('${user.firstName} ${user.lastName}'),
-                    content: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('İsmi: ${user.firstName}'),
-                          Text('Location: ${user.location}'),
-                          // Diğer bilgileri ekleyin
-                        ],
-                      ),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          context.maybePop();
-                        },
-                        child: const Text('Close'),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              onChatTap: (user) async {
-                final currentUser = matchingServiceProvider.user!;
-                final roomId = await matchingServiceProvider.getRoomId(
-                    currentUser.uid, user.uid); // Odayı bulma işlemi
-
-                if (roomId != null) {
-                  final room = types.Room(
-                    type: types.RoomType.direct,
-                    id: roomId,
-                    name: "${user.firstName} ${user.lastName}",
-                    users: const [],
-                  );
-
-                  context.router.push(ChatRoute(room: room));
-                } else {
-                  // Oda bulunamazsa hata göster
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Chat room not found')),
-                  );
-                }
-              },
+              onTap: (user) =>
+                  context.pushRoute(ProfileDetailsRoute(user: user)),
+              isObsecured: false,
             ),
           ],
         ),
@@ -199,12 +65,12 @@ class LikesPage extends ConsumerWidget {
 class LikesList extends ConsumerWidget {
   final Stream<QuerySnapshot> stream;
   final Function(UserModel) onTap;
-  final Function(UserModel) onChatTap;
+  final bool isObsecured;
 
   const LikesList({
     required this.stream,
     required this.onTap,
-    required this.onChatTap,
+    required this.isObsecured,
     super.key,
   });
 
@@ -230,6 +96,7 @@ class LikesList extends ConsumerWidget {
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 1,
+            crossAxisSpacing: 3,
           ),
           itemCount: docs.length,
           itemBuilder: (context, index) {
@@ -252,21 +119,31 @@ class LikesList extends ConsumerWidget {
 
                 return GestureDetector(
                   onTap: () => onTap(user),
-                  onLongPress: () => onChatTap(user),
-                  child: Card(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: CustomImage.network(
-                            user.profileImages.first,
-                            width: double.maxFinite,
-                            fit: BoxFit.cover,
-                            memCacheHeight: 300,
+                  child: Stack(
+                    children: [
+                      Card(
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: CustomImage.network(
+                                user.profileImages.first,
+                                width: double.maxFinite,
+                                fit: BoxFit.cover,
+                                memCacheHeight: 300,
+                              ),
+                            ),
+                            Text('${user.firstName} ${user.lastName}'),
+                          ],
+                        ),
+                      ),
+                      if (isObsecured)
+                        Positioned.fill(
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                            child: const SizedBox.shrink(),
                           ),
                         ),
-                        Text('${user.firstName} ${user.lastName}'),
-                      ],
-                    ),
+                    ],
                   ),
                 );
               },
@@ -277,3 +154,30 @@ class LikesList extends ConsumerWidget {
     );
   }
 }
+
+
+/*// Diyalog açma işlemi
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('${user.firstName} ${user.lastName}'),
+                    content: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('İsmi: ${user.firstName}'),
+                          Text('Location: ${user.location}'),
+                          // Diğer bilgileri ekleyin
+                        ],
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          context.maybePop();
+                        },
+                        child: const Text('Close'),
+                      ),
+                    ],
+                  ),
+                ); */
