@@ -37,8 +37,28 @@ class LikesPage extends ConsumerWidget {
             LikesList(
               stream: matchingServiceProvider
                   .getLikesYouList(matchingServiceProvider.user!.uid),
-              onTap: (user) =>
-                  context.pushRoute(ProfileDetailsRoute(user: user)),
+              onTap: (user) => showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('To See This Profile'),
+                  content: const SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Subscribe'),
+                      ],
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        context.maybePop();
+                      },
+                      child: const Text('Close'),
+                    ),
+                  ],
+                ),
+              ),
               isObsecured: true,
             ),
             LikesList(
@@ -154,30 +174,3 @@ class LikesList extends ConsumerWidget {
     );
   }
 }
-
-
-/*// Diyalog açma işlemi
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text('${user.firstName} ${user.lastName}'),
-                    content: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('İsmi: ${user.firstName}'),
-                          Text('Location: ${user.location}'),
-                          // Diğer bilgileri ekleyin
-                        ],
-                      ),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          context.maybePop();
-                        },
-                        child: const Text('Close'),
-                      ),
-                    ],
-                  ),
-                ); */

@@ -140,9 +140,12 @@ class EditProfilePage extends HookConsumerWidget {
               try {
                 List<String> imageUrls = [];
                 for (var image in imageFiles.value) {
-                  String imageUrl = await auth.uploadImage(
-                      pickedFile: image, context: context);
-                  imageUrls.add(imageUrl);
+                  var uri = Uri.tryParse(image.path);
+                  if (uri == null || !uri.isAbsolute) {
+                    String imageUrl = await auth.uploadImage(
+                        pickedFile: image, context: context);
+                    imageUrls.add(imageUrl);
+                  }
                 }
                 for (var imagePath in deletedImages.value) {
                   await auth.deleteImage(imagePath);
