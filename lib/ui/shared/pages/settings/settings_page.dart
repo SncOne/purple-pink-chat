@@ -63,8 +63,8 @@ class SettingsWidget extends ConsumerWidget {
             color: Colors.white,
           ),
           onTap: () async {
-            context.showLoading(
-              await ref.read(authService).deleteAccount,
+            await context.showLoading(
+              ref.read(authService).deleteAccount,
             );
             if (context.mounted) {
               Utils.show.toast(context, t.yourAccountDeleted);

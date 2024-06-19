@@ -1,4 +1,5 @@
 import 'package:catt_catt/core/models/user.dart';
+import 'package:catt_catt/core/providers/match_notifier_provider.dart';
 import 'package:catt_catt/core/services/send_push_notification.dart';
 import 'package:catt_catt/utils/print.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -39,7 +40,8 @@ class MatchingService {
         .snapshots();
   }
 
-  Future<void> addToLikedList(String toUserId, String currentUserId) async {
+  Future<void> addToLikedList(
+      String toUserId, String currentUserId, WidgetRef ref) async {
     final currentUserDoc = _store.collection('users').doc(currentUserId);
     final toUserDoc = _store.collection('users').doc(toUserId);
 
@@ -64,7 +66,10 @@ class MatchingService {
       });
       sendMatchNotification(currentUserId, toUserId);
       sendMatchNotification(toUserId, currentUserId);
-      //TODO: show PopUp for matching on the user screen
+      ref.read(matchNotifierProvider.notifier).showMatchDialog(
+            currentUserId: currentUserId,
+            toUserId: toUserId,
+          );
     }
   }
 
