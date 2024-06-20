@@ -98,7 +98,9 @@ extension LoadingExtension on BuildContext {
   /// });
   /// ```
   Future<T> showLoading<T>(Future<T> Function() callback) async {
-    final entry = OverlayEntry(builder: (_) => const LoadingOverlay());
+    final entry = OverlayEntry(
+      builder: (_) => const LoadingOverlay(),
+    );
     try {
       overlay.insert(entry);
       final res = await callback();

@@ -1,6 +1,6 @@
 import 'package:catt_catt/ui/shared/widgets/custom_image.dart';
 import 'package:catt_catt/ui/shared/widgets/profile_card_like_status.dart';
-import 'package:catt_catt/ui/shared/widgets/profile_card_provider.dart';
+import 'package:catt_catt/core/providers/profile_card_provider.dart';
 import 'package:catt_catt/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

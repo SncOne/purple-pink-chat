@@ -1,8 +1,9 @@
 import 'package:catt_catt/core/providers/providers.dart';
+import 'package:catt_catt/core/services/admob_service.dart';
 import 'package:catt_catt/core/services/matching_service.dart';
 import 'package:catt_catt/ui/shared/widgets/async_widget.dart';
 import 'package:catt_catt/ui/shared/widgets/profile_card.dart';
-import 'package:catt_catt/ui/shared/widgets/profile_card_provider.dart';
+import 'package:catt_catt/core/providers/profile_card_provider.dart';
 import 'package:catt_catt/utils/print.dart';
 import 'package:catt_catt/utils/styles.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,7 @@ class ProfileCards extends HookConsumerWidget {
             Print.info(previousIndex, userData.length.toString());
             if (previousIndex > userData.length - 2) {
               lastCard.value = true;
+              ref.read(admobService.notifier).videoAd();
             }
             if (direction == CardSwiperDirection.left) {
             } else if (direction == CardSwiperDirection.right) {

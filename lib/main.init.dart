@@ -4,6 +4,7 @@ Future<ProviderContainer> init() async {
   final binding = WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   LocaleSettings.useDeviceLocale();
+  MobileAds.instance.initialize();
   // debugRepaintTextRainbowEnabled = true;
   // debugRepaintRainbowEnabled = true;
   // debugPaintSizeEnabled = true;
@@ -53,5 +54,4 @@ Future<ProviderContainer> init() async {
 
 void onError(Object error, StackTrace stack) {
   debugPrint('error: $error, stackTrace: $stack');
-  if (kReleaseMode) exit(1);
 }

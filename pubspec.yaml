@@ -55,6 +55,7 @@ dependencies:
   url_launcher: ^6.3.0
   permission_handler: ^11.3.1
   lottie: ^3.1.2
+  google_mobile_ads: ^5.1.0
 
 dev_dependencies:
   auto_route_generator: ^8.0.0
