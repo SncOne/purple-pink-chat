@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 final messagesService = Provider((_) => MessagesService());
 
@@ -20,56 +21,62 @@ class MessagesService {
     await _store.collection("rooms").doc(roomId).delete();
   }
 
-  // Stream<List<MessagesModel>> getMessages({
-  //   required String roomId,
-  //   List<Object?>? endAt,
-  //   List<Object?>? endBefore,
-  //   int? limit,
-  //   List<Object?>? startAfter,
-  //   List<Object?>? startAt,
-  // }) {
-  //   var query = _store
-  //       .collection('rooms/$roomId/messages')
-  //       .orderBy('createdAt', descending: true);
+  void sendMessage(dynamic partialMessage, String roomId) async {
+    if (user == null) return;
 
-  //   if (endAt != null) {
-  //     query = query.endAt(endAt);
-  //   }
+    types.Message? message;
 
-  //   if (endBefore != null) {
-  //     query = query.endBefore(endBefore);
-  //   }
+    if (partialMessage is types.PartialCustom) {
+      message = types.CustomMessage.fromPartial(
+        author: types.User(id: user!.uid),
+        id: '',
+        partialCustom: partialMessage,
+      );
+    } else if (partialMessage is types.PartialFile) {
+      message = types.FileMessage.fromPartial(
+        author: types.User(id: user!.uid),
+        id: '',
+        partialFile: partialMessage,
+      );
+    } else if (partialMessage is types.PartialImage) {
+      message = types.ImageMessage.fromPartial(
+        author: types.User(id: user!.uid),
+        id: '',
+        partialImage: partialMessage,
+      );
+    } else if (partialMessage is types.PartialText) {
+      message = types.TextMessage.fromPartial(
+        author: types.User(id: user!.uid),
+        id: '',
+        partialText: partialMessage,
+      );
+    } else if (partialMessage is types.PartialAudio) {
+      message = types.AudioMessage.fromPartial(
+        author: types.User(id: user!.uid),
+        id: '',
+        partialAudio: partialMessage,
+      );
+    } else if (partialMessage is types.PartialVideo) {
+      message = types.VideoMessage.fromPartial(
+        author: types.User(id: user!.uid),
+        id: '',
+        partialVideo: partialMessage,
+      );
+    }
 
-  //   if (limit != null) {
-  //     query = query.limit(limit);
-  //   }
+    if (message != null) {
+      final messageMap = message.toJson();
+      messageMap.removeWhere((key, value) => key == 'author' || key == 'id');
+      messageMap['authorId'] = user!.uid;
+      messageMap['createdAt'] = FieldValue.serverTimestamp();
+      messageMap['updatedAt'] = FieldValue.serverTimestamp();
 
-  //   if (startAfter != null) {
-  //     query = query.startAfter(startAfter);
-  //   }
+      await _store.collection('rooms/$roomId/messages').add(messageMap);
 
-  //   if (startAt != null) {
-  //     query = query.startAt(startAt);
-  //   }
-
-  //   return query.snapshots().map(
-  //         (snapshot) => snapshot.docs.fold<List<MessagesModel>>(
-  //           [],
-  //           (previousValue, doc) {
-  //             final data = doc.data();
-  //             final author = room.users.firstWhere(
-  //               (u) => u.id == data['authorId'],
-  //               orElse: () => UserModel(uid: data['authorId'] as String),
-  //             );
-
-  //             data['author'] = author.toJson();
-  //             data['createdAt'] = data['createdAt']?.millisecondsSinceEpoch;
-  //             data['id'] = doc.id;
-  //             data['updatedAt'] = data['updatedAt']?.millisecondsSinceEpoch;
-
-  //             return [...previousValue, MessagesModel.fromJson(data)];
-  //           },
-  //         ),
-  //       );
-  // }
+      await _store
+          .collection("rooms")
+          .doc(roomId)
+          .update({'updatedAt': FieldValue.serverTimestamp()});
+    }
+  }
 }

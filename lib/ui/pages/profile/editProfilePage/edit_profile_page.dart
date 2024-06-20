@@ -12,6 +12,7 @@ import 'package:catt_catt/utils/styles.dart';
 import 'package:catt_catt/utils/utils.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:country_picker/country_picker.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -32,7 +33,7 @@ class EditProfilePage extends HookConsumerWidget {
     final lastname = ref.watch(lastNameController);
     final auth = ref.watch(authService);
 
-    final currentUser = useMemoized(() => ref.read(userProvider).value);
+    final currentUser = ref.watch(userProvider).value;
 
     final selectedCountry = useState('Location');
     final birthDate = useState<DateTime?>(null);
@@ -142,13 +143,21 @@ class EditProfilePage extends HookConsumerWidget {
                 for (var image in imageFiles.value) {
                   var uri = Uri.tryParse(image.path);
                   if (uri == null || !uri.isAbsolute) {
-                    String imageUrl = await auth.uploadImage(
-                        pickedFile: image, context: context);
-                    imageUrls.add(imageUrl);
+                    await auth.uploadImage(pickedFile: image, context: context);
                   }
+                  imageUrls.add(image.path);
                 }
                 for (var imagePath in deletedImages.value) {
-                  await auth.deleteImage(imagePath);
+                  try {
+                    await auth.deleteImage(imagePath);
+                  } catch (e) {
+                    if (e is FirebaseException &&
+                        e.code == 'object-not-found') {
+                      print('No object exists at the desired reference.');
+                    } else {
+                      print('Error deleting image: $e');
+                    }
+                  }
                 }
 
                 auth.editProfile(
@@ -164,8 +173,7 @@ class EditProfilePage extends HookConsumerWidget {
                   sexualOrientation: sexualOrientation.value,
                   about: about.text,
                 );
-
-                await auth.getUser();
+                ref.invalidate(userProvider);
               } catch (e) {
                 if (context.mounted) {
                   Utils.show.toast(context, 'Error: $e');

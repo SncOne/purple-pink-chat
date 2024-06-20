@@ -1,7 +1,8 @@
 import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
-import 'package:catt_catt/utils/print.dart';
+import 'package:catt_catt/core/services/messages_service.dart';
+import 'package:catt_catt/ui/shared/widgets/audio_player_widget.dart';
+import 'package:catt_catt/ui/shared/widgets/video_player_widget.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
@@ -22,6 +23,8 @@ class ChatPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     FlutterSoundRecorder? audioRecorder;
     final isRecording = useState(false);
+
+    final messageServiceProvider = ref.watch(messagesService);
 
     Future<void> startRecording() async {
       audioRecorder = FlutterSoundRecorder();
@@ -113,7 +116,7 @@ class ChatPage extends HookConsumerWidget {
             width: 0,
           );
 
-          FirebaseChatCore.instance.sendMessage(
+          messageServiceProvider.sendMessage(
             message,
             room.id,
           );
@@ -161,7 +164,7 @@ class ChatPage extends HookConsumerWidget {
                           uri: downloadUri,
                         );
 
-                        FirebaseChatCore.instance.sendMessage(
+                        messageServiceProvider.sendMessage(
                           message,
                           room.id,
                         );
@@ -249,24 +252,6 @@ class ChatPage extends HookConsumerWidget {
       );
     }
 
-    Widget audioMessageBuilder(types.AudioMessage message,
-        {required int messageWidth}) {
-      return Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Colors.grey[300],
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Audio message: ${message.name}'),
-            Text('Duration: ${message.duration} seconds'),
-          ],
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Text(room.name.toString()),
@@ -285,9 +270,17 @@ class ChatPage extends HookConsumerWidget {
             user: types.User(
               id: FirebaseChatCore.instance.firebaseUser?.uid ?? '',
             ),
-            audioMessageBuilder: (p0, {required messageWidth}) {
-              Print.error(messageWidth);
-              return audioMessageBuilder(p0, messageWidth: messageWidth);
+            audioMessageBuilder: (audioMessage, {required messageWidth}) {
+              return AudioPlayerWidget(
+                message: audioMessage,
+                messageWidth: messageWidth,
+              );
+            },
+            videoMessageBuilder: (videoMessage, {required messageWidth}) {
+              return VideoPlayerWidget(
+                message: videoMessage,
+                messageWidth: messageWidth,
+              );
             },
           ),
         ),

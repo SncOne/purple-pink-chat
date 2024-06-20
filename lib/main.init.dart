@@ -24,19 +24,19 @@ Future<ProviderContainer> init() async {
   // MobileAds.instance.initialize();
 
   await Hive.initFlutter();
-
-  if (Platform.isIOS || Platform.isMacOS) {
-    StoreConfig(
-      store: Store.appStore,
-      apiKey: C.api.appleApiKey,
-    );
-  } else if (Platform.isAndroid) {
-    const useAmazon = bool.fromEnvironment("amazon");
-    StoreConfig(
-      store: useAmazon ? Store.amazon : Store.playStore,
-      apiKey: useAmazon ? C.api.amazonApiKey : C.api.googleApiKey,
-    );
-  }
+//TODO: Open it
+  // if (Platform.isIOS || Platform.isMacOS) {
+  //   StoreConfig(
+  //     store: Store.appStore,
+  //     apiKey: C.api.appleApiKey,
+  //   );
+  // } else if (Platform.isAndroid) {
+  //   const useAmazon = bool.fromEnvironment("amazon");
+  //   StoreConfig(
+  //     store: useAmazon ? Store.amazon : Store.playStore,
+  //     apiKey: useAmazon ? C.api.amazonApiKey : C.api.googleApiKey,
+  //   );
+  // }
 
   if (!Hive.isBoxOpen(C.hive.app)) {
     await Hive.openBox(C.hive.app, encryptionCipher: Utils.hiveCipher);
@@ -46,26 +46,27 @@ Future<ProviderContainer> init() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await NotificationService().requestNotificationPermission();
+//TODO: Open it
 
   // Enable debug logs before calling `configure`.
-  await Purchases.setLogLevel(LogLevel.debug);
+  // await Purchases.setLogLevel(LogLevel.debug);
 
-  /*
-    - appUserID is nil, so an anonymous ID will be generated automatically by the Purchases SDK. Read more about Identifying Users here: https://docs.revenuecat.com/docs/user-ids
+  // /*
+  //   - appUserID is nil, so an anonymous ID will be generated automatically by the Purchases SDK. Read more about Identifying Users here: https://docs.revenuecat.com/docs/user-ids
 
-    - observerMode is false, so Purchases will automatically handle finishing transactions. Read more about Observer Mode here: https://docs.revenuecat.com/docs/observer-mode
-    */
-  PurchasesConfiguration configuration;
-  if (StoreConfig.isForAmazonAppstore()) {
-    configuration = AmazonConfiguration(StoreConfig.instance.apiKey)
-      ..appUserID = null
-      ..observerMode = false;
-  } else {
-    configuration = PurchasesConfiguration(StoreConfig.instance.apiKey)
-      ..appUserID = null
-      ..observerMode = false;
-  }
-  await Purchases.configure(configuration);
+  //   - observerMode is false, so Purchases will automatically handle finishing transactions. Read more about Observer Mode here: https://docs.revenuecat.com/docs/observer-mode
+  //   */
+  // PurchasesConfiguration configuration;
+  // if (StoreConfig.isForAmazonAppstore()) {
+  //   configuration = AmazonConfiguration(StoreConfig.instance.apiKey)
+  //     ..appUserID = null
+  //     ..observerMode = false;
+  // } else {
+  //   configuration = PurchasesConfiguration(StoreConfig.instance.apiKey)
+  //     ..appUserID = null
+  //     ..observerMode = false;
+  // }
+  // await Purchases.configure(configuration);
 
   // container.read(dynamicLinksServiceProvider);
 
