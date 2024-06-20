@@ -8,7 +8,8 @@ final class LocationService {
   const LocationService();
 
   void settings() {
-    LocationSettings locationSettings; //TODO: stream position
+    // ignore: unused_local_variable
+    LocationSettings locationSettings;
     if (defaultTargetPlatform == TargetPlatform.android) {
       locationSettings = AndroidSettings(
         accuracy: LocationAccuracy.high,
@@ -68,7 +69,7 @@ final class LocationService {
     return await Geolocator.getCurrentPosition();
   }
 
-  Future<double> findDistance({required Position position}) async {
+  Future<double> findDistance({required position}) async {
     final currentPosition = await determinePosition();
     double distanceBetween = Geolocator.distanceBetween(
         currentPosition.latitude,

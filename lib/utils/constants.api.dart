@@ -22,4 +22,11 @@ class _Api {
 
   String get baseUrl => '';
   String get localhost => 'http://localhost:3000/';
+
+//RenueCat Api Keys TODO:get those keys
+  String get appleApiKey => '';
+  String get amazonApiKey => '';
+  String get googleApiKey => '';
+
+  String get entitlementID => 'premium';
 }

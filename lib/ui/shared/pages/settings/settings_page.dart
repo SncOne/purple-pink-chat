@@ -163,6 +163,7 @@ class NotificationSettingsPage extends StatefulWidget {
   const NotificationSettingsPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _NotificationSettingsPageState createState() =>
       _NotificationSettingsPageState();
 }

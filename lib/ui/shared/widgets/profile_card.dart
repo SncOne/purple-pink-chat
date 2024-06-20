@@ -1,3 +1,4 @@
+import 'package:catt_catt/core/services/location_service.dart';
 import 'package:catt_catt/ui/shared/widgets/custom_image.dart';
 import 'package:catt_catt/ui/shared/widgets/profile_card_like_status.dart';
 import 'package:catt_catt/core/providers/profile_card_provider.dart';
@@ -11,6 +12,7 @@ class ProfileCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final user = ref.watch(profileCardProvider);
+    final locationServiceProvider = ref.read(locationService);
     return Column(
       children: [
         Stack(
@@ -97,11 +99,47 @@ class ProfileCard extends ConsumerWidget {
             ),
             Positioned(
               bottom: 10,
+              left: 10,
               right: 10,
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Container(
+                    padding: S.edgeInsets.all5,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.white70,
+                        width: 1,
+                      ),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 4,
+                          offset: Offset(2, 2),
+                        ),
+                      ],
+                      borderRadius: S.borderRadius.radius16,
+                    ),
+                    child: FutureBuilder<double>(
+                      future: locationServiceProvider.findDistance(
+                        position: user.currentLocation,
+                      ),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          return Text(
+                            '${snapshot.data} km away',
+                            style: S.textStyles.font16White,
+                          );
+                        }
+                      },
+                    ),
+                  ),
                   Container(
                     padding: S.edgeInsets.all5,
                     decoration: BoxDecoration(
