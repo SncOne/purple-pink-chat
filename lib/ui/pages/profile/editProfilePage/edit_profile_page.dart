@@ -178,7 +178,7 @@ class EditProfilePage extends HookConsumerWidget {
               } finally {
                 if (context.mounted) {
                   ref.invalidate(userProvider);
-                  context.router.replace(const ProfileRoute());
+                  context.router.replaceAll([const ProfileRoute()]);
                 }
               }
             },

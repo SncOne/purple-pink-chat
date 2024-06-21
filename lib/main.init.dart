@@ -1,30 +1,30 @@
 part of 'main.dart';
 
 Future<ProviderContainer> init() async {
-  final binding = WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final app = await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  FirebaseCrashlytics.instance.app = app;
+
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   LocaleSettings.useDeviceLocale();
   MobileAds.instance.initialize();
-  // debugRepaintTextRainbowEnabled = true;
-  // debugRepaintRainbowEnabled = true;
-  // debugPaintSizeEnabled = true;
-  // debugPaintLayerBordersEnabled = true;
-  // debugPaintPointersEnabled = true;
-
-  binding
-    ..deferFirstFrame()
-    ..addPostFrameCallback((_) async {
-      binding.allowFirstFrame();
-    });
 
   final container = ProviderContainer(
     observers: [if (kDebugMode) ProviderLogger()],
   );
 
-  // MobileAds.instance.initialize();
-
   await Hive.initFlutter();
-//TODO: Open it
+  // TODO: BURAYA BAKARLAR
   // if (Platform.isIOS || Platform.isMacOS) {
   //   StoreConfig(
   //     store: Store.appStore,
@@ -42,34 +42,11 @@ Future<ProviderContainer> init() async {
     await Hive.openBox(C.hive.app, encryptionCipher: Utils.hiveCipher);
   }
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
-  await FirebaseAppCheck.instance.activate(
-    // You can also use a `ReCaptchaEnterpriseProvider` provider instance as an
-    // argument for `webProvider`
-    // Default provider for Android is the Play Integrity provider. You can use the "AndroidProvider" enum to choose
-    // your preferred provider. Choose from:
-    // 1. Debug provider
-    // 2. Safety Net provider
-    // 3. Play Integrity provider
-    androidProvider: AndroidProvider.debug,
-    // Default provider for iOS/macOS is the Device Check provider. You can use the "AppleProvider" enum to choose
-    // your preferred provider. Choose from:
-    // 1. Debug provider
-    // 2. Device Check provider
-    // 3. App Attest provider
-    // 4. App Attest provider with fallback to Device Check provider (App Attest provider is only available on iOS 14.0+, macOS 14.0+)
-    appleProvider: AppleProvider.appAttest,
-  );
-  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  analytics.logAdImpression();
-  await NotificationService().requestNotificationPermission();
+  FirebaseAnalytics.instance.logAdImpression();
+
+  await container
+      .read(notificationServiceProvider)
+      .requestNotificationPermission();
 //TODO: Open it
 
   // Enable debug logs before calling `configure`.
@@ -92,24 +69,5 @@ Future<ProviderContainer> init() async {
   // }
   // await Purchases.configure(configuration);
 
-  // container.read(dynamicLinksServiceProvider);
-
-  FlutterError.onError = (details) {
-    FlutterError.presentError(details);
-    if (kReleaseMode) exit(1);
-  };
-
-  ErrorWidget.builder = (details) {
-    return Material(
-      child: Center(
-        child: Text('$details', textDirection: TextDirection.ltr),
-      ),
-    );
-  };
-
   return container;
-}
-
-void onError(Object error, StackTrace stack) {
-  debugPrint('error: $error, stackTrace: $stack');
 }
