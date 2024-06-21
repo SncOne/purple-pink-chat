@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:catt_catt/core/services/notification_service.dart';
+//import 'package:catt_catt/core/services/notification_service.dart';
 import 'package:catt_catt/utils/app_router.dart';
 import 'package:catt_catt/utils/lang/strings.g.dart';
 // import 'package:catt_catt/utils/store_config.dart';

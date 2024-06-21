@@ -44,9 +44,9 @@ Future<ProviderContainer> init() async {
 
   FirebaseAnalytics.instance.logAdImpression();
 
-  await container
-      .read(notificationServiceProvider)
-      .requestNotificationPermission();
+  // await container
+  //     .read(notificationServiceProvider)
+  //     .requestNotificationPermission();
 //TODO: Open it
 
   // Enable debug logs before calling `configure`.
