@@ -15,7 +15,7 @@ abstract class UserModel with _$UserModel {
     required String uid,
     required String gender,
     required String interestedGender,
-    required String lookingFor,
+    required List<String> lookingFor,
     required String location,
     String? about,
     required bool subscription,
@@ -23,6 +23,10 @@ abstract class UserModel with _$UserModel {
     required Location currentLocation,
     required List<String> hobiesAndInterests,
     required DateTime birthDate,
+    required bool isValidated,
+    required bool canRecieveImages,
+    required bool canRecieveAudios,
+    required bool canRecieveVideos,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>

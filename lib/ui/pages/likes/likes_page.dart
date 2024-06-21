@@ -10,7 +10,7 @@ import 'package:catt_catt/utils/app_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
+//import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 
 @RoutePage()
 class LikesPage extends ConsumerWidget {
@@ -42,12 +42,13 @@ class LikesPage extends ConsumerWidget {
                 context: context,
                 builder: (context) => AlertDialog(
                   title: const Text('To See This Profile'),
-                  content: PaywallView(
-                    onRestoreCompleted: (customerInfo) {
-                      // Optional listener. Called when a restore has been completed.
-                      // This may be called even if no entitlements have been granted.
-                    },
-                  ),
+                  content: const Text('You Need to Subscribe'),
+                  // PaywallView(
+                  //   onRestoreCompleted: (customerInfo) {
+                  //     // Optional listener. Called when a restore has been completed.
+                  //     // This may be called even if no entitlements have been granted.
+                  //   },
+                  // ),
                   actions: [
                     TextButton(
                       onPressed: () {

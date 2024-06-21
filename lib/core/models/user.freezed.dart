@@ -27,7 +27,7 @@ mixin _$UserModel {
   String get uid => throw _privateConstructorUsedError;
   String get gender => throw _privateConstructorUsedError;
   String get interestedGender => throw _privateConstructorUsedError;
-  String get lookingFor => throw _privateConstructorUsedError;
+  List<String> get lookingFor => throw _privateConstructorUsedError;
   String get location => throw _privateConstructorUsedError;
   String? get about => throw _privateConstructorUsedError;
   bool get subscription => throw _privateConstructorUsedError;
@@ -35,6 +35,10 @@ mixin _$UserModel {
   Location get currentLocation => throw _privateConstructorUsedError;
   List<String> get hobiesAndInterests => throw _privateConstructorUsedError;
   DateTime get birthDate => throw _privateConstructorUsedError;
+  bool get isValidated => throw _privateConstructorUsedError;
+  bool get canRecieveImages => throw _privateConstructorUsedError;
+  bool get canRecieveAudios => throw _privateConstructorUsedError;
+  bool get canRecieveVideos => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -55,14 +59,18 @@ abstract class $UserModelCopyWith<$Res> {
       String uid,
       String gender,
       String interestedGender,
-      String lookingFor,
+      List<String> lookingFor,
       String location,
       String? about,
       bool subscription,
       bool isAdmin,
       Location currentLocation,
       List<String> hobiesAndInterests,
-      DateTime birthDate});
+      DateTime birthDate,
+      bool isValidated,
+      bool canRecieveImages,
+      bool canRecieveAudios,
+      bool canRecieveVideos});
 
   $LocationCopyWith<$Res> get currentLocation;
 }
@@ -95,6 +103,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? currentLocation = null,
     Object? hobiesAndInterests = null,
     Object? birthDate = null,
+    Object? isValidated = null,
+    Object? canRecieveImages = null,
+    Object? canRecieveAudios = null,
+    Object? canRecieveVideos = null,
   }) {
     return _then(_value.copyWith(
       sexualOrientation: null == sexualOrientation
@@ -128,7 +140,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
       lookingFor: null == lookingFor
           ? _value.lookingFor
           : lookingFor // ignore: cast_nullable_to_non_nullable
-              as String,
+              as List<String>,
       location: null == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
@@ -157,6 +169,22 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.birthDate
           : birthDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      isValidated: null == isValidated
+          ? _value.isValidated
+          : isValidated // ignore: cast_nullable_to_non_nullable
+              as bool,
+      canRecieveImages: null == canRecieveImages
+          ? _value.canRecieveImages
+          : canRecieveImages // ignore: cast_nullable_to_non_nullable
+              as bool,
+      canRecieveAudios: null == canRecieveAudios
+          ? _value.canRecieveAudios
+          : canRecieveAudios // ignore: cast_nullable_to_non_nullable
+              as bool,
+      canRecieveVideos: null == canRecieveVideos
+          ? _value.canRecieveVideos
+          : canRecieveVideos // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -185,14 +213,18 @@ abstract class _$$UserModelImplCopyWith<$Res>
       String uid,
       String gender,
       String interestedGender,
-      String lookingFor,
+      List<String> lookingFor,
       String location,
       String? about,
       bool subscription,
       bool isAdmin,
       Location currentLocation,
       List<String> hobiesAndInterests,
-      DateTime birthDate});
+      DateTime birthDate,
+      bool isValidated,
+      bool canRecieveImages,
+      bool canRecieveAudios,
+      bool canRecieveVideos});
 
   @override
   $LocationCopyWith<$Res> get currentLocation;
@@ -224,6 +256,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? currentLocation = null,
     Object? hobiesAndInterests = null,
     Object? birthDate = null,
+    Object? isValidated = null,
+    Object? canRecieveImages = null,
+    Object? canRecieveAudios = null,
+    Object? canRecieveVideos = null,
   }) {
     return _then(_$UserModelImpl(
       sexualOrientation: null == sexualOrientation
@@ -255,9 +291,9 @@ class __$$UserModelImplCopyWithImpl<$Res>
           : interestedGender // ignore: cast_nullable_to_non_nullable
               as String,
       lookingFor: null == lookingFor
-          ? _value.lookingFor
+          ? _value._lookingFor
           : lookingFor // ignore: cast_nullable_to_non_nullable
-              as String,
+              as List<String>,
       location: null == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
@@ -286,6 +322,22 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.birthDate
           : birthDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      isValidated: null == isValidated
+          ? _value.isValidated
+          : isValidated // ignore: cast_nullable_to_non_nullable
+              as bool,
+      canRecieveImages: null == canRecieveImages
+          ? _value.canRecieveImages
+          : canRecieveImages // ignore: cast_nullable_to_non_nullable
+              as bool,
+      canRecieveAudios: null == canRecieveAudios
+          ? _value.canRecieveAudios
+          : canRecieveAudios // ignore: cast_nullable_to_non_nullable
+              as bool,
+      canRecieveVideos: null == canRecieveVideos
+          ? _value.canRecieveVideos
+          : canRecieveVideos // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -301,15 +353,20 @@ class _$UserModelImpl implements _UserModel {
       required this.uid,
       required this.gender,
       required this.interestedGender,
-      required this.lookingFor,
+      required final List<String> lookingFor,
       required this.location,
       this.about,
       required this.subscription,
       required this.isAdmin,
       required this.currentLocation,
       required final List<String> hobiesAndInterests,
-      required this.birthDate})
+      required this.birthDate,
+      required this.isValidated,
+      required this.canRecieveImages,
+      required this.canRecieveAudios,
+      required this.canRecieveVideos})
       : _profileImages = profileImages,
+        _lookingFor = lookingFor,
         _hobiesAndInterests = hobiesAndInterests;
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -335,8 +392,14 @@ class _$UserModelImpl implements _UserModel {
   final String gender;
   @override
   final String interestedGender;
+  final List<String> _lookingFor;
   @override
-  final String lookingFor;
+  List<String> get lookingFor {
+    if (_lookingFor is EqualUnmodifiableListView) return _lookingFor;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_lookingFor);
+  }
+
   @override
   final String location;
   @override
@@ -358,10 +421,18 @@ class _$UserModelImpl implements _UserModel {
 
   @override
   final DateTime birthDate;
+  @override
+  final bool isValidated;
+  @override
+  final bool canRecieveImages;
+  @override
+  final bool canRecieveAudios;
+  @override
+  final bool canRecieveVideos;
 
   @override
   String toString() {
-    return 'UserModel(sexualOrientation: $sexualOrientation, lastName: $lastName, firstName: $firstName, profileImages: $profileImages, uid: $uid, gender: $gender, interestedGender: $interestedGender, lookingFor: $lookingFor, location: $location, about: $about, subscription: $subscription, isAdmin: $isAdmin, currentLocation: $currentLocation, hobiesAndInterests: $hobiesAndInterests, birthDate: $birthDate)';
+    return 'UserModel(sexualOrientation: $sexualOrientation, lastName: $lastName, firstName: $firstName, profileImages: $profileImages, uid: $uid, gender: $gender, interestedGender: $interestedGender, lookingFor: $lookingFor, location: $location, about: $about, subscription: $subscription, isAdmin: $isAdmin, currentLocation: $currentLocation, hobiesAndInterests: $hobiesAndInterests, birthDate: $birthDate, isValidated: $isValidated, canRecieveImages: $canRecieveImages, canRecieveAudios: $canRecieveAudios, canRecieveVideos: $canRecieveVideos)';
   }
 
   @override
@@ -381,8 +452,8 @@ class _$UserModelImpl implements _UserModel {
             (identical(other.gender, gender) || other.gender == gender) &&
             (identical(other.interestedGender, interestedGender) ||
                 other.interestedGender == interestedGender) &&
-            (identical(other.lookingFor, lookingFor) ||
-                other.lookingFor == lookingFor) &&
+            const DeepCollectionEquality()
+                .equals(other._lookingFor, _lookingFor) &&
             (identical(other.location, location) ||
                 other.location == location) &&
             (identical(other.about, about) || other.about == about) &&
@@ -394,28 +465,41 @@ class _$UserModelImpl implements _UserModel {
             const DeepCollectionEquality()
                 .equals(other._hobiesAndInterests, _hobiesAndInterests) &&
             (identical(other.birthDate, birthDate) ||
-                other.birthDate == birthDate));
+                other.birthDate == birthDate) &&
+            (identical(other.isValidated, isValidated) ||
+                other.isValidated == isValidated) &&
+            (identical(other.canRecieveImages, canRecieveImages) ||
+                other.canRecieveImages == canRecieveImages) &&
+            (identical(other.canRecieveAudios, canRecieveAudios) ||
+                other.canRecieveAudios == canRecieveAudios) &&
+            (identical(other.canRecieveVideos, canRecieveVideos) ||
+                other.canRecieveVideos == canRecieveVideos));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      sexualOrientation,
-      lastName,
-      firstName,
-      const DeepCollectionEquality().hash(_profileImages),
-      uid,
-      gender,
-      interestedGender,
-      lookingFor,
-      location,
-      about,
-      subscription,
-      isAdmin,
-      currentLocation,
-      const DeepCollectionEquality().hash(_hobiesAndInterests),
-      birthDate);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        sexualOrientation,
+        lastName,
+        firstName,
+        const DeepCollectionEquality().hash(_profileImages),
+        uid,
+        gender,
+        interestedGender,
+        const DeepCollectionEquality().hash(_lookingFor),
+        location,
+        about,
+        subscription,
+        isAdmin,
+        currentLocation,
+        const DeepCollectionEquality().hash(_hobiesAndInterests),
+        birthDate,
+        isValidated,
+        canRecieveImages,
+        canRecieveAudios,
+        canRecieveVideos
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -440,14 +524,18 @@ abstract class _UserModel implements UserModel {
       required final String uid,
       required final String gender,
       required final String interestedGender,
-      required final String lookingFor,
+      required final List<String> lookingFor,
       required final String location,
       final String? about,
       required final bool subscription,
       required final bool isAdmin,
       required final Location currentLocation,
       required final List<String> hobiesAndInterests,
-      required final DateTime birthDate}) = _$UserModelImpl;
+      required final DateTime birthDate,
+      required final bool isValidated,
+      required final bool canRecieveImages,
+      required final bool canRecieveAudios,
+      required final bool canRecieveVideos}) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$UserModelImpl.fromJson;
@@ -467,7 +555,7 @@ abstract class _UserModel implements UserModel {
   @override
   String get interestedGender;
   @override
-  String get lookingFor;
+  List<String> get lookingFor;
   @override
   String get location;
   @override
@@ -482,6 +570,14 @@ abstract class _UserModel implements UserModel {
   List<String> get hobiesAndInterests;
   @override
   DateTime get birthDate;
+  @override
+  bool get isValidated;
+  @override
+  bool get canRecieveImages;
+  @override
+  bool get canRecieveAudios;
+  @override
+  bool get canRecieveVideos;
   @override
   @JsonKey(ignore: true)
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>

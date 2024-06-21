@@ -17,7 +17,9 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
       uid: json['uid'] as String,
       gender: json['gender'] as String,
       interestedGender: json['interestedGender'] as String,
-      lookingFor: json['lookingFor'] as String,
+      lookingFor: (json['lookingFor'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
       location: json['location'] as String,
       about: json['about'] as String?,
       subscription: json['subscription'] as bool,
@@ -28,6 +30,10 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
           .map((e) => e as String)
           .toList(),
       birthDate: DateTime.parse(json['birthDate'] as String),
+      isValidated: json['isValidated'] as bool,
+      canRecieveImages: json['canRecieveImages'] as bool,
+      canRecieveAudios: json['canRecieveAudios'] as bool,
+      canRecieveVideos: json['canRecieveVideos'] as bool,
     );
 
 Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
@@ -47,6 +53,10 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
       'currentLocation': instance.currentLocation,
       'hobiesAndInterests': instance.hobiesAndInterests,
       'birthDate': instance.birthDate.toIso8601String(),
+      'isValidated': instance.isValidated,
+      'canRecieveImages': instance.canRecieveImages,
+      'canRecieveAudios': instance.canRecieveAudios,
+      'canRecieveVideos': instance.canRecieveVideos,
     };
 
 _$LocationImpl _$$LocationImplFromJson(Map<String, dynamic> json) =>

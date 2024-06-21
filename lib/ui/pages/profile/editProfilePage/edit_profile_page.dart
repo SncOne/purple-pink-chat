@@ -43,7 +43,7 @@ class EditProfilePage extends HookConsumerWidget {
     final gender = useState<String>('');
     final interestedGender = useState<String>('');
     final sexualOrientation = useState<String>('');
-    final lookingFor = useState<String>('');
+    final lookingFor = useState<List<String>>([]);
 
     final formKey = GlobalKey<FormBuilderState>();
     final introKey = useMemoized(GlobalKey<IntroductionScreenState>.new);
@@ -540,7 +540,7 @@ class EditProfilePage extends HookConsumerWidget {
                             fontSize: 14, color: Colors.deepPurple),
                       ),
                     ),
-                    ChipsChoice<String>.single(
+                    ChipsChoice<String>.multiple(
                       value: lookingFor.value,
                       onChanged: (val) => lookingFor.value = val,
                       wrapped: true,

@@ -122,7 +122,7 @@ final class AuthService {
     String? location,
     List<String>? hobiesAndInterests,
     String? interestedGender,
-    String? lookingFor,
+    List<String>? lookingFor,
     String? sexualOrientation,
     String? about,
     bool? isAdmin,
@@ -144,13 +144,17 @@ final class AuthService {
         "location": location ?? '',
         "hobiesAndInterests": hobiesAndInterests ?? [],
         "interestedGender": interestedGender ?? '',
-        "lookingFor": lookingFor ?? '',
+        "lookingFor": lookingFor ?? [],
         "sexualOrientation": sexualOrientation ?? '',
         "about": about ?? '',
         "isAdmin": false, //For admin account
         "currentLocation": currentLocation,
         "subscription": false,
         //For no subs its false it will turn true when its subscribed
+        "isValidated": false,
+        "canRecieveImages": false,
+        "canRecieveAudios": false,
+        "canRecieveVideos": false,
       });
     }
   }
@@ -164,7 +168,7 @@ final class AuthService {
     String? location,
     List<String>? hobiesAndInterests,
     String? interestedGender,
-    String? lookingFor,
+    List<String>? lookingFor,
     String? sexualOrientation,
     String? about,
   }) async {
@@ -181,7 +185,7 @@ final class AuthService {
         "location": location ?? '',
         "hobiesAndInterests": hobiesAndInterests ?? [],
         "interestedGender": interestedGender ?? '',
-        "lookingFor": lookingFor ?? '',
+        "lookingFor": lookingFor ?? [],
         "sexualOrientation": sexualOrientation ?? '',
         "about": about ?? '',
       });
