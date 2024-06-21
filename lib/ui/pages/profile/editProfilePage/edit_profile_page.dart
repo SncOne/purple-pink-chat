@@ -142,9 +142,12 @@ class EditProfilePage extends HookConsumerWidget {
                 for (var image in imageFiles.value) {
                   var uri = Uri.tryParse(image.path);
                   if (uri == null || !uri.isAbsolute) {
-                    await auth.uploadImage(pickedFile: image, context: context);
+                    final uploadedImage = await auth.uploadImage(
+                        pickedFile: image, context: context);
+                    imageUrls.add(uploadedImage);
+                  } else {
+                    imageUrls.add(image.path);
                   }
-                  imageUrls.add(image.path);
                 }
                 for (var imagePath in deletedImages.value) {
                   try {
@@ -155,7 +158,7 @@ class EditProfilePage extends HookConsumerWidget {
                   }
                 }
 
-                auth.editProfile(
+                await auth.editProfile(
                   firstName: name.text,
                   lastName: lastname.text,
                   profileImages: imageUrls,
@@ -168,13 +171,13 @@ class EditProfilePage extends HookConsumerWidget {
                   sexualOrientation: sexualOrientation.value,
                   about: about.text,
                 );
-                ref.invalidate(userProvider);
               } catch (e) {
                 if (context.mounted) {
                   Utils.show.toast(context, 'Error: $e');
                 }
               } finally {
                 if (context.mounted) {
+                  ref.invalidate(userProvider);
                   context.router.replace(const ProfileRoute());
                 }
               }

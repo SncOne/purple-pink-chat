@@ -59,6 +59,8 @@ dependencies:
   purchases_ui_flutter: ^6.29.4
   purchases_flutter: ^6.29.4
   video_player: ^2.8.7
+  firebase_crashlytics: ^4.0.1
+  firebase_app_check: ^0.3.0+1
 
 dev_dependencies:
   auto_route_generator: ^8.0.0

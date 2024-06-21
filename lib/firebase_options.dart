@@ -65,7 +65,9 @@ class DefaultFirebaseOptions {
     projectId: 'catt-catt',
     databaseURL: 'https://catt-catt-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'catt-catt.appspot.com',
+    androidClientId: '622241807603-n8o1n68n11lav1glqo5b9g2cvfvod00k.apps.googleusercontent.com',
     iosClientId: '622241807603-dfi8eri9qg2v6kmnufa54tob7fm3fqbg.apps.googleusercontent.com',
     iosBundleId: 'com.cattcatt.cattCatt',
   );
+
 }
