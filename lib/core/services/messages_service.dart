@@ -1,3 +1,5 @@
+import 'package:catt_catt/core/services/send_push_notification.dart';
+import 'package:catt_catt/utils/print.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -21,7 +23,11 @@ class MessagesService {
     await _store.collection("rooms").doc(roomId).delete();
   }
 
-  void sendMessage(dynamic partialMessage, String roomId) async {
+  void sendMessage(
+    dynamic partialMessage,
+    String roomId,
+    String toUserId,
+  ) async {
     if (user == null) return;
 
     types.Message? message;
@@ -66,6 +72,24 @@ class MessagesService {
 
     if (message != null) {
       final messageMap = message.toJson();
+      late final String messageBody;
+      switch (messageMap['type']) {
+        case 'audio':
+          messageBody = 'You received a Voice Message. Check it out!';
+          break;
+        case 'image':
+          messageBody = 'You received an Image Message. Check it out!';
+          break;
+        case 'text':
+          messageBody = messageMap['text'];
+          break;
+        case 'video':
+          messageBody = 'You received a Video Message. Check it out!';
+          break;
+        default:
+          messageBody = 'You received a new message. Check it out!';
+          break;
+      }
       messageMap.removeWhere((key, value) => key == 'author' || key == 'id');
       messageMap['authorId'] = user!.uid;
       messageMap['createdAt'] = FieldValue.serverTimestamp();
@@ -77,6 +101,20 @@ class MessagesService {
           .collection("rooms")
           .doc(roomId)
           .update({'updatedAt': FieldValue.serverTimestamp()});
+      final tokenSnapshot =
+          await _store.collection('users').doc(toUserId).get();
+      Print.warning(tokenSnapshot.data(), "here");
+      final token = tokenSnapshot.data()?['fcmToken'] as String?;
+
+      Print.json(message);
+      if (token != null) {
+        Print.error(token);
+        await sendPushNotification(
+          deviceToken: token,
+          title: user!.displayName.toString(),
+          body: messageBody,
+        );
+      }
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:auto_route/auto_route.dart';
+import 'package:catt_catt/core/services/auth_service.dart';
 import 'package:catt_catt/core/services/messages_service.dart';
 import 'package:catt_catt/ui/shared/widgets/audio_player_widget.dart';
 import 'package:catt_catt/ui/shared/widgets/video_player_widget.dart';
@@ -25,6 +26,7 @@ class ChatPage extends HookConsumerWidget {
     final isRecording = useState(false);
 
     final messageServiceProvider = ref.watch(messagesService);
+    final currentUser = ref.read(authService).user;
 
     Future<void> startRecording() async {
       audioRecorder = FlutterSoundRecorder();
@@ -82,9 +84,13 @@ class ChatPage extends HookConsumerWidget {
             width: image.width.toDouble(),
           );
 
-          FirebaseChatCore.instance.sendMessage(
+          final otherUser = room.users.firstWhere(
+            (u) => u.id != currentUser!.uid,
+          );
+          messageServiceProvider.sendMessage(
             message,
             room.id,
+            otherUser.id,
           );
         } catch (e) {
           Future.error("Error uploading image: $e");
@@ -115,10 +121,13 @@ class ChatPage extends HookConsumerWidget {
             uri: uri,
             width: 0,
           );
-
+          final otherUser = room.users.firstWhere(
+            (u) => u.id != currentUser!.uid,
+          );
           messageServiceProvider.sendMessage(
             message,
             room.id,
+            otherUser.id,
           );
         } catch (e) {
           Future.error("Error uploading video: $e");
@@ -164,9 +173,13 @@ class ChatPage extends HookConsumerWidget {
                           uri: downloadUri,
                         );
 
+                        final otherUser = room.users.firstWhere(
+                          (u) => u.id != currentUser!.uid,
+                        );
                         messageServiceProvider.sendMessage(
                           message,
                           room.id,
+                          otherUser.id,
                         );
                       }
                       if (context.mounted) {
@@ -246,9 +259,13 @@ class ChatPage extends HookConsumerWidget {
     }
 
     void handleSendPressed(types.PartialText message) {
-      FirebaseChatCore.instance.sendMessage(
+      final otherUser = room.users.firstWhere(
+        (u) => u.id != currentUser!.uid,
+      );
+      messageServiceProvider.sendMessage(
         message,
         room.id,
+        otherUser.id,
       );
     }
 

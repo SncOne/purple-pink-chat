@@ -40,7 +40,7 @@ class _Images {
 }
 
 class _Anims {
-  static const path = 'assets/anims';
+  static const path = 'assets/animations';
   final loading = '$path/loading.zip';
   final matchingHearts = '$path/lottie-match-anim.zip';
 }

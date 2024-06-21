@@ -19,7 +19,7 @@ class ProfileCard extends ConsumerWidget {
           children: [
             CustomImage.network(
               user.profileImages.first,
-              height: MediaQuery.sizeOf(context).height / 1.4,
+              height: MediaQuery.sizeOf(context).height / 1.5,
               width: 500,
               memCacheHeight: MediaQuery.sizeOf(context).height.toInt(),
               borderRadius: S.borderRadius.radius12,

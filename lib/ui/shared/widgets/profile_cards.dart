@@ -55,7 +55,11 @@ class ProfileCards extends HookConsumerWidget {
             if (direction == CardSwiperDirection.left) {
             } else if (direction == CardSwiperDirection.right) {
               matchingProvider.addToLikedList(
-                  userData[previousIndex].uid, currentUser.value!.uid, ref);
+                userData[previousIndex].uid,
+                currentUser.value!.uid,
+                ref,
+                context,
+              );
             }
             return true;
           },

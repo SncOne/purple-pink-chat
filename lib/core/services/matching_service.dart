@@ -49,7 +49,11 @@ class MatchingService {
   }
 
   Future<void> addToLikedList(
-      String toUserId, String currentUserId, WidgetRef ref) async {
+    String toUserId,
+    String currentUserId,
+    WidgetRef ref,
+    BuildContext context,
+  ) async {
     final currentUserDoc = _store.collection('users').doc(currentUserId);
     final toUserDoc = _store.collection('users').doc(toUserId);
 
@@ -82,15 +86,11 @@ class MatchingService {
         // Send match notifications
         await sendMatchNotification(currentUserId, toUserId);
         await sendMatchNotification(toUserId, currentUserId);
-
-        final context = AppRouter().navigatorKey.currentContext;
-
-        if (context != null) {
-          // Show matching dialog
+        if (context.mounted) {
           Utils.show.dialog(
             context,
             Dialog(
-              backgroundColor: Colors.transparent,
+              backgroundColor: Colors.deepPurple,
               child: Stack(
                 alignment: Alignment.center,
                 children: [
@@ -162,8 +162,7 @@ class MatchingService {
         }
       }
     } catch (e) {
-      // Handle any errors that might occur
-      print("Error adding to liked list: $e");
+      Future.error("Error adding to liked list: $e");
     }
   }
 

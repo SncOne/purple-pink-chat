@@ -12,7 +12,6 @@ import 'package:catt_catt/utils/styles.dart';
 import 'package:catt_catt/utils/utils.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:country_picker/country_picker.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -149,14 +148,10 @@ class EditProfilePage extends HookConsumerWidget {
                 }
                 for (var imagePath in deletedImages.value) {
                   try {
-                    await auth.deleteImage(imagePath);
+                    imageUrls.remove(imagePath);
+                    //TODO:Design a system to remove images for some reason
                   } catch (e) {
-                    if (e is FirebaseException &&
-                        e.code == 'object-not-found') {
-                      print('No object exists at the desired reference.');
-                    } else {
-                      print('Error deleting image: $e');
-                    }
+                    Future.error(e);
                   }
                 }
 
