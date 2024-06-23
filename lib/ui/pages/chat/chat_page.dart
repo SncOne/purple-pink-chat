@@ -1,9 +1,13 @@
 import 'dart:io';
 import 'package:auto_route/auto_route.dart';
+import 'package:catt_catt/core/providers/providers.dart';
 import 'package:catt_catt/core/services/auth_service.dart';
 import 'package:catt_catt/core/services/messages_service.dart';
+import 'package:catt_catt/core/services/send_push_notification.dart';
 import 'package:catt_catt/ui/shared/widgets/audio_player_widget.dart';
 import 'package:catt_catt/ui/shared/widgets/video_player_widget.dart';
+import 'package:catt_catt/utils/utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
@@ -58,141 +62,297 @@ class ChatPage extends HookConsumerWidget {
     }
 
     void handleImageSelection() async {
-      final result = await ImagePicker().pickMultiImage(
-        imageQuality: 70,
-        maxWidth: 1440,
-        limit: 4,
+      final otherUser = room.users.firstWhere(
+        (u) => u.id != currentUser!.uid,
       );
+      final otherUserProfile =
+          await ref.read(userProviderWithID(otherUser.id).future);
+      final currentUserProfile =
+          await ref.read(userProviderWithID(currentUser!.uid).future);
+      if (otherUserProfile.canRecieveImages) {
+        final result = await ImagePicker().pickMultiImage(
+          imageQuality: 70,
+          maxWidth: 1440,
+          limit: 4,
+        );
 
-      for (var element in result) {
-        final file = File(element.path);
-        final size = file.lengthSync();
-        final bytes = await element.readAsBytes();
-        final image = await decodeImageFromList(bytes);
-        final name = element.name;
+        for (var element in result) {
+          final file = File(element.path);
+          final size = file.lengthSync();
+          final bytes = await element.readAsBytes();
+          final image = await decodeImageFromList(bytes);
+          final name = element.name;
 
-        try {
-          final reference = FirebaseStorage.instance.ref(name);
-          await reference.putFile(file);
-          final uri = await reference.getDownloadURL();
+          try {
+            final reference = FirebaseStorage.instance.ref(name);
+            await reference.putFile(file);
+            final uri = await reference.getDownloadURL();
 
-          final message = types.PartialImage(
-            height: image.height.toDouble(),
-            name: name,
-            size: size,
-            uri: uri,
-            width: image.width.toDouble(),
+            final message = types.PartialImage(
+              height: image.height.toDouble(),
+              name: name,
+              size: size,
+              uri: uri,
+              width: image.width.toDouble(),
+            );
+
+            messageServiceProvider.sendMessage(
+              message,
+              room.id,
+              otherUser.id,
+            );
+          } catch (e) {
+            Future.error("Error uploading image: $e");
+          }
+        }
+      } else {
+        if (context.mounted) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Cannot Send Image'),
+                content: const Text('The other user cannot receive images.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      context.maybePop();
+                    },
+                    child: const Text('OK'),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      final tokenSnapshot = await FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(otherUser.id)
+                          .get();
+                      final token =
+                          tokenSnapshot.data()?['fcmToken'] as String?;
+                      if (token != null) {
+                        await sendPushNotification(
+                          deviceToken: token,
+                          title: 'Do You Want To Recieve Image',
+                          body:
+                              '${currentUserProfile.firstName} wants to send image.Go ahead and open it on your settings',
+                        );
+                      }
+                      if (context.mounted) {
+                        Utils.show.toast(context, 'Your request has been send');
+                        context.maybePop();
+                      }
+                    },
+                    child: const Text('Send Request'),
+                  ),
+                ],
+              );
+            },
           );
-
-          final otherUser = room.users.firstWhere(
-            (u) => u.id != currentUser!.uid,
-          );
-          messageServiceProvider.sendMessage(
-            message,
-            room.id,
-            otherUser.id,
-          );
-        } catch (e) {
-          Future.error("Error uploading image: $e");
         }
       }
     }
 
     void handleVideoSelection() async {
-      final result = await ImagePicker().pickVideo(
-        maxDuration: const Duration(minutes: 2),
-        source: ImageSource.gallery,
+      final otherUser = room.users.firstWhere(
+        (u) => u.id != currentUser!.uid,
       );
+      final otherUserProfile =
+          await ref.read(userProviderWithID(otherUser.id).future);
+      final currentUserProfile =
+          await ref.read(userProviderWithID(currentUser!.uid).future);
 
-      if (result != null) {
-        final file = File(result.path);
-        final size = file.lengthSync();
-        final name = result.name;
+      if (otherUserProfile.canRecieveVideos) {
+        final result = await ImagePicker().pickVideo(
+          maxDuration: const Duration(minutes: 2),
+          source: ImageSource.gallery,
+        );
 
-        try {
-          final reference = FirebaseStorage.instance.ref(name);
-          await reference.putFile(file);
-          final uri = await reference.getDownloadURL();
+        if (result != null) {
+          final file = File(result.path);
+          final size = file.lengthSync();
+          final name = result.name;
 
-          final message = types.PartialVideo(
-            height: 0,
-            name: name,
-            size: size,
-            uri: uri,
-            width: 0,
+          try {
+            final reference = FirebaseStorage.instance.ref(name);
+            await reference.putFile(file);
+            final uri = await reference.getDownloadURL();
+
+            final message = types.PartialVideo(
+              height: 0,
+              name: name,
+              size: size,
+              uri: uri,
+              width: 0,
+            );
+            final otherUser = room.users.firstWhere(
+              (u) => u.id != currentUser.uid,
+            );
+            messageServiceProvider.sendMessage(
+              message,
+              room.id,
+              otherUser.id,
+            );
+          } catch (e) {
+            Future.error("Error uploading video: $e");
+          }
+        }
+      } else {
+        if (context.mounted) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Cannot Send Image'),
+                content: const Text('The other user cannot receive images.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      context.maybePop();
+                    },
+                    child: const Text('OK'),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      final tokenSnapshot = await FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(otherUser.id)
+                          .get();
+                      final token =
+                          tokenSnapshot.data()?['fcmToken'] as String?;
+                      if (token != null) {
+                        await sendPushNotification(
+                          deviceToken: token,
+                          title: 'Do You Want To Recieve Video',
+                          body:
+                              '${currentUserProfile.firstName} wants to send video.Go ahead and open it on your settings',
+                        );
+                      }
+                      if (context.mounted) {
+                        Utils.show.toast(context, 'Your request has been send');
+                        context.maybePop();
+                      }
+                    },
+                    child: const Text('Send Request'),
+                  ),
+                ],
+              );
+            },
           );
-          final otherUser = room.users.firstWhere(
-            (u) => u.id != currentUser!.uid,
-          );
-          messageServiceProvider.sendMessage(
-            message,
-            room.id,
-            otherUser.id,
-          );
-        } catch (e) {
-          Future.error("Error uploading video: $e");
         }
       }
     }
 
     void handleAudioSelection() async {
-      await startRecording();
+      final otherUser = room.users.firstWhere(
+        (u) => u.id != currentUser!.uid,
+      );
+      final otherUserProfile =
+          await ref.read(userProviderWithID(otherUser.id).future);
+      final currentUserProfile =
+          await ref.read(userProviderWithID(currentUser!.uid).future);
 
-      if (context.mounted) {
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Recording...'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const CircularProgressIndicator(),
-                  const SizedBox(height: 20),
-                  const Text('Recording in progress...'),
+      if (otherUserProfile.canRecieveAudios) {
+        await startRecording();
+
+        if (context.mounted) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Recording...'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const CircularProgressIndicator(),
+                    const SizedBox(height: 20),
+                    const Text('Recording in progress...'),
+                    TextButton(
+                      onPressed: () async {
+                        final uri = await stopRecording();
+                        if (uri != null) {
+                          final file = File(uri);
+                          final size = file.lengthSync();
+                          final duration =
+                              DateTime.now().millisecondsSinceEpoch;
+                          final name =
+                              DateTime.now().millisecondsSinceEpoch.toString();
+
+                          final reference =
+                              FirebaseStorage.instance.ref('$name.aac');
+                          await reference.putFile(file);
+                          final downloadUri = await reference.getDownloadURL();
+
+                          final message = types.PartialAudio(
+                            duration: Duration(milliseconds: duration),
+                            name: name,
+                            size: size,
+                            uri: downloadUri,
+                          );
+
+                          final otherUser = room.users.firstWhere(
+                            (u) => u.id != currentUser.uid,
+                          );
+                          messageServiceProvider.sendMessage(
+                            message,
+                            room.id,
+                            otherUser.id,
+                          );
+                        }
+                        if (context.mounted) {
+                          context.maybePop();
+                        }
+                      },
+                      child: const Text('Stop Recording'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        }
+      } else {
+        if (context.mounted) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Cannot Send Image'),
+                content: const Text('The other user cannot receive images.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      context.maybePop();
+                    },
+                    child: const Text('OK'),
+                  ),
                   TextButton(
                     onPressed: () async {
-                      final uri = await stopRecording();
-                      if (uri != null) {
-                        final file = File(uri);
-                        final size = file.lengthSync();
-                        final duration = DateTime.now().millisecondsSinceEpoch;
-                        final name =
-                            DateTime.now().millisecondsSinceEpoch.toString();
-
-                        final reference =
-                            FirebaseStorage.instance.ref('$name.aac');
-                        await reference.putFile(file);
-                        final downloadUri = await reference.getDownloadURL();
-
-                        final message = types.PartialAudio(
-                          duration: Duration(milliseconds: duration),
-                          name: name,
-                          size: size,
-                          uri: downloadUri,
-                        );
-
-                        final otherUser = room.users.firstWhere(
-                          (u) => u.id != currentUser!.uid,
-                        );
-                        messageServiceProvider.sendMessage(
-                          message,
-                          room.id,
-                          otherUser.id,
+                      final tokenSnapshot = await FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(otherUser.id)
+                          .get();
+                      final token =
+                          tokenSnapshot.data()?['fcmToken'] as String?;
+                      if (token != null) {
+                        await sendPushNotification(
+                          deviceToken: token,
+                          title: 'Do You Want To Recieve Audio',
+                          body:
+                              '${currentUserProfile.firstName} wants to send audio.Go ahead and open it on your settings',
                         );
                       }
                       if (context.mounted) {
+                        Utils.show.toast(context, 'Your request has been send');
                         context.maybePop();
                       }
                     },
-                    child: const Text('Stop Recording'),
+                    child: const Text('Send Request'),
                   ),
                 ],
-              ),
-            );
-          },
-        );
+              );
+            },
+          );
+        }
       }
     }
 
