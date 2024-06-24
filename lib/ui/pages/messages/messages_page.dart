@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:catt_catt/core/models/user.dart';
 import 'package:catt_catt/core/providers/providers.dart';
 import 'package:catt_catt/core/services/auth_service.dart';
-import 'package:catt_catt/core/services/storage_service.dart';
 import 'package:catt_catt/ui/pages/messages/messages_provider.dart';
 import 'package:catt_catt/ui/shared/pages/settings/settings_page.dart';
 import 'package:catt_catt/ui/shared/widgets/async_widget.dart';
@@ -30,7 +29,6 @@ class MessagesPage extends HookConsumerWidget {
     }
 
     final currentUser = ref.read(authService).user;
-    final storage = ref.read(storageService);
 
     return Scaffold(
       appBar: AppBar(
@@ -98,8 +96,15 @@ class MessagesPage extends HookConsumerWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(room.name ?? '',
-                                  style: S.textStyles.font20BoldWhite),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(room.name ?? '',
+                                      style: S.textStyles.font20BoldWhite),
+                                  UnreadMessageCount(room.id),
+                                ],
+                              ),
                               S.sizedBox.h6,
                               AsyncWidget(
                                 data: ref.watch(
@@ -162,7 +167,6 @@ class MessagesPage extends HookConsumerWidget {
                                   );
                                 },
                               ),
-                              UnreadMessageCount(room.id),
                             ],
                           ),
                         ),
@@ -187,10 +191,19 @@ class UnreadMessageCount extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     return AsyncWidget(
       data: ref.watch(unreadMessageCountProvider(_roomId)),
-      builder: (final int count) => Text(
-        'Unread messages: $count',
-        style: S.textStyles.font16White,
-      ),
+      builder: (final int count) => count == 0
+          ? const SizedBox.shrink()
+          : Container(
+              decoration: BoxDecoration(
+                color: Colors.teal,
+                borderRadius: S.borderRadius.radius12,
+              ),
+              padding: S.edgeInsets.all5,
+              child: Text(
+                count.toString(),
+                style: S.textStyles.font16White,
+              ),
+            ),
     );
   }
 }

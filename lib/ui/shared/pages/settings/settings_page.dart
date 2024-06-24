@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:catt_catt/core/models/user.dart';
 import 'package:catt_catt/core/providers/providers.dart';
@@ -9,6 +11,7 @@ import 'package:catt_catt/utils/extensions.dart';
 import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:catt_catt/utils/styles.dart';
 import 'package:catt_catt/utils/utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -38,7 +41,7 @@ class SettingsWidget extends HookConsumerWidget {
         ),
         ListTile(
           title: Text(
-            t.chatHistory,
+            "Verification",
             style: S.textStyles.font16White,
           ),
           trailing: const Icon(
@@ -46,7 +49,10 @@ class SettingsWidget extends HookConsumerWidget {
             color: Colors.white,
           ),
           onTap: () {
-            Utils.show.toast(context, t.willBeImplemented);
+            Utils.show.settings(
+              context,
+              const EmailVerificationScreen(),
+            );
           },
         ),
         ListTile(
@@ -222,6 +228,107 @@ class RecievingSettingsPage extends HookConsumerWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class EmailVerificationScreen extends StatefulWidget {
+  const EmailVerificationScreen({super.key});
+
+  @override
+  State<EmailVerificationScreen> createState() =>
+      _EmailVerificationScreenState();
+}
+
+class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
+  bool isEmailVerified = false;
+  Timer? timer;
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth.instance.currentUser?.sendEmailVerification();
+    timer =
+        Timer.periodic(const Duration(seconds: 3), (_) => checkEmailVerified());
+  }
+
+  checkEmailVerified() async {
+    await FirebaseAuth.instance.currentUser?.reload();
+
+    setState(() {
+      isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
+    });
+
+    if (isEmailVerified) {
+      Utils.show.toast(context, "Your account is verified succesfully");
+
+      timer?.cancel();
+    }
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final auth = FirebaseAuth.instance.currentUser!;
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 35),
+              const SizedBox(height: 30),
+              const Center(
+                child: Text(
+                  'Check your \n Email',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                child: Center(
+                  child: Text(
+                    'We have sent you a Email on ${auth.email}',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Center(child: CircularProgressIndicator()),
+              const SizedBox(height: 8),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32.0),
+                child: Center(
+                  child: Text(
+                    'Verifying email....',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 57),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                child: ElevatedButton(
+                  child: const Text('Resend'),
+                  onPressed: () {
+                    try {
+                      FirebaseAuth.instance.currentUser
+                          ?.sendEmailVerification();
+                    } catch (e) {
+                      debugPrint('$e');
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

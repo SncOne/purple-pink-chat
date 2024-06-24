@@ -279,6 +279,19 @@ final class AuthService {
     }
   }
 
+  Future<void> verifyEmail(
+    String email,
+    BuildContext context,
+  ) async {
+    try {
+      await _auth.currentUser!.sendEmailVerification();
+    } on FirebaseAuthException catch (e) {
+      if (context.mounted) {
+        Utils.show.toast(context, e.message!);
+      }
+    }
+  }
+
   Future<void> updatePassword(
     String currentPassword,
     String newPassword,
