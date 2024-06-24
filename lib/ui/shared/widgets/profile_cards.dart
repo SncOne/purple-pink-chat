@@ -27,7 +27,7 @@ class ProfileCards extends HookConsumerWidget {
             color: Colors.deepPurple,
             padding: S.edgeInsets.all20,
             margin: S.edgeInsets.all20,
-            height: 500,
+            height: MediaQuery.sizeOf(context).height / 1.5,
             alignment: Alignment.center,
             child: Text(
               'Hi unfortunately there isn\'t any cool person in here yet, check later on',
@@ -73,7 +73,7 @@ class ProfileCards extends HookConsumerWidget {
                 color: Colors.deepPurple,
                 padding: S.edgeInsets.all20,
                 margin: S.edgeInsets.all20,
-                height: double.maxFinite / 0.2,
+                height: MediaQuery.sizeOf(context).height / 1.5,
                 alignment: Alignment.center,
                 child: Text(
                   'No more profiles available',

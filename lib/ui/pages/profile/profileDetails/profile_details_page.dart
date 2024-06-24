@@ -186,17 +186,20 @@ class ProfileDetailsPage extends HookConsumerWidget {
         ElevatedButton(
           onPressed: () async {
             final currentUser = matchingServiceProvider.user!;
-            final currentRoom = await matchingServiceProvider.getRoom(
+            final currentRoom = await matchingServiceProvider.getRoomId(
                 currentUser.uid, user.uid); // Odayı bulma işlemi
 
             if (currentRoom != null) {
               final room = types.Room(
-                id: currentRoom.id,
-                imageUrl: currentRoom.imageUrl,
-                metadata: currentRoom.metadata,
+                id: currentRoom,
+                // imageUrl: currentRoom.imageUrl,
+                // metadata: currentRoom.metadata,
                 name: "${user.firstName} ${user.lastName}",
                 type: types.RoomType.direct,
-                users: [currentUser as types.User, user as types.User],
+                users: [
+                  types.User(id: currentUser.uid),
+                  types.User(id: user.uid)
+                ],
               );
 
               if (context.mounted) {

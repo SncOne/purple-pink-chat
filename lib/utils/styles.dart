@@ -81,6 +81,10 @@ class _TextStyles {
     fontSize: 14,
     color: S.colors.black,
   );
+  final font14White = TextStyle(
+    fontSize: 14,
+    color: S.colors.white,
+  );
   final font14Bold = TextStyle(
     fontSize: 14,
     fontWeight: S.fontWeights.w700,
@@ -109,10 +113,20 @@ class _TextStyles {
     fontWeight: S.fontWeights.w700,
     color: S.colors.black,
   );
+  final font20BoldWhite = TextStyle(
+    fontSize: 20,
+    fontWeight: S.fontWeights.w700,
+    color: S.colors.white,
+  );
   final font24Bold = TextStyle(
     fontSize: 24,
     fontWeight: S.fontWeights.w700,
     color: S.colors.black,
+  );
+  final font24BoldWhite = TextStyle(
+    fontSize: 24,
+    fontWeight: S.fontWeights.w700,
+    color: S.colors.white,
   );
   final font28w300 = TextStyle(
     fontSize: 28,

@@ -88,81 +88,106 @@ class MatchingService {
         await sendMatchNotification(currentUserId, toUserId);
         await sendMatchNotification(toUserId, currentUserId);
         if (context.mounted) {
-          Utils.show.dialog(
-            context,
-            Dialog(
-              backgroundColor: Colors.deepPurple,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Positioned(
-                    left: 20,
-                    child: AsyncWidget<UserModel>(
-                      data: ref.watch(userProviderWithID(currentUserId)),
-                      builder: (userData) {
-                        return CustomImage.network(
-                          userData.profileImages.first,
-                          fit: BoxFit.cover,
-                          height: 100,
-                          memCacheHeight: 200,
-                          borderRadius: S.borderRadius.radius50,
-                        );
-                      },
-                    ),
-                  ),
-                  Positioned(
-                    right: 20,
-                    child: AsyncWidget<UserModel>(
-                      data: ref.watch(userProviderWithID(toUserId)),
-                      builder: (userData) {
-                        return CustomImage.network(
-                          userData.profileImages.first,
-                          borderRadius: S.borderRadius.radius50,
-                          fit: BoxFit.cover,
-                          height: 100,
-                          memCacheHeight: 200,
-                        );
-                      },
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 30,
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.message,
-                        color: Colors.white,
-                        size: 50,
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Center(
+                child: Container(
+                  color: Colors.deepPurple,
+                  height: 600,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Text(
+                        'You have a new match!',
+                        style: S.textStyles.font16White,
                       ),
-                      onPressed: () async {
-                        final roomId = await getRoomId(currentUserId, toUserId);
-                        final user = userProviderWithID(toUserId);
-                        if (roomId != null) {
-                          final room = types.Room(
-                            type: types.RoomType.direct,
-                            id: roomId,
-                            name: '${user.name}',
-                            users: const [],
-                          );
+                      Positioned(
+                        right: 10,
+                        top: 10,
+                        child: GestureDetector(
+                          onTap: () => context.maybePop(),
+                          child: const Icon(
+                            Icons.close,
+                            color: Colors.white,
+                            size: 36,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 20,
+                        child: AsyncWidget<UserModel>(
+                          data: ref.watch(userProviderWithID(currentUserId)),
+                          builder: (userData) {
+                            return CustomImage.network(
+                              userData.profileImages.first,
+                              fit: BoxFit.cover,
+                              height: 100,
+                              memCacheHeight: 200,
+                              borderRadius: S.borderRadius.radius50,
+                            );
+                          },
+                        ),
+                      ),
+                      Positioned(
+                        right: 20,
+                        child: AsyncWidget<UserModel>(
+                          data: ref.watch(userProviderWithID(toUserId)),
+                          builder: (userData) {
+                            return CustomImage.network(
+                              userData.profileImages.first,
+                              borderRadius: S.borderRadius.radius50,
+                              fit: BoxFit.cover,
+                              height: 100,
+                              memCacheHeight: 200,
+                            );
+                          },
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 30,
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.message,
+                            color: Colors.white,
+                            size: 50,
+                          ),
+                          onPressed: () async {
+                            final roomId =
+                                await getRoomId(currentUserId, toUserId);
+                            final user = userProviderWithID(toUserId);
+                            if (roomId != null) {
+                              final room = types.Room(
+                                type: types.RoomType.direct,
+                                id: roomId,
+                                name: '${user.name}',
+                                users: [
+                                  types.User(id: currentUserId),
+                                  types.User(id: toUserId)
+                                ],
+                              );
 
-                          if (context.mounted) {
-                            context.router.push(ChatRoute(room: room));
-                          }
-                        } else {
-                          if (context.mounted) {
-                            Utils.show
-                                .toast(context, "Chat room can't be found");
-                          }
-                        }
-                      },
-                    ),
+                              if (context.mounted) {
+                                context.router.push(ChatRoute(room: room));
+                              }
+                            } else {
+                              if (context.mounted) {
+                                Utils.show
+                                    .toast(context, "Chat room can't be found");
+                              }
+                            }
+                          },
+                        ),
+                      ),
+                      Lottie.asset(
+                        R.anims.matchingHearts,
+                        fit: BoxFit.cover,
+                      ),
+                    ],
                   ),
-                  Lottie.asset(
-                    R.anims.matchingHearts,
-                    fit: BoxFit.cover,
-                  ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           );
         }
       }

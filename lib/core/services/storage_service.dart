@@ -1,6 +1,3 @@
-// ignore_for_file: no-object-declaration, box returns dynamic
-// but we don't like dynamic that's why we need to use Object? instead
-
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -67,5 +64,32 @@ class StorageService {
   Future<void> close() async {
     Print.log('close', _service);
     await box().close();
+  }
+
+  // New methods for unread message counts
+  void incrementUnreadCount(String userId) {
+    Print.log('incrementUnreadCount', _service);
+    int count = box().get('unread_$userId', defaultValue: 0) as int;
+    count++;
+    box().put('unread_$userId', count);
+  }
+
+  void decrementUnreadCount(String userId) {
+    Print.log('decrementUnreadCount', _service);
+    int count = box().get('unread_$userId', defaultValue: 0) as int;
+    if (count > 0) {
+      count--;
+      box().put('unread_$userId', count);
+    }
+  }
+
+  int getUnreadCount(String userId) {
+    Print.log('getUnreadCount', _service);
+    return box().get('unread_$userId', defaultValue: 0) as int;
+  }
+
+  void resetUnreadCount(String userId) {
+    Print.log('resetUnreadCount', _service);
+    box().put('unread_$userId', 0);
   }
 }

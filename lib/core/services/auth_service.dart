@@ -159,6 +159,18 @@ final class AuthService {
     }
   }
 
+  Future<void> editRecievingMessageSettings({
+    required bool canRecieveImages,
+    required bool canRecieveAudios,
+    required bool canRecieveVideos,
+  }) async {
+    await storeInfo.update({
+      "canRecieveImages": canRecieveImages,
+      "canRecieveAudios": canRecieveAudios,
+      "canRecieveVideos": canRecieveVideos,
+    });
+  }
+
   Future editProfile({
     List<String>? profileImages,
     String? firstName,

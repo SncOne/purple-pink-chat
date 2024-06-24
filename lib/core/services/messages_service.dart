@@ -23,6 +23,24 @@ class MessagesService {
     await _store.collection("rooms").doc(roomId).delete();
   }
 
+  Stream<Map<String, dynamic>> getLatestMessageStream(String roomId) {
+    return _store
+        .collection("rooms")
+        .doc(roomId)
+        .collection("messages")
+        .orderBy("createdAt", descending: true)
+        .limit(1)
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.docs.isNotEmpty) {
+        Print.error(snapshot.docs.first.data());
+        return snapshot.docs.first.data();
+      } else {
+        throw Exception("No messages found");
+      }
+    });
+  }
+
   void sendMessage(
     dynamic partialMessage,
     String roomId,
