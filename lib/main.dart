@@ -39,7 +39,7 @@ void main() async {
   );
 }
 
-final _appRouter = AppRouter();
+final appRouter = AppRouter();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
             child: widget!,
           );
         },
-        routerConfig: _appRouter.config(),
+        routerConfig: appRouter.config(),
         locale: TranslationProvider.of(context).flutterLocale,
         supportedLocales: AppLocaleUtils.supportedLocales,
         localizationsDelegates: const [

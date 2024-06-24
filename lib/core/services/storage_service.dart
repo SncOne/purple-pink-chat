@@ -66,6 +66,17 @@ class StorageService {
     await box().close();
   }
 
+  void setLastSeenDateTime(String roomId, DateTime date) {
+    Print.log('setUnreadMessageDateTime', _service);
+    box().put('unread_$roomId', date.millisecondsSinceEpoch);
+  }
+
+  int getLastSeenDateTime(String roomId) {
+    Print.log('getLastSeenDateTime', _service);
+    final lastSeen = box().get('unread_$roomId') as int?;
+    return lastSeen ?? DateTime.now().millisecondsSinceEpoch;
+  }
+
   // New methods for unread message counts
   void incrementUnreadCount(String userId) {
     Print.log('incrementUnreadCount', _service);

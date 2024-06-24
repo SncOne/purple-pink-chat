@@ -3,10 +3,12 @@ import 'package:catt_catt/core/models/user.dart';
 import 'package:catt_catt/core/providers/providers.dart';
 import 'package:catt_catt/core/services/auth_service.dart';
 import 'package:catt_catt/core/services/storage_service.dart';
+import 'package:catt_catt/ui/pages/messages/messages_provider.dart';
 import 'package:catt_catt/ui/shared/pages/settings/settings_page.dart';
 import 'package:catt_catt/ui/shared/widgets/async_widget.dart';
 import 'package:catt_catt/ui/shared/widgets/custom_image.dart';
 import 'package:catt_catt/utils/app_router.dart';
+import 'package:catt_catt/utils/assets.dart';
 import 'package:catt_catt/utils/print.dart';
 import 'package:catt_catt/utils/styles.dart';
 import 'package:catt_catt/utils/utils.dart';
@@ -14,9 +16,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:catt_catt/utils/assets.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:intl/intl.dart';
 
 @RoutePage()
@@ -45,11 +44,10 @@ class MessagesPage extends HookConsumerWidget {
           ),
         ],
       ),
-      body: StreamBuilder<List<types.Room>>(
-        stream: FirebaseChatCore.instance.rooms(),
-        initialData: const [],
-        builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+      body: AsyncWidget(
+        data: ref.watch(messagesProvider),
+        builder: (list) {
+          if (list.isEmpty) {
             return Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.only(
@@ -60,31 +58,15 @@ class MessagesPage extends HookConsumerWidget {
           }
 
           return ListView.builder(
-            itemCount: snapshot.data!.length,
+            itemCount: list.length,
             itemBuilder: (context, index) {
-              final room = snapshot.data![index];
+              final room = list[index];
               final otherUser = room.users.firstWhere(
                 (u) => u.id != currentUser!.uid,
               );
-              final userInfo = ref.watch(userProviderWithID(otherUser.id));
-
-              ref.listen<AsyncValue<List<types.Message>>>(
-                  newMessageStreamProvider(room.id), (previous, next) {
-                next.whenData((messages) {
-                  if (messages.isNotEmpty) {
-                    final latestMessage = messages.first;
-                    if (latestMessage.author.id != currentUser!.uid) {
-                      storage.incrementUnreadCount(currentUser.uid);
-                    }
-                  }
-                });
-              });
 
               return GestureDetector(
-                onTap: () {
-                  storage.resetUnreadCount(currentUser.uid);
-                  context.pushRoute(ChatRoute(room: room));
-                },
+                onTap: () => context.pushRoute(ChatRoute(room: room)),
                 child: Card(
                   margin: const EdgeInsets.symmetric(
                     horizontal: 16,
@@ -99,7 +81,7 @@ class MessagesPage extends HookConsumerWidget {
                     child: Row(
                       children: [
                         AsyncWidget<UserModel>(
-                          data: userInfo,
+                          data: ref.watch(userProviderWithID(otherUser.id)),
                           builder: (userData) {
                             return CustomImage.network(
                               userData.profileImages.first,
@@ -180,9 +162,7 @@ class MessagesPage extends HookConsumerWidget {
                                   );
                                 },
                               ),
-                              Text(
-                                  'Unread messages: ${storage.getUnreadCount(currentUser!.uid)}',
-                                  style: S.textStyles.font16White),
+                              UnreadMessageCount(room.id),
                             ],
                           ),
                         ),
@@ -194,6 +174,22 @@ class MessagesPage extends HookConsumerWidget {
             },
           );
         },
+      ),
+    );
+  }
+}
+
+class UnreadMessageCount extends ConsumerWidget {
+  const UnreadMessageCount(this._roomId, {super.key});
+  final String _roomId;
+
+  @override
+  Widget build(BuildContext context, ref) {
+    return AsyncWidget(
+      data: ref.watch(unreadMessageCountProvider(_roomId)),
+      builder: (final int count) => Text(
+        'Unread messages: $count',
+        style: S.textStyles.font16White,
       ),
     );
   }

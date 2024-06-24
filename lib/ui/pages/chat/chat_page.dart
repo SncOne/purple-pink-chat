@@ -1,31 +1,43 @@
 import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:catt_catt/core/providers/providers.dart';
 import 'package:catt_catt/core/services/auth_service.dart';
 import 'package:catt_catt/core/services/messages_service.dart';
 import 'package:catt_catt/core/services/send_push_notification.dart';
+import 'package:catt_catt/core/services/storage_service.dart';
+import 'package:catt_catt/ui/pages/messages/messages_provider.dart';
 import 'package:catt_catt/ui/shared/widgets/audio_player_widget.dart';
 import 'package:catt_catt/ui/shared/widgets/video_player_widget.dart';
 import 'package:catt_catt/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 @RoutePage()
 class ChatPage extends HookConsumerWidget {
   final types.Room room;
   const ChatPage({required this.room, super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useEffect(() {
+      Future.microtask(() {
+        ref.read(storageService).setLastSeenDateTime(room.id, DateTime.now());
+        ref.invalidate(unreadMessageCountProvider(room.id));
+      });
+      return null;
+    }, const []);
+
     FlutterSoundRecorder? audioRecorder;
     final isRecording = useState(false);
 
@@ -429,36 +441,43 @@ class ChatPage extends HookConsumerWidget {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(room.name.toString()),
-      ),
-      body: StreamBuilder<types.Room>(
-        initialData: room,
-        stream: FirebaseChatCore.instance.room(room.id),
-        builder: (context, snapshot) => StreamBuilder<List<types.Message>>(
-          initialData: const [],
-          stream: FirebaseChatCore.instance.messages(snapshot.data!),
-          builder: (context, snapshot) => Chat(
-            messages: snapshot.data ?? [],
-            onAttachmentPressed: handleAttachmentPressed,
-            onPreviewDataFetched: handlePreviewDataFetched,
-            onSendPressed: handleSendPressed,
-            user: types.User(
-              id: FirebaseChatCore.instance.firebaseUser?.uid ?? '',
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (_) {
+        ref.read(storageService).setLastSeenDateTime(room.id, DateTime.now());
+        ref.invalidate(unreadMessageCountProvider(room.id));
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(room.name.toString()),
+        ),
+        body: StreamBuilder<types.Room>(
+          initialData: room,
+          stream: FirebaseChatCore.instance.room(room.id),
+          builder: (context, snapshot) => StreamBuilder<List<types.Message>>(
+            initialData: const [],
+            stream: FirebaseChatCore.instance.messages(snapshot.data!),
+            builder: (context, snapshot) => Chat(
+              messages: snapshot.data ?? [],
+              onAttachmentPressed: handleAttachmentPressed,
+              onPreviewDataFetched: handlePreviewDataFetched,
+              onSendPressed: handleSendPressed,
+              user: types.User(
+                id: FirebaseChatCore.instance.firebaseUser?.uid ?? '',
+              ),
+              audioMessageBuilder: (audioMessage, {required messageWidth}) {
+                return AudioPlayerWidget(
+                  message: audioMessage,
+                  messageWidth: messageWidth,
+                );
+              },
+              videoMessageBuilder: (videoMessage, {required messageWidth}) {
+                return VideoPlayerWidget(
+                  message: videoMessage,
+                  messageWidth: messageWidth,
+                );
+              },
             ),
-            audioMessageBuilder: (audioMessage, {required messageWidth}) {
-              return AudioPlayerWidget(
-                message: audioMessage,
-                messageWidth: messageWidth,
-              );
-            },
-            videoMessageBuilder: (videoMessage, {required messageWidth}) {
-              return VideoPlayerWidget(
-                message: videoMessage,
-                messageWidth: messageWidth,
-              );
-            },
           ),
         ),
       ),
