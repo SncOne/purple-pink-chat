@@ -63,6 +63,18 @@ final class AuthService {
     return UserModel.fromJson(userData!);
   }
 
+  Stream<UserModel> getUserStreamWithID(String id) async* {
+    final userDoc =
+        FirebaseFirestore.instance.collection('users').doc(id).snapshots();
+    yield* userDoc.map((doc) {
+      if (doc.exists) {
+        return UserModel.fromJson(doc.data()!);
+      } else {
+        throw Future.error('User document does not exist');
+      }
+    });
+  }
+
   Stream<UserModel> getUserStream() async* {
     final userDoc = _store.collection("users").doc(user!.uid).snapshots();
     yield* userDoc.map((doc) {
@@ -134,11 +146,12 @@ final class AuthService {
         'longitude': currentPosition.longitude,
       };
       await user!.updateDisplayName('$firstName $lastName');
+      await user!.updatePhotoURL(profileImages!.first);
       await storeInfo.set({
         "uid": user!.uid,
         "firstName": firstName ?? '',
         "lastName": lastName ?? '',
-        "profileImages": profileImages ?? [],
+        "profileImages": profileImages,
         "gender": gender ?? '',
         "birthDate": birthDate ?? '',
         "location": location ?? '',
@@ -188,10 +201,12 @@ final class AuthService {
       if (user!.displayName != '$firstName $lastName') {
         await user!.updateDisplayName('$firstName $lastName');
       }
+      await user!.updatePhotoURL(profileImages!.first);
+
       await storeInfo.update({
         "firstName": firstName ?? '',
         "lastName": lastName ?? '',
-        "profileImages": profileImages ?? [],
+        "profileImages": profileImages,
         "gender": gender ?? '',
         "birthDate": birthDate ?? '',
         "location": location ?? '',

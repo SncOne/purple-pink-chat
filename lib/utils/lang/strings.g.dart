@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 280 (140 per locale)
+/// Strings: 296 (148 per locale)
 ///
-/// Built on 2024-06-25 at 12:25 UTC
+/// Built on 2024-06-25 at 19:38 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -295,6 +295,14 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get recieveAudio => 'Receive Audios';
 	String get recieveVideo => 'Receive Videos';
 	String get accountVerified => 'Your account is verified succesfully';
+	String get matches => 'Matches';
+	String get likesYou => 'Likes You';
+	String get yourLikes => 'Your Likes';
+	String get yourMatches => 'Your Matches';
+	String get subscriptionToSeeTitle => 'To See This Profile';
+	String get subscriptionToSeeBody => 'You Need to Subscribe';
+	String get readyToRecord => 'Ready to Record';
+	String get startRecording => 'Start Recording';
 }
 
 // Path: loginState
@@ -479,6 +487,14 @@ class _StringsTr implements Translations {
 	@override String get recieveAudio => 'Sesleri Al';
 	@override String get recieveVideo => 'Videoları Al';
 	@override String get accountVerified => 'Hesabınız başarıyla doğrulandı.';
+	@override String get matches => 'Eşleşmeler';
+	@override String get likesYou => 'Seni Beğenenler';
+	@override String get yourLikes => 'Beğendiklerin';
+	@override String get yourMatches => 'Eşleşmelerin';
+	@override String get subscriptionToSeeTitle => 'Bu Profili Görmek İçin';
+	@override String get subscriptionToSeeBody => 'Abone Olmanız Gerekiyor';
+	@override String get readyToRecord => 'Kayda Hazır';
+	@override String get startRecording => 'Kayıtı Başlat';
 }
 
 // Path: loginState
@@ -638,6 +654,14 @@ extension on Translations {
 			case 'recieveAudio': return 'Receive Audios';
 			case 'recieveVideo': return 'Receive Videos';
 			case 'accountVerified': return 'Your account is verified succesfully';
+			case 'matches': return 'Matches';
+			case 'likesYou': return 'Likes You';
+			case 'yourLikes': return 'Your Likes';
+			case 'yourMatches': return 'Your Matches';
+			case 'subscriptionToSeeTitle': return 'To See This Profile';
+			case 'subscriptionToSeeBody': return 'You Need to Subscribe';
+			case 'readyToRecord': return 'Ready to Record';
+			case 'startRecording': return 'Start Recording';
 			default: return null;
 		}
 	}
@@ -786,6 +810,14 @@ extension on _StringsTr {
 			case 'recieveAudio': return 'Sesleri Al';
 			case 'recieveVideo': return 'Videoları Al';
 			case 'accountVerified': return 'Hesabınız başarıyla doğrulandı.';
+			case 'matches': return 'Eşleşmeler';
+			case 'likesYou': return 'Seni Beğenenler';
+			case 'yourLikes': return 'Beğendiklerin';
+			case 'yourMatches': return 'Eşleşmelerin';
+			case 'subscriptionToSeeTitle': return 'Bu Profili Görmek İçin';
+			case 'subscriptionToSeeBody': return 'Abone Olmanız Gerekiyor';
+			case 'readyToRecord': return 'Kayda Hazır';
+			case 'startRecording': return 'Kayıtı Başlat';
 			default: return null;
 		}
 	}

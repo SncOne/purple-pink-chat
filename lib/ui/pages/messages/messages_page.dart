@@ -44,7 +44,7 @@ class MessagesPage extends HookConsumerWidget {
         ],
       ),
       body: AsyncWidget(
-        data: ref.watch(messagesProvider),
+        data: ref.watch(roomsProvider),
         builder: (list) {
           if (list.isEmpty) {
             return Container(
@@ -122,7 +122,10 @@ class MessagesPage extends HookConsumerWidget {
                                         Expanded(
                                           child: Row(
                                             children: [
-                                              const Icon(Icons.video_file),
+                                              const Icon(
+                                                  Icons
+                                                      .video_camera_back_outlined,
+                                                  color: Colors.white),
                                               Text(t.video,
                                                   style:
                                                       S.textStyles.font16White),
@@ -141,7 +144,8 @@ class MessagesPage extends HookConsumerWidget {
                                         Expanded(
                                           child: Row(
                                             children: [
-                                              const Icon(Icons.image),
+                                              const Icon(Icons.image,
+                                                  color: Colors.white),
                                               Text(t.photo,
                                                   style:
                                                       S.textStyles.font16White),
@@ -160,7 +164,9 @@ class MessagesPage extends HookConsumerWidget {
                                         Expanded(
                                           child: Row(
                                             children: [
-                                              const Icon(Icons.audio_file),
+                                              const Icon(
+                                                  Icons.audiotrack_outlined,
+                                                  color: Colors.white),
                                               Text(t.audio,
                                                   style:
                                                       S.textStyles.font16White),

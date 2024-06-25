@@ -8,7 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'messages_provider.g.dart';
 
 @riverpod
-Stream<List<Room>> messages(MessagesRef ref) {
+Stream<List<Room>> rooms(RoomsRef ref) {
   return FirebaseChatCore.instance.rooms(orderByUpdatedAt: true);
 }
 

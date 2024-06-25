@@ -155,12 +155,14 @@ class MatchingService {
                           onPressed: () async {
                             final roomId =
                                 await getRoomId(currentUserId, toUserId);
-                            final user = userProviderWithID(toUserId);
+                            final user =
+                                ref.watch(getUserStreamWithId(toUserId));
                             if (roomId != null) {
                               final room = types.Room(
                                 type: types.RoomType.direct,
                                 id: roomId,
-                                name: '${user.name}',
+                                name:
+                                    '${user.value?.firstName} ${user.value?.lastName}',
                                 users: [
                                   types.User(id: currentUserId),
                                   types.User(id: toUserId)

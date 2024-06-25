@@ -186,6 +186,7 @@ class RecievingSettingsPage extends HookConsumerWidget {
             canRecieveAudios: receiveAudios,
             canRecieveVideos: receiveVideos,
           );
+      ref.invalidate(getUserStreamWithId);
     }
 
     return Scaffold(

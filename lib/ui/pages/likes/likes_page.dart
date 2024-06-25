@@ -25,12 +25,12 @@ class LikesPage extends ConsumerWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Matches'),
-          bottom: const TabBar(
+          title: Text(t.matches),
+          bottom: TabBar(
             tabs: [
-              Tab(text: 'Likes You'),
-              Tab(text: 'Your Likes'),
-              Tab(text: 'Your Matches'),
+              Tab(text: t.likesYou),
+              Tab(text: t.yourLikes),
+              Tab(text: t.yourMatches),
             ],
           ),
         ),
@@ -42,8 +42,8 @@ class LikesPage extends ConsumerWidget {
               onTap: (user) => showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: const Text('To See This Profile'),
-                  content: const Text('You Need to Subscribe'),
+                  title: Text(t.subscriptionToSeeTitle),
+                  content: Text(t.subscriptionToSeeBody),
                   // PaywallView(
                   //   onRestoreCompleted: (customerInfo) {
                   //     // Optional listener. Called when a restore has been completed.
@@ -55,7 +55,7 @@ class LikesPage extends ConsumerWidget {
                       onPressed: () {
                         context.maybePop();
                       },
-                      child: const Text('Close'),
+                      child: Text(t.close),
                     ),
                   ],
                 ),

@@ -145,5 +145,13 @@
   "recieveImage": "Resimleri Al",
   "recieveAudio": "Sesleri Al",
   "recieveVideo": "Videoları Al",
-  "accountVerified": "Hesabınız başarıyla doğrulandı."
+  "accountVerified": "Hesabınız başarıyla doğrulandı.",
+  "matches": "Eşleşmeler",
+  "likesYou": "Seni Beğenenler",
+  "yourLikes": "Beğendiklerin",
+  "yourMatches": "Eşleşmelerin",
+  "subscriptionToSeeTitle": "Bu Profili Görmek İçin",
+  "subscriptionToSeeBody": "Abone Olmanız Gerekiyor",
+  "readyToRecord": "Kayda Hazır",
+  "startRecording": "Kayıtı Başlat"
 }

@@ -6,20 +6,20 @@ part of 'messages_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$messagesHash() => r'0576764561c0f84ec76e7deb9bd3364748adbc07';
+String _$roomsHash() => r'f98ef390da36b1719c7ad582e59afae45d4a0774';
 
-/// See also [messages].
-@ProviderFor(messages)
-final messagesProvider = AutoDisposeStreamProvider<List<Room>>.internal(
-  messages,
-  name: r'messagesProvider',
+/// See also [rooms].
+@ProviderFor(rooms)
+final roomsProvider = AutoDisposeStreamProvider<List<Room>>.internal(
+  rooms,
+  name: r'roomsProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$messagesHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$roomsHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef MessagesRef = AutoDisposeStreamProviderRef<List<Room>>;
+typedef RoomsRef = AutoDisposeStreamProviderRef<List<Room>>;
 String _$unreadMessageCountHash() =>
     r'170108ab0f3627270597402175727a2ae5c65acb';
 

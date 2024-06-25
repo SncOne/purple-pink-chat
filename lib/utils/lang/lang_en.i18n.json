@@ -145,5 +145,13 @@
   "recieveImage": "Receive Images",
   "recieveAudio": "Receive Audios",
   "recieveVideo": "Receive Videos",
-  "accountVerified": "Your account is verified succesfully"
+  "accountVerified": "Your account is verified succesfully",
+  "matches": "Matches",
+  "likesYou": "Likes You",
+  "yourLikes": "Your Likes",
+  "yourMatches": "Your Matches",
+  "subscriptionToSeeTitle": "To See This Profile",
+  "subscriptionToSeeBody": "You Need to Subscribe",
+  "readyToRecord": "Ready to Record",
+  "startRecording": "Start Recording"
 }

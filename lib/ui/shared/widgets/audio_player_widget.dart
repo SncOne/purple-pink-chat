@@ -1,3 +1,4 @@
+import 'package:catt_catt/core/services/auth_service.dart';
 import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:catt_catt/utils/styles.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,8 @@ class AudioPlayerWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final player = useMemoized(() => FlutterSoundPlayer());
+    final currentUser = ref.read(authService).user;
+
     final isPlaying = useState(false);
     final position = useState(Duration.zero);
     final duration =
@@ -94,7 +97,9 @@ class AudioPlayerWidget extends HookConsumerWidget {
               IconButton(
                 icon: Icon(
                   isPlaying.value ? Icons.pause : Icons.play_arrow,
-                  color: Colors.white,
+                  color: message.author.id != currentUser!.uid
+                      ? Colors.black
+                      : Colors.white,
                 ),
                 onPressed: togglePlayPause,
               ),
@@ -103,7 +108,9 @@ class AudioPlayerWidget extends HookConsumerWidget {
                   min: 0.0,
                   max: duration.value.inMilliseconds.toDouble(),
                   value: position.value.inMilliseconds.toDouble(),
-                  inactiveColor: Colors.white,
+                  inactiveColor: message.author.id != currentUser.uid
+                      ? Colors.grey
+                      : Colors.white,
                   activeColor: Colors.teal,
                   onChanged: (value) async {
                     final newPosition = Duration(milliseconds: value.toInt());
@@ -114,7 +121,9 @@ class AudioPlayerWidget extends HookConsumerWidget {
               ),
               Text(
                 '${formatDuration(position.value)} / ${formatDuration(duration.value)}',
-                style: S.textStyles.font16White,
+                style: message.author.id != currentUser.uid
+                    ? S.textStyles.font16
+                    : S.textStyles.font16White,
               ),
             ],
           ),

@@ -94,6 +94,10 @@ class _TextStyles {
     fontSize: 16,
     color: S.colors.white,
   );
+  final font16 = TextStyle(
+    fontSize: 16,
+    color: S.colors.black,
+  );
   final font16Bold = TextStyle(
     fontSize: 16,
     fontWeight: S.fontWeights.w700,

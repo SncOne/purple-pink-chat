@@ -59,6 +59,12 @@ final userProviderWithID =
   return authService.getUserWithID(userId);
 });
 
+final getUserStreamWithId =
+    StreamProvider.autoDispose.family<UserModel, String>((ref, userId) {
+  final authService = ref.watch(authServiceProvider);
+  return authService.getUserStreamWithID(userId);
+});
+
 final getLastMessageStreamProvider = StreamProvider.autoDispose
     .family<Map<String, dynamic>, String>((ref, roomId) {
   final authServiceController = ref.watch(messagesService);
