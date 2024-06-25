@@ -6,7 +6,7 @@ part of 'chat_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$roomHash() => r'3b84707a6e3d468638a243a1b4299942b9e1c4bc';
+String _$roomHash() => r'e4ed62f230e0a3673686f7258fb81e1cffec80ee';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -152,7 +152,7 @@ class _RoomProviderElement extends AutoDisposeStreamProviderElement<types.Room>
   String get roomId => (origin as RoomProvider).roomId;
 }
 
-String _$messagesHash() => r'9c1608fc4176da331703597019e9ae06ea87f98a';
+String _$messagesHash() => r'c97330fef96ca85394c00a6322f37103aa81e1b9';
 
 /// See also [messages].
 @ProviderFor(messages)
@@ -279,5 +279,21 @@ class _MessagesProviderElement
   @override
   Room get room => (origin as MessagesProvider).room;
 }
+
+String _$selectedRoomHash() => r'89d721d7d77b4cf536690557563a2ccf1b77196b';
+
+/// See also [SelectedRoom].
+@ProviderFor(SelectedRoom)
+final selectedRoomProvider =
+    NotifierProvider<SelectedRoom, types.Room?>.internal(
+  SelectedRoom.new,
+  name: r'selectedRoomProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$selectedRoomHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$SelectedRoom = Notifier<types.Room?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

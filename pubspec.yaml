@@ -14,6 +14,7 @@ dependencies:
   cached_network_image: ^3.3.1
   chips_choice: ^3.0.1
   cloud_firestore: ^5.0.1
+  collection: ^1.18.0
   connectivity_plus: ^6.0.3
   country_picker: ^2.0.26
   dart_firebase_admin: ^0.3.1
@@ -57,6 +58,7 @@ dependencies:
   purchases_flutter: ^6.29.4
   purchases_ui_flutter: ^6.29.4
   riverpod_annotation: ^2.3.5
+  rxdart: ^0.27.0
   slang: ^3.31.0
   slang_flutter: ^3.31.0
   smooth_sheets: ^0.8.1
@@ -70,8 +72,6 @@ dev_dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_lints: ^4.0.0
   flutter_native_splash: ^2.4.0
-  flutter_test:
-    sdk: flutter
   freezed: ^2.5.2
   hive_generator: ^2.0.1
   json_serializable: ^6.8.0

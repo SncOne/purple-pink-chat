@@ -10,7 +10,7 @@ class ProviderLogger extends ProviderObserver {
     ProviderContainer container,
   ) {
     Print.log(
-      '${'${provider.name}'.split('.').first} | $value',
+      '${provider.name}'.split('.').first,
       'didAddProvider',
     );
   }
@@ -34,7 +34,7 @@ class ProviderLogger extends ProviderObserver {
     ProviderContainer container,
   ) {
     Print.log(
-      '${'${provider.name}'.split('.').first} | $previousValue -> $newValue',
+      '${provider.name}'.split('.').first,
       'didUpdateProvider',
     );
   }

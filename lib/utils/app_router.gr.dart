@@ -16,11 +16,13 @@ abstract class _$AppRouter extends RootStackRouter {
   @override
   final Map<String, PageFactory> pagesMap = {
     ChatRoute.name: (routeData) {
-      final args = routeData.argsAs<ChatRouteArgs>();
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<ChatRouteArgs>(
+          orElse: () => ChatRouteArgs(roomId: pathParams.getString('roomId')));
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: ChatPage(
-          room: args.room,
+          roomId: args.roomId,
           key: args.key,
         ),
       );
@@ -132,15 +134,16 @@ abstract class _$AppRouter extends RootStackRouter {
 /// [ChatPage]
 class ChatRoute extends PageRouteInfo<ChatRouteArgs> {
   ChatRoute({
-    required Room room,
+    required String roomId,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
           ChatRoute.name,
           args: ChatRouteArgs(
-            room: room,
+            roomId: roomId,
             key: key,
           ),
+          rawPathParams: {'roomId': roomId},
           initialChildren: children,
         );
 
@@ -151,17 +154,17 @@ class ChatRoute extends PageRouteInfo<ChatRouteArgs> {
 
 class ChatRouteArgs {
   const ChatRouteArgs({
-    required this.room,
+    required this.roomId,
     this.key,
   });
 
-  final Room room;
+  final String roomId;
 
   final Key? key;
 
   @override
   String toString() {
-    return 'ChatRouteArgs{room: $room, key: $key}';
+    return 'ChatRouteArgs{roomId: $roomId, key: $key}';
   }
 }
 

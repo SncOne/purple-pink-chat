@@ -2,10 +2,10 @@ import 'package:catt_catt/core/services/auth_service.dart';
 import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:catt_catt/utils/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class AudioPlayerWidget extends HookConsumerWidget {
   final types.AudioMessage message;
@@ -19,13 +19,14 @@ class AudioPlayerWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final player = useMemoized(() => FlutterSoundPlayer());
+    final player = useMemoized(FlutterSoundPlayer.new);
     final currentUser = ref.read(authService).user;
 
     final isPlaying = useState(false);
     final position = useState(Duration.zero);
-    final duration =
-        useState(Duration(milliseconds: message.duration.inMilliseconds));
+    final duration = useState(
+      Duration(milliseconds: message.duration.inMilliseconds),
+    );
     final isPlayerInitialized = useState(false);
     useEffect(() {
       void initializePlayer() async {
@@ -45,7 +46,7 @@ class AudioPlayerWidget extends HookConsumerWidget {
       return () {
         player.closePlayer();
       };
-    }, []);
+    }, const []);
 
     Future<void> togglePlayPause() async {
       if (isPlaying.value) {

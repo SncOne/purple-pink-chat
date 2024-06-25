@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:catt_catt/core/models/user.dart';
 import 'package:catt_catt/core/providers/providers.dart';
 import 'package:catt_catt/core/services/auth_service.dart';
+import 'package:catt_catt/ui/pages/chat/chat_provider.dart';
 import 'package:catt_catt/ui/pages/messages/messages_provider.dart';
 import 'package:catt_catt/ui/shared/pages/settings/settings_page.dart';
 import 'package:catt_catt/ui/shared/widgets/async_widget.dart';
@@ -24,13 +25,12 @@ class MessagesPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    String formatTimestamp(Timestamp timestamp) {
-      DateTime dateTime = timestamp.toDate();
+    String formatTimestamp(Timestamp? timestamp) {
+      DateTime dateTime = timestamp?.toDate() ?? DateTime.now();
       return DateFormat('HH:mm').format(dateTime);
     }
 
     final currentUser = ref.read(authService).user;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(t.messages),
@@ -65,7 +65,10 @@ class MessagesPage extends HookConsumerWidget {
               );
 
               return GestureDetector(
-                onTap: () => context.pushRoute(ChatRoute(room: room)),
+                onTap: () {
+                  ref.read(selectedRoomProvider.notifier).setRoom(room);
+                  context.pushRoute(ChatRoute(roomId: room.id));
+                },
                 child: Card(
                   margin: const EdgeInsets.symmetric(
                     horizontal: 16,

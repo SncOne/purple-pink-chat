@@ -259,7 +259,7 @@ class EmailVerificationScreen extends HookWidget {
       });
 
       return () => timer.cancel();
-    }, []);
+    }, const []);
 
     return SafeArea(
       child: Scaffold(

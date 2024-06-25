@@ -14,8 +14,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
-import 'package:lottie/lottie.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lottie/lottie.dart';
 
 final matchingService = Provider((_) => MatchingService());
 
@@ -170,7 +170,7 @@ class MatchingService {
                               );
 
                               if (context.mounted) {
-                                context.router.push(ChatRoute(room: room));
+                                context.router.push(ChatRoute(roomId: room.id));
                               }
                             } else {
                               if (context.mounted) {

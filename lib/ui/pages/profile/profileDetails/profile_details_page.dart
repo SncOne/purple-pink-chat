@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:catt_catt/core/models/user.dart';
 import 'package:catt_catt/core/providers/providers.dart';
 import 'package:catt_catt/core/services/matching_service.dart';
@@ -10,9 +11,8 @@ import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:catt_catt/utils/styles.dart';
 import 'package:catt_catt/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:auto_route/auto_route.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 @RoutePage()
 class ProfileDetailsPage extends HookConsumerWidget {
@@ -203,7 +203,7 @@ class ProfileDetailsPage extends HookConsumerWidget {
               );
 
               if (context.mounted) {
-                context.router.push(ChatRoute(room: room));
+                context.router.push(ChatRoute(roomId: room.id));
               }
             } else {
               if (context.mounted) {

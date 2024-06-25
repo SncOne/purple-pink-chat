@@ -7,9 +7,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'messages_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 Stream<List<Room>> rooms(RoomsRef ref) {
-  return FirebaseChatCore.instance.rooms(orderByUpdatedAt: true);
+  return FirebaseChatCore.instance.rooms(orderByUpdatedAt: true).distinct();
 }
 
 @riverpod
@@ -27,7 +27,8 @@ Stream<int> unreadMessageCount(UnreadMessageCountRef ref, String roomId) {
       .map((messages) {
     if (messages.isNotEmpty) {
       final latestMessage = messages.first;
-      if (lastSeenDate < latestMessage.createdAt!) {
+      if (lastSeenDate <
+          (latestMessage.createdAt ?? DateTime.now().millisecondsSinceEpoch)) {
         if (latestMessage.author.id != currentUser.uid) {
           if (lastMessageId != latestMessage.id) {
             count++;

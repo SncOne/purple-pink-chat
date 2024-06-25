@@ -17,7 +17,7 @@ class BannerAdWidget extends HookConsumerWidget {
     useEffect(() {
       adFuture.value = ref.read(admobService.notifier).loadBannerAd(adSize);
       return null; // No cleanup necessary
-    }, []);
+    }, const []);
 
     return FutureBuilder<BannerAd?>(
       future: adFuture.value,
