@@ -80,7 +80,7 @@ class ProfilePage extends HookConsumerWidget {
                                     style: S.textStyles.font16White,
                                   ),
                                   Text(
-                                    '${(DateTime.now().difference(userData.birthDate).inDays ~/ 365).toString()} years old',
+                                    '${(DateTime.now().difference(userData.birthDate).inDays ~/ 365).toString()} ${t.yearsOld}',
                                     style: S.textStyles.font16White,
                                   ),
                                 ],

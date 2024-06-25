@@ -7,6 +7,7 @@ import 'package:catt_catt/core/models/user.dart';
 import 'package:catt_catt/core/services/matching_service.dart';
 import 'package:catt_catt/ui/shared/widgets/custom_image.dart';
 import 'package:catt_catt/utils/app_router.dart';
+import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -105,10 +106,10 @@ class LikesList extends ConsumerWidget {
           return const Center(child: CircularProgressIndicator());
         }
         if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+          return Center(child: Text('${t.error}: ${snapshot.error}'));
         }
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text('No Data Available'));
+          return Center(child: Text(t.noDataAvailable));
         }
         final docs = snapshot.data!.docs;
 
@@ -129,10 +130,11 @@ class LikesList extends ConsumerWidget {
                   return const Center(child: CircularProgressIndicator());
                 }
                 if (profileSnapshot.hasError) {
-                  return Center(child: Text('Error: ${profileSnapshot.error}'));
+                  return Center(
+                      child: Text('${t.error}: ${profileSnapshot.error}'));
                 }
                 if (!profileSnapshot.hasData) {
-                  return const Center(child: Text('Profile not found'));
+                  return Center(child: Text(t.noDataAvailable));
                 }
 
                 final user = profileSnapshot.data!;

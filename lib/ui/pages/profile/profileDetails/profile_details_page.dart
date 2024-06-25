@@ -182,7 +182,7 @@ class ProfileDetailsPage extends HookConsumerWidget {
       ),
       persistentFooterAlignment: AlignmentDirectional.center,
       persistentFooterButtons: [
-        ElevatedButton(onPressed: () {}, child: const Text('Incoming')),
+        //ElevatedButton(onPressed: () {}, child: const Text('Incoming')),
         ElevatedButton(
           onPressed: () async {
             final currentUser = matchingServiceProvider.user!;
@@ -207,13 +207,13 @@ class ProfileDetailsPage extends HookConsumerWidget {
               }
             } else {
               if (context.mounted) {
-                Utils.show.toast(context, "Chat room can't be found");
+                Utils.show.toast(context, t.cantFindRoom);
               }
             }
           },
           child: Text(t.messages),
         ),
-        ElevatedButton(onPressed: () {}, child: const Text('Super Like')),
+        //ElevatedButton(onPressed: () {}, child: const Text('Super Like')),
       ],
     );
   }

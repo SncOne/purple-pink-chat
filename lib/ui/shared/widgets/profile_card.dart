@@ -2,6 +2,7 @@ import 'package:catt_catt/core/services/location_service.dart';
 import 'package:catt_catt/ui/shared/widgets/custom_image.dart';
 import 'package:catt_catt/ui/shared/widgets/profile_card_like_status.dart';
 import 'package:catt_catt/core/providers/profile_card_provider.dart';
+import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:catt_catt/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -80,10 +81,10 @@ class ProfileCard extends ConsumerWidget {
                     child: Row(
                       children: [
                         Text(
-                          '${(DateTime.now().difference(user.birthDate).inDays ~/ 365).toString()} years old',
+                          '${(DateTime.now().difference(user.birthDate).inDays ~/ 365).toString()} ${t.yearsOld}',
                           style: S.textStyles.font16White,
                         ),
-                        user.isAdmin
+                        user.isValidated
                             ? const Icon(
                                 Icons.check_circle_outline_outlined,
                                 color: Colors.deepPurple,
@@ -130,10 +131,10 @@ class ProfileCard extends ConsumerWidget {
                             ConnectionState.waiting) {
                           return const CircularProgressIndicator();
                         } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
+                          return Text('${t.error}: ${snapshot.error}');
                         } else {
                           return Text(
-                            '${snapshot.data} km away',
+                            '${snapshot.data} ${t.kmAway}',
                             style: S.textStyles.font16White,
                           );
                         }

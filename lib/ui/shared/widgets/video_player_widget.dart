@@ -200,8 +200,6 @@ class _ControlsOverlay extends HookWidget {
                           : Icons.play_arrow,
                       color: Colors.white,
                       size: 100.0,
-                      semanticLabel:
-                          controller.value.isPlaying ? 'Pause' : 'Play',
                     ),
                   ),
                 )

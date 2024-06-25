@@ -163,7 +163,7 @@ class LoginPage extends HookConsumerWidget {
                         }
                       } catch (e) {
                         if (context.mounted) {
-                          Utils.show.toast(context, "Login Failed:$e");
+                          Utils.show.toast(context, "${t.loginFailed}:$e");
                         }
                       }
                     });

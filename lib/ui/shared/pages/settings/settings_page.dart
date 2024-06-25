@@ -25,7 +25,7 @@ class SettingsWidget extends HookConsumerWidget {
       children: <Widget>[
         ListTile(
           title: Text(
-            "Recieving Image/Audio/Video",
+            t.recievingSettings,
             style: S.textStyles.font16White,
           ),
           trailing: const Icon(
@@ -41,7 +41,7 @@ class SettingsWidget extends HookConsumerWidget {
         ),
         ListTile(
           title: Text(
-            "Verification",
+            t.verification,
             style: S.textStyles.font16White,
           ),
           trailing: const Icon(
@@ -93,7 +93,7 @@ class SettingsWidget extends HookConsumerWidget {
                   content: const Text(C.privacyPolicy),
                   actions: <Widget>[
                     TouchableOpacity(
-                      child: const Text('Close'),
+                      child: Text(t.close),
                       onTap: () => context.maybePop(),
                     ),
                   ],
@@ -121,7 +121,7 @@ class SettingsWidget extends HookConsumerWidget {
                   content: const Text(C.termsOfUse),
                   actions: <Widget>[
                     TouchableOpacity(
-                      child: const Text('Close'),
+                      child: Text(t.close),
                       onTap: () => context.maybePop(),
                     ),
                   ],
@@ -181,7 +181,7 @@ class RecievingSettingsPage extends HookConsumerWidget {
       recieveAudio.value = receiveAudios;
       recieveVideo.value = receiveVideos;
 
-      ref.read(authService).editRecievingMessageSettings(
+      ref.watch(authService).editRecievingMessageSettings(
             canRecieveImages: receiveImages,
             canRecieveAudios: receiveAudios,
             canRecieveVideos: receiveVideos,
@@ -190,7 +190,7 @@ class RecievingSettingsPage extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Recieving Settings"),
+        title: Text(t.recieveSettings),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -201,7 +201,7 @@ class RecievingSettingsPage extends HookConsumerWidget {
       body: Column(
         children: <Widget>[
           ListTile(
-            title: const Text("Receive Images"),
+            title: Text(t.recieveImage),
             trailing: Switch(
               value: recieveImage.value,
               onChanged: (bool value) {
@@ -210,7 +210,7 @@ class RecievingSettingsPage extends HookConsumerWidget {
             ),
           ),
           ListTile(
-            title: const Text("Receive Audios"),
+            title: Text(t.recieveAudio),
             trailing: Switch(
               value: recieveAudio.value,
               onChanged: (bool value) {
@@ -219,7 +219,7 @@ class RecievingSettingsPage extends HookConsumerWidget {
             ),
           ),
           ListTile(
-            title: const Text("Receive Videos"),
+            title: Text(t.recieveVideo),
             trailing: Switch(
               value: recieveVideo.value,
               onChanged: (bool value) {
@@ -233,48 +233,33 @@ class RecievingSettingsPage extends HookConsumerWidget {
   }
 }
 
-class EmailVerificationScreen extends StatefulWidget {
+class EmailVerificationScreen extends HookWidget {
   const EmailVerificationScreen({super.key});
-
-  @override
-  State<EmailVerificationScreen> createState() =>
-      _EmailVerificationScreenState();
-}
-
-class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
-  bool isEmailVerified = false;
-  Timer? timer;
-  @override
-  void initState() {
-    super.initState();
-    FirebaseAuth.instance.currentUser?.sendEmailVerification();
-    timer =
-        Timer.periodic(const Duration(seconds: 3), (_) => checkEmailVerified());
-  }
-
-  checkEmailVerified() async {
-    await FirebaseAuth.instance.currentUser?.reload();
-
-    setState(() {
-      isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
-    });
-
-    if (isEmailVerified) {
-      Utils.show.toast(context, "Your account is verified succesfully");
-
-      timer?.cancel();
-    }
-  }
-
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     final auth = FirebaseAuth.instance.currentUser!;
+    final isEmailVerified = useState(false);
+    late Timer timer;
+
+    useEffect(() {
+      auth.sendEmailVerification();
+
+      timer = Timer.periodic(const Duration(seconds: 3), (_) async {
+        await auth.reload();
+        if (auth.emailVerified) {
+          isEmailVerified.value = true;
+          if (context.mounted) {
+            Utils.show.toast(context, t.accountVerified);
+          }
+
+          timer.cancel();
+        }
+      });
+
+      return () => timer.cancel();
+    }, []);
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -283,9 +268,9 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
             children: [
               const SizedBox(height: 35),
               const SizedBox(height: 30),
-              const Center(
+              Center(
                 child: Text(
-                  'Check your \n Email',
+                  t.checkYourMail,
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -294,19 +279,21 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: Center(
                   child: Text(
-                    'We have sent you a Email on ${auth.email}',
+                    t.sendedMail(email: auth.email!),
                     textAlign: TextAlign.center,
                   ),
                 ),
               ),
               const SizedBox(height: 16),
-              const Center(child: CircularProgressIndicator()),
+              isEmailVerified.value
+                  ? Center(child: Text(t.emailVerified))
+                  : const Center(child: CircularProgressIndicator()),
               const SizedBox(height: 8),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: Center(
                   child: Text(
-                    'Verifying email....',
+                    t.verifyingEmail,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -315,13 +302,13 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: ElevatedButton(
-                  child: const Text('Resend'),
+                  child: Text(t.resend),
                   onPressed: () {
                     try {
-                      FirebaseAuth.instance.currentUser
-                          ?.sendEmailVerification();
+                      auth.sendEmailVerification();
                     } catch (e) {
-                      debugPrint('$e');
+                      // Replace Future.error with your own error handling logic
+                      Future.error('${t.error}: $e');
                     }
                   },
                 ),

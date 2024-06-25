@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 180 (90 per locale)
+/// Strings: 280 (140 per locale)
 ///
-/// Built on 2024-06-24 at 21:06 UTC
+/// Built on 2024-06-25 at 12:25 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -245,6 +245,56 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get messages => 'Messages';
 	String get chat => 'Chat';
 	String get room => 'Room';
+	String get error => 'Error';
+	String get checkYourEmail => 'Please Check Your Email!';
+	String get loginFailed => 'Login Failed';
+	String get close => 'Close';
+	String get registerFailed => 'Register Failed';
+	String get microphonePermissionNotGranted => 'Microphone permission not granted';
+	String get errorUploadingImage => 'Error uploading image';
+	String get cantSendImage => 'You can\'t Send Image';
+	String get userCantRecieveImages => 'The other user can\'t receive images.';
+	String get ok => 'Okay';
+	String get recieveImageTitle => 'Do You Want To Recieve Image';
+	String recieveImageBody({required Object firstName}) => '${firstName} wants to send image.Go ahead and open it on your settings';
+	String get errorUploadingVideo => 'Error uploading video';
+	String get cantSendVideo => 'You can\'t Send Video';
+	String get userCantRecieveVideos => 'The other user can\'t receive videos.';
+	String get recieveVideoTitle => 'Do You Want To Recieve Video';
+	String recieveVideoBody({required Object firstName}) => '${firstName} wants to send video.Go ahead and open it on your settings';
+	String get errorUploadingAudio => 'Error uploading audio';
+	String get cantSendAudio => 'You can\'t Send Audio';
+	String get userCantRecieveAudios => 'The other user can\'t receive audios.';
+	String get recieveAudioTitle => 'Do You Want To Recieve Audio';
+	String recieveAudioBody({required Object firstName}) => '${firstName} wants to send audio.Go ahead and open it on your settings';
+	String get requestSended => 'Your request has been send';
+	String get sendRequest => 'Send Request';
+	String get cancel => 'Cancel';
+	String get photo => 'Photo';
+	String get audio => 'Audio';
+	String get video => 'Video';
+	String get recording => 'Recording...';
+	String get recordingInProgress => 'Recording in progress...';
+	String get stopRecording => 'Stop Recording';
+	String get filter => 'Filter';
+	String get noDataAvailable => 'No Data Available';
+	String get noRooms => 'No rooms';
+	String get cantFindRoom => 'Chat room can\'t be found';
+	String get yearsOld => 'years old';
+	String get recievingSettings => 'Recieving Image/Audio/Video';
+	String get verification => 'Verification';
+	String get kmAway => 'Km Away';
+	String get resend => 'Resend';
+	String get noProfile => 'Hi unfortunately there isn\'t any cool person in here yet, check later on';
+	String get checkYourMail => 'Check your Email';
+	String sendedMail({required Object email}) => 'We have sent you a mail on ${email}';
+	String get verifyingEmail => 'Verifying email..';
+	String get emailVerified => 'Email Verified';
+	String get recieveSettings => 'Recieving Image/Audio/Video Settings';
+	String get recieveImage => 'Receive Images';
+	String get recieveAudio => 'Receive Audios';
+	String get recieveVideo => 'Receive Videos';
+	String get accountVerified => 'Your account is verified succesfully';
 }
 
 // Path: loginState
@@ -379,6 +429,56 @@ class _StringsTr implements Translations {
 	@override String get messages => 'Mesajlar';
 	@override String get chat => 'Sohbet';
 	@override String get room => 'Oda';
+	@override String get error => 'Hata';
+	@override String get checkYourEmail => 'Lütfen Mail Adresinizi Kontrol Edin!';
+	@override String get loginFailed => 'Girişte bir hata ile karşılaşıldı';
+	@override String get close => 'Kapat';
+	@override String get registerFailed => 'Kayıtta bir hata ile karşılaşıldı';
+	@override String get microphonePermissionNotGranted => 'Mikrofon izni verilmedi.';
+	@override String get errorUploadingImage => 'Resim yüklenirken bir hata ile karşılaşıldı';
+	@override String get cantSendImage => 'Resim Gönderemezsin';
+	@override String get userCantRecieveImages => 'Diğer kullanıcıya resim gönderemezsin';
+	@override String get ok => 'Tamam';
+	@override String get recieveImageTitle => 'Görüntü Almak İster Misiniz?';
+	@override String recieveImageBody({required Object firstName}) => '${firstName} görüntü göndermek istiyor. Ayarlarınızda açabilirsiniz.';
+	@override String get errorUploadingVideo => 'Video yüklenirken hata oluştu.';
+	@override String get cantSendVideo => 'Video gönderemezsiniz.';
+	@override String get userCantRecieveVideos => 'Diğer kullanıcı videoları alamaz.';
+	@override String get recieveVideoTitle => 'Video Almak İster Misiniz?';
+	@override String recieveVideoBody({required Object firstName}) => '${firstName} video göndermek istiyor. Ayarlarınızda açabilirsiniz.';
+	@override String get errorUploadingAudio => 'Ses yüklenirken hata oluştu.';
+	@override String get cantSendAudio => 'Ses gönderemezsiniz.';
+	@override String get userCantRecieveAudios => 'Diğer kullanıcı sesleri alamaz.';
+	@override String get recieveAudioTitle => 'Ses Almak İster Misiniz?';
+	@override String recieveAudioBody({required Object firstName}) => '${firstName} ses göndermek istiyor. Ayarlarınızda açabilirsiniz.';
+	@override String get requestSended => 'İsteğiniz gönderildi.';
+	@override String get sendRequest => 'İsteği Gönder';
+	@override String get cancel => 'İptal';
+	@override String get photo => 'Fotoğraf';
+	@override String get audio => 'Ses';
+	@override String get video => 'Video';
+	@override String get recording => 'Kaydediliyor...';
+	@override String get recordingInProgress => 'Kayıt yapılıyor...';
+	@override String get stopRecording => 'Kaydı Durdur';
+	@override String get filter => 'Filtre';
+	@override String get noDataAvailable => 'Gösterebileceğimiz bir değer yok';
+	@override String get noRooms => 'Oda yok';
+	@override String get cantFindRoom => 'Oda bulunamıyor';
+	@override String get yearsOld => 'Yaşında';
+	@override String get kmAway => 'Km Uzaklıkta';
+	@override String get resend => 'Yeniden Gönder';
+	@override String get noProfile => 'Maalesef burada henüz harika bir kişi yok, daha sonra kontrol edin.';
+	@override String get checkYourMail => 'E-postanızı kontrol edin';
+	@override String sendedMail({required Object email}) => 'Size ${email} adresine bir e-posta gönderdik.';
+	@override String get verifyingEmail => 'E-posta doğrulanıyor...';
+	@override String get emailVerified => 'E-posta doğrulandı.';
+	@override String get verification => 'Doğrulama';
+	@override String get recievingSettings => 'Fotoğraf/Ses/Video Alımı';
+	@override String get recieveSettings => 'Fotoğraf/Ses/Video Ayarlarını Al';
+	@override String get recieveImage => 'Resimleri Al';
+	@override String get recieveAudio => 'Sesleri Al';
+	@override String get recieveVideo => 'Videoları Al';
+	@override String get accountVerified => 'Hesabınız başarıyla doğrulandı.';
 }
 
 // Path: loginState
@@ -488,6 +588,56 @@ extension on Translations {
 			case 'messages': return 'Messages';
 			case 'chat': return 'Chat';
 			case 'room': return 'Room';
+			case 'error': return 'Error';
+			case 'checkYourEmail': return 'Please Check Your Email!';
+			case 'loginFailed': return 'Login Failed';
+			case 'close': return 'Close';
+			case 'registerFailed': return 'Register Failed';
+			case 'microphonePermissionNotGranted': return 'Microphone permission not granted';
+			case 'errorUploadingImage': return 'Error uploading image';
+			case 'cantSendImage': return 'You can\'t Send Image';
+			case 'userCantRecieveImages': return 'The other user can\'t receive images.';
+			case 'ok': return 'Okay';
+			case 'recieveImageTitle': return 'Do You Want To Recieve Image';
+			case 'recieveImageBody': return ({required Object firstName}) => '${firstName} wants to send image.Go ahead and open it on your settings';
+			case 'errorUploadingVideo': return 'Error uploading video';
+			case 'cantSendVideo': return 'You can\'t Send Video';
+			case 'userCantRecieveVideos': return 'The other user can\'t receive videos.';
+			case 'recieveVideoTitle': return 'Do You Want To Recieve Video';
+			case 'recieveVideoBody': return ({required Object firstName}) => '${firstName} wants to send video.Go ahead and open it on your settings';
+			case 'errorUploadingAudio': return 'Error uploading audio';
+			case 'cantSendAudio': return 'You can\'t Send Audio';
+			case 'userCantRecieveAudios': return 'The other user can\'t receive audios.';
+			case 'recieveAudioTitle': return 'Do You Want To Recieve Audio';
+			case 'recieveAudioBody': return ({required Object firstName}) => '${firstName} wants to send audio.Go ahead and open it on your settings';
+			case 'requestSended': return 'Your request has been send';
+			case 'sendRequest': return 'Send Request';
+			case 'cancel': return 'Cancel';
+			case 'photo': return 'Photo';
+			case 'audio': return 'Audio';
+			case 'video': return 'Video';
+			case 'recording': return 'Recording...';
+			case 'recordingInProgress': return 'Recording in progress...';
+			case 'stopRecording': return 'Stop Recording';
+			case 'filter': return 'Filter';
+			case 'noDataAvailable': return 'No Data Available';
+			case 'noRooms': return 'No rooms';
+			case 'cantFindRoom': return 'Chat room can\'t be found';
+			case 'yearsOld': return 'years old';
+			case 'recievingSettings': return 'Recieving Image/Audio/Video';
+			case 'verification': return 'Verification';
+			case 'kmAway': return 'Km Away';
+			case 'resend': return 'Resend';
+			case 'noProfile': return 'Hi unfortunately there isn\'t any cool person in here yet, check later on';
+			case 'checkYourMail': return 'Check your Email';
+			case 'sendedMail': return ({required Object email}) => 'We have sent you a mail on ${email}';
+			case 'verifyingEmail': return 'Verifying email..';
+			case 'emailVerified': return 'Email Verified';
+			case 'recieveSettings': return 'Recieving Image/Audio/Video Settings';
+			case 'recieveImage': return 'Receive Images';
+			case 'recieveAudio': return 'Receive Audios';
+			case 'recieveVideo': return 'Receive Videos';
+			case 'accountVerified': return 'Your account is verified succesfully';
 			default: return null;
 		}
 	}
@@ -586,6 +736,56 @@ extension on _StringsTr {
 			case 'messages': return 'Mesajlar';
 			case 'chat': return 'Sohbet';
 			case 'room': return 'Oda';
+			case 'error': return 'Hata';
+			case 'checkYourEmail': return 'Lütfen Mail Adresinizi Kontrol Edin!';
+			case 'loginFailed': return 'Girişte bir hata ile karşılaşıldı';
+			case 'close': return 'Kapat';
+			case 'registerFailed': return 'Kayıtta bir hata ile karşılaşıldı';
+			case 'microphonePermissionNotGranted': return 'Mikrofon izni verilmedi.';
+			case 'errorUploadingImage': return 'Resim yüklenirken bir hata ile karşılaşıldı';
+			case 'cantSendImage': return 'Resim Gönderemezsin';
+			case 'userCantRecieveImages': return 'Diğer kullanıcıya resim gönderemezsin';
+			case 'ok': return 'Tamam';
+			case 'recieveImageTitle': return 'Görüntü Almak İster Misiniz?';
+			case 'recieveImageBody': return ({required Object firstName}) => '${firstName} görüntü göndermek istiyor. Ayarlarınızda açabilirsiniz.';
+			case 'errorUploadingVideo': return 'Video yüklenirken hata oluştu.';
+			case 'cantSendVideo': return 'Video gönderemezsiniz.';
+			case 'userCantRecieveVideos': return 'Diğer kullanıcı videoları alamaz.';
+			case 'recieveVideoTitle': return 'Video Almak İster Misiniz?';
+			case 'recieveVideoBody': return ({required Object firstName}) => '${firstName} video göndermek istiyor. Ayarlarınızda açabilirsiniz.';
+			case 'errorUploadingAudio': return 'Ses yüklenirken hata oluştu.';
+			case 'cantSendAudio': return 'Ses gönderemezsiniz.';
+			case 'userCantRecieveAudios': return 'Diğer kullanıcı sesleri alamaz.';
+			case 'recieveAudioTitle': return 'Ses Almak İster Misiniz?';
+			case 'recieveAudioBody': return ({required Object firstName}) => '${firstName} ses göndermek istiyor. Ayarlarınızda açabilirsiniz.';
+			case 'requestSended': return 'İsteğiniz gönderildi.';
+			case 'sendRequest': return 'İsteği Gönder';
+			case 'cancel': return 'İptal';
+			case 'photo': return 'Fotoğraf';
+			case 'audio': return 'Ses';
+			case 'video': return 'Video';
+			case 'recording': return 'Kaydediliyor...';
+			case 'recordingInProgress': return 'Kayıt yapılıyor...';
+			case 'stopRecording': return 'Kaydı Durdur';
+			case 'filter': return 'Filtre';
+			case 'noDataAvailable': return 'Gösterebileceğimiz bir değer yok';
+			case 'noRooms': return 'Oda yok';
+			case 'cantFindRoom': return 'Oda bulunamıyor';
+			case 'yearsOld': return 'Yaşında';
+			case 'kmAway': return 'Km Uzaklıkta';
+			case 'resend': return 'Yeniden Gönder';
+			case 'noProfile': return 'Maalesef burada henüz harika bir kişi yok, daha sonra kontrol edin.';
+			case 'checkYourMail': return 'E-postanızı kontrol edin';
+			case 'sendedMail': return ({required Object email}) => 'Size ${email} adresine bir e-posta gönderdik.';
+			case 'verifyingEmail': return 'E-posta doğrulanıyor...';
+			case 'emailVerified': return 'E-posta doğrulandı.';
+			case 'verification': return 'Doğrulama';
+			case 'recievingSettings': return 'Fotoğraf/Ses/Video Alımı';
+			case 'recieveSettings': return 'Fotoğraf/Ses/Video Ayarlarını Al';
+			case 'recieveImage': return 'Resimleri Al';
+			case 'recieveAudio': return 'Sesleri Al';
+			case 'recieveVideo': return 'Videoları Al';
+			case 'accountVerified': return 'Hesabınız başarıyla doğrulandı.';
 			default: return null;
 		}
 	}

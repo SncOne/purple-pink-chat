@@ -114,7 +114,7 @@ class ForgotPasswordPage extends HookConsumerWidget {
                         await auth.forgotPw(email.text, context);
                         if (context.mounted) {
                           email.clear();
-                          Utils.show.toast(context, 'Please Check Your Email!');
+                          Utils.show.toast(context, t.checkYourEmail);
                           context.router.replace(const LoginRoute());
                         }
                       });

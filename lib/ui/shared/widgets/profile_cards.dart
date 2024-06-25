@@ -4,6 +4,7 @@ import 'package:catt_catt/core/services/matching_service.dart';
 import 'package:catt_catt/ui/shared/widgets/async_widget.dart';
 import 'package:catt_catt/ui/shared/widgets/profile_card.dart';
 import 'package:catt_catt/core/providers/profile_card_provider.dart';
+import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:catt_catt/utils/print.dart';
 import 'package:catt_catt/utils/styles.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class ProfileCards extends HookConsumerWidget {
             height: MediaQuery.sizeOf(context).height / 1.5,
             alignment: Alignment.center,
             child: Text(
-              'Hi unfortunately there isn\'t any cool person in here yet, check later on',
+              t.noProfile,
               style: S.textStyles.font18BoldWhite,
             ),
           );
@@ -76,7 +77,7 @@ class ProfileCards extends HookConsumerWidget {
                 height: MediaQuery.sizeOf(context).height / 1.5,
                 alignment: Alignment.center,
                 child: Text(
-                  'No more profiles available',
+                  t.noDataAvailable,
                   style: S.textStyles.font18BoldWhite,
                 ),
               );

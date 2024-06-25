@@ -8,6 +8,7 @@ import 'package:catt_catt/ui/shared/widgets/async_widget.dart';
 import 'package:catt_catt/ui/shared/widgets/custom_image.dart';
 import 'package:catt_catt/utils/app_router.dart';
 import 'package:catt_catt/utils/assets.dart';
+import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:catt_catt/utils/print.dart';
 import 'package:catt_catt/utils/styles.dart';
 import 'package:catt_catt/utils/utils.dart';
@@ -32,7 +33,7 @@ class MessagesPage extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Messages"),
+        title: Text(t.messages),
         actions: [
           ElevatedButton(
             onPressed: () {
@@ -51,7 +52,7 @@ class MessagesPage extends HookConsumerWidget {
               margin: const EdgeInsets.only(
                 bottom: 200,
               ),
-              child: const Text('No rooms'),
+              child: Text(t.noRooms),
             );
           }
 
@@ -119,8 +120,14 @@ class MessagesPage extends HookConsumerWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Expanded(
-                                          child: Text("A video Message",
-                                              style: S.textStyles.font16White),
+                                          child: Row(
+                                            children: [
+                                              const Icon(Icons.video_file),
+                                              Text(t.video,
+                                                  style:
+                                                      S.textStyles.font16White),
+                                            ],
+                                          ),
                                         ),
                                         Text(formattedTime,
                                             style: S.textStyles.font16White),
@@ -132,8 +139,14 @@ class MessagesPage extends HookConsumerWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Expanded(
-                                          child: Text("An image Message",
-                                              style: S.textStyles.font16White),
+                                          child: Row(
+                                            children: [
+                                              const Icon(Icons.image),
+                                              Text(t.photo,
+                                                  style:
+                                                      S.textStyles.font16White),
+                                            ],
+                                          ),
                                         ),
                                         Text(formattedTime,
                                             style: S.textStyles.font16White),
@@ -145,8 +158,14 @@ class MessagesPage extends HookConsumerWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Expanded(
-                                          child: Text("An audio Message",
-                                              style: S.textStyles.font16White),
+                                          child: Row(
+                                            children: [
+                                              const Icon(Icons.audio_file),
+                                              Text(t.audio,
+                                                  style:
+                                                      S.textStyles.font16White),
+                                            ],
+                                          ),
                                         ),
                                         Text(formattedTime,
                                             style: S.textStyles.font16White),

@@ -1,14 +1,19 @@
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:catt_catt/core/models/user.dart';
 import 'package:catt_catt/core/providers/providers.dart';
 import 'package:catt_catt/core/services/auth_service.dart';
 import 'package:catt_catt/core/services/messages_service.dart';
 import 'package:catt_catt/core/services/send_push_notification.dart';
 import 'package:catt_catt/core/services/storage_service.dart';
 import 'package:catt_catt/ui/pages/messages/messages_provider.dart';
+import 'package:catt_catt/ui/shared/widgets/async_widget.dart';
 import 'package:catt_catt/ui/shared/widgets/audio_player_widget.dart';
+import 'package:catt_catt/ui/shared/widgets/custom_image.dart';
 import 'package:catt_catt/ui/shared/widgets/video_player_widget.dart';
+import 'package:catt_catt/utils/lang/strings.g.dart';
+import 'package:catt_catt/utils/styles.dart';
 import 'package:catt_catt/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -44,12 +49,15 @@ class ChatPage extends HookConsumerWidget {
     final messageServiceProvider = ref.watch(messagesService);
     final currentUser = ref.read(authService).user;
 
+    final otherUser = room.users.firstWhere(
+      (u) => u.id != currentUser!.uid,
+    );
     Future<void> startRecording() async {
       audioRecorder = FlutterSoundRecorder();
       await audioRecorder!.openRecorder();
       final status = await Permission.microphone.request();
       if (status != PermissionStatus.granted) {
-        throw RecordingPermissionException('Microphone permission not granted');
+        throw RecordingPermissionException(t.microphonePermissionNotGranted);
       }
 
       final directory = await getTemporaryDirectory();
@@ -60,7 +68,7 @@ class ChatPage extends HookConsumerWidget {
         await audioRecorder!.startRecorder(toFile: path);
         isRecording.value = true;
       } catch (e) {
-        Future.error("Error: $e");
+        Future.error("${t.error}: $e");
       }
     }
 
@@ -74,13 +82,10 @@ class ChatPage extends HookConsumerWidget {
     }
 
     void handleImageSelection() async {
-      final otherUser = room.users.firstWhere(
-        (u) => u.id != currentUser!.uid,
-      );
       final otherUserProfile =
-          await ref.read(userProviderWithID(otherUser.id).future);
+          await ref.watch(userProviderWithID(otherUser.id).future);
       final currentUserProfile =
-          await ref.read(userProviderWithID(currentUser!.uid).future);
+          await ref.watch(userProviderWithID(currentUser!.uid).future);
       if (otherUserProfile.canRecieveImages) {
         final result = await ImagePicker().pickMultiImage(
           imageQuality: 70,
@@ -114,7 +119,7 @@ class ChatPage extends HookConsumerWidget {
               otherUser.id,
             );
           } catch (e) {
-            Future.error("Error uploading image: $e");
+            Future.error("${t.errorUploadingImage}: $e");
           }
         }
       } else {
@@ -123,14 +128,14 @@ class ChatPage extends HookConsumerWidget {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Text('Cannot Send Image'),
-                content: const Text('The other user cannot receive images.'),
+                title: Text(t.cantSendImage),
+                content: Text(t.userCantRecieveImages),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
                       context.maybePop();
                     },
-                    child: const Text('OK'),
+                    child: Text(t.ok),
                   ),
                   TextButton(
                     onPressed: () async {
@@ -143,17 +148,17 @@ class ChatPage extends HookConsumerWidget {
                       if (token != null) {
                         await sendPushNotification(
                           deviceToken: token,
-                          title: 'Do You Want To Recieve Image',
-                          body:
-                              '${currentUserProfile.firstName} wants to send image.Go ahead and open it on your settings',
+                          title: t.recieveImageTitle,
+                          body: t.recieveImageBody(
+                              firstName: currentUserProfile.firstName),
                         );
                       }
                       if (context.mounted) {
-                        Utils.show.toast(context, 'Your request has been send');
+                        Utils.show.toast(context, t.requestSended);
                         context.maybePop();
                       }
                     },
-                    child: const Text('Send Request'),
+                    child: Text(t.sendRequest),
                   ),
                 ],
               );
@@ -164,13 +169,10 @@ class ChatPage extends HookConsumerWidget {
     }
 
     void handleVideoSelection() async {
-      final otherUser = room.users.firstWhere(
-        (u) => u.id != currentUser!.uid,
-      );
       final otherUserProfile =
-          await ref.read(userProviderWithID(otherUser.id).future);
+          await ref.watch(userProviderWithID(otherUser.id).future);
       final currentUserProfile =
-          await ref.read(userProviderWithID(currentUser!.uid).future);
+          await ref.watch(userProviderWithID(currentUser!.uid).future);
 
       if (otherUserProfile.canRecieveVideos) {
         final result = await ImagePicker().pickVideo(
@@ -204,7 +206,7 @@ class ChatPage extends HookConsumerWidget {
               otherUser.id,
             );
           } catch (e) {
-            Future.error("Error uploading video: $e");
+            Future.error("${t.errorUploadingVideo}: $e");
           }
         }
       } else {
@@ -213,14 +215,14 @@ class ChatPage extends HookConsumerWidget {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Text('Cannot Send Image'),
-                content: const Text('The other user cannot receive images.'),
+                title: Text(t.cantSendVideo),
+                content: Text(t.userCantRecieveVideos),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
                       context.maybePop();
                     },
-                    child: const Text('OK'),
+                    child: Text(t.ok),
                   ),
                   TextButton(
                     onPressed: () async {
@@ -233,17 +235,17 @@ class ChatPage extends HookConsumerWidget {
                       if (token != null) {
                         await sendPushNotification(
                           deviceToken: token,
-                          title: 'Do You Want To Recieve Video',
-                          body:
-                              '${currentUserProfile.firstName} wants to send video.Go ahead and open it on your settings',
+                          title: t.recieveVideoTitle,
+                          body: t.recieveVideoBody(
+                              firstName: currentUserProfile.firstName),
                         );
                       }
                       if (context.mounted) {
-                        Utils.show.toast(context, 'Your request has been send');
+                        Utils.show.toast(context, t.requestSended);
                         context.maybePop();
                       }
                     },
-                    child: const Text('Send Request'),
+                    child: Text(t.sendRequest),
                   ),
                 ],
               );
@@ -254,13 +256,10 @@ class ChatPage extends HookConsumerWidget {
     }
 
     void handleAudioSelection() async {
-      final otherUser = room.users.firstWhere(
-        (u) => u.id != currentUser!.uid,
-      );
       final otherUserProfile =
-          await ref.read(userProviderWithID(otherUser.id).future);
+          await ref.watch(userProviderWithID(otherUser.id).future);
       final currentUserProfile =
-          await ref.read(userProviderWithID(currentUser!.uid).future);
+          await ref.watch(userProviderWithID(currentUser!.uid).future);
 
       if (otherUserProfile.canRecieveAudios) {
         await startRecording();
@@ -270,54 +269,65 @@ class ChatPage extends HookConsumerWidget {
             context: context,
             barrierDismissible: false,
             builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Recording...'),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    const CircularProgressIndicator(),
-                    const SizedBox(height: 20),
-                    const Text('Recording in progress...'),
-                    TextButton(
-                      onPressed: () async {
-                        final uri = await stopRecording();
-                        if (uri != null) {
-                          final file = File(uri);
-                          final size = file.lengthSync();
-                          final duration =
-                              DateTime.now().millisecondsSinceEpoch;
-                          final name =
-                              DateTime.now().millisecondsSinceEpoch.toString();
+              // Başlangıç zamanı
+              final startTime = DateTime.now();
 
-                          final reference =
-                              FirebaseStorage.instance.ref('$name.aac');
-                          await reference.putFile(file);
-                          final downloadUri = await reference.getDownloadURL();
+              return StatefulBuilder(
+                builder: (BuildContext context, StateSetter setState) {
+                  return AlertDialog(
+                    title: Text(t.recording),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        const CircularProgressIndicator(),
+                        const SizedBox(height: 20),
+                        Text(t.recordingInProgress),
+                        TextButton(
+                          onPressed: () async {
+                            final uri = await stopRecording();
+                            if (uri != null) {
+                              final file = File(uri);
+                              final size = file.lengthSync();
 
-                          final message = types.PartialAudio(
-                            duration: Duration(milliseconds: duration),
-                            name: name,
-                            size: size,
-                            uri: downloadUri,
-                          );
+                              // Kayıt süresi hesaplanıyor
+                              final duration =
+                                  DateTime.now().difference(startTime);
+                              final name = DateTime.now()
+                                  .millisecondsSinceEpoch
+                                  .toString();
 
-                          final otherUser = room.users.firstWhere(
-                            (u) => u.id != currentUser.uid,
-                          );
-                          messageServiceProvider.sendMessage(
-                            message,
-                            room.id,
-                            otherUser.id,
-                          );
-                        }
-                        if (context.mounted) {
-                          context.maybePop();
-                        }
-                      },
-                      child: const Text('Stop Recording'),
+                              final reference =
+                                  FirebaseStorage.instance.ref('$name.aac');
+                              await reference.putFile(file);
+                              final downloadUri =
+                                  await reference.getDownloadURL();
+
+                              final message = types.PartialAudio(
+                                duration: duration,
+                                name: name,
+                                size: size,
+                                uri: downloadUri,
+                              );
+
+                              final otherUser = room.users.firstWhere(
+                                (u) => u.id != currentUser.uid,
+                              );
+                              messageServiceProvider.sendMessage(
+                                message,
+                                room.id,
+                                otherUser.id,
+                              );
+                            }
+                            if (context.mounted) {
+                              context.maybePop(); // Dialog kapatılıyor
+                            }
+                          },
+                          child: Text(t.stopRecording),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  );
+                },
               );
             },
           );
@@ -328,14 +338,14 @@ class ChatPage extends HookConsumerWidget {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Text('Cannot Send Image'),
-                content: const Text('The other user cannot receive images.'),
+                title: Text(t.cantSendAudio),
+                content: Text(t.userCantRecieveAudios),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
                       context.maybePop();
                     },
-                    child: const Text('OK'),
+                    child: Text(t.ok),
                   ),
                   TextButton(
                     onPressed: () async {
@@ -348,17 +358,17 @@ class ChatPage extends HookConsumerWidget {
                       if (token != null) {
                         await sendPushNotification(
                           deviceToken: token,
-                          title: 'Do You Want To Recieve Audio',
-                          body:
-                              '${currentUserProfile.firstName} wants to send audio.Go ahead and open it on your settings',
+                          title: t.recieveAudioTitle,
+                          body: t.recieveAudioBody(
+                              firstName: currentUserProfile.firstName),
                         );
                       }
                       if (context.mounted) {
-                        Utils.show.toast(context, 'Your request has been send');
+                        Utils.show.toast(context, t.requestSended);
                         context.maybePop();
                       }
                     },
-                    child: const Text('Send Request'),
+                    child: Text(t.sendRequest),
                   ),
                 ],
               );
@@ -379,39 +389,39 @@ class ChatPage extends HookConsumerWidget {
               children: <Widget>[
                 TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    context.maybePop();
                     handleImageSelection();
                   },
-                  child: const Align(
+                  child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('Photo'),
+                    child: Text(t.photo),
                   ),
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    context.maybePop();
                     handleVideoSelection();
                   },
-                  child: const Align(
+                  child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('Video'),
+                    child: Text(t.video),
                   ),
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    context.maybePop();
                     handleAudioSelection();
                   },
-                  child: const Align(
+                  child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('Audio'),
+                    child: Text(t.audio),
                   ),
                 ),
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Align(
+                  child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('Cancel'),
+                    child: Text(t.cancel),
                   ),
                 ),
               ],
@@ -431,9 +441,6 @@ class ChatPage extends HookConsumerWidget {
     }
 
     void handleSendPressed(types.PartialText message) {
-      final otherUser = room.users.firstWhere(
-        (u) => u.id != currentUser!.uid,
-      );
       messageServiceProvider.sendMessage(
         message,
         room.id,
@@ -449,7 +456,25 @@ class ChatPage extends HookConsumerWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(room.name.toString()),
+          title: Row(
+            children: [
+              AsyncWidget<UserModel>(
+                data: ref.watch(userProviderWithID(otherUser.id)),
+                builder: (userData) {
+                  return CustomImage.network(
+                    userData.profileImages.first,
+                    memCacheHeight: 100,
+                    memCacheWidth: 100,
+                    width: 50,
+                    height: 50,
+                    borderRadius: S.borderRadius.radius50,
+                  );
+                },
+              ),
+              S.sizedBox.w12,
+              Text(room.name.toString()),
+            ],
+          ),
         ),
         body: StreamBuilder<types.Room>(
           initialData: room,

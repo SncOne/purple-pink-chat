@@ -115,17 +115,17 @@ class RegisterPage extends HookConsumerWidget {
                     context: context,
                     builder: (context) => AlertDialog(
                       scrollable: true,
-                      title: const Text("Terms of Use"),
+                      title: Text(t.termsOfUse),
                       content: const Text(C.termsOfUse),
                       actions: <Widget>[
                         TouchableOpacity(
-                          child: const Text('Close'),
+                          child: Text(t.close),
                           onTap: () => context.maybePop(),
                         ),
                       ],
                     ),
                   ),
-                  child: const Text('Terms Of Use'),
+                  child: Text(t.termsOfUse),
                 ),
                 validator: FormBuilderValidators.required(),
               ),
@@ -136,17 +136,17 @@ class RegisterPage extends HookConsumerWidget {
                     context: context,
                     builder: (context) => AlertDialog(
                       scrollable: true,
-                      title: const Text("Privacy Policy"),
+                      title: Text(t.privacyPolicy),
                       content: const Text(C.privacyPolicy),
                       actions: <Widget>[
                         TouchableOpacity(
-                          child: const Text('Close'),
+                          child: Text(t.close),
                           onTap: () => context.maybePop(),
                         ),
                       ],
                     ),
                   ),
-                  child: const Text('Privacy Policy'),
+                  child: Text(t.privacyPolicy),
                 ),
                 validator: FormBuilderValidators.required(),
               ),
@@ -189,7 +189,7 @@ class RegisterPage extends HookConsumerWidget {
                         }
                       } catch (e) {
                         if (context.mounted) {
-                          Utils.show.toast(context, "Register Failed:$e");
+                          Utils.show.toast(context, "${t.registerFailed}:$e");
                         }
                       }
                     });

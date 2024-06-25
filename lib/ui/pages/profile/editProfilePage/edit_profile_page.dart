@@ -34,7 +34,7 @@ class EditProfilePage extends HookConsumerWidget {
 
     final currentUser = ref.watch(userProvider).value;
 
-    final selectedCountry = useState('Location');
+    final selectedCountry = useState(t.location);
     final birthDate = useState<DateTime?>(null);
     final about = ref.watch(aboutController);
     final imageFiles = useState<List<XFile>>([]);
@@ -286,6 +286,7 @@ class EditProfilePage extends HookConsumerWidget {
                             ),
                             child: FormBuilderTextField(
                               name: 'firstName',
+                              textCapitalization: TextCapitalization.words,
                               textInputAction: TextInputAction.next,
                               controller: name,
                               style: const TextStyle(
@@ -311,6 +312,7 @@ class EditProfilePage extends HookConsumerWidget {
                             child: FormBuilderTextField(
                               name: 'lastName',
                               controller: lastname,
+                              textCapitalization: TextCapitalization.words,
                               textInputAction: TextInputAction.done,
                               style: const TextStyle(
                                   fontSize: 12, color: Colors.white),

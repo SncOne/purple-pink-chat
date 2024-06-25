@@ -31,7 +31,7 @@ class CreateProfilePage extends HookConsumerWidget {
     final lastname = ref.watch(lastNameController);
     final auth = ref.watch(authService);
 
-    final selectedCountry = useState('Location');
+    final selectedCountry = useState(t.location);
     final birthDate = useState<DateTime?>(null);
     final about = ref.watch(aboutController);
     final imageFiles = useState<List<XFile>>([]);
@@ -143,7 +143,7 @@ class CreateProfilePage extends HookConsumerWidget {
                 );
               } catch (e) {
                 if (context.mounted) {
-                  Utils.show.toast(context, 'Error: $e');
+                  Utils.show.toast(context, '${t.error}: $e');
                 }
               } finally {
                 if (context.mounted) {
@@ -246,6 +246,7 @@ class CreateProfilePage extends HookConsumerWidget {
                             ),
                             child: FormBuilderTextField(
                               name: 'firstName',
+                              textCapitalization: TextCapitalization.words,
                               textInputAction: TextInputAction.next,
                               controller: name,
                               style: const TextStyle(
@@ -272,6 +273,7 @@ class CreateProfilePage extends HookConsumerWidget {
                               name: 'lastName',
                               controller: lastname,
                               textInputAction: TextInputAction.done,
+                              textCapitalization: TextCapitalization.words,
                               style: const TextStyle(
                                   fontSize: 12, color: Colors.white),
                               decoration: InputDecoration(
