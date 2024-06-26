@@ -96,10 +96,18 @@ class AudioRecorderDialog extends HookConsumerWidget {
     }
 
     return AlertDialog(
-      title: Text(t.recording),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
+          Align(
+            alignment: Alignment.centerRight,
+            child: IconButton(
+              icon: const Icon(Icons.close, color: Colors.black),
+              onPressed: () {
+                context.maybePop();
+              },
+            ),
+          ),
           isRecording.value
               ? const CircularProgressIndicator()
               : const Icon(Icons.mic, size: 64),

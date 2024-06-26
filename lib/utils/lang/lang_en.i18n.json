@@ -153,5 +153,8 @@
   "subscriptionToSeeTitle": "To See This Profile",
   "subscriptionToSeeBody": "You Need to Subscribe",
   "readyToRecord": "Ready to Record",
-  "startRecording": "Start Recording"
+  "startRecording": "Start Recording",
+  "areYouSureYouWantToDeleteYourAccount": "Are You Sure You Want To Delete Your Account",
+  "no": "No",
+  "yes": "Yes"
 }

@@ -13,7 +13,7 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     ref.watch(userProvider.future);
-    ref.read(authService).getToken();
+    ref.read(authService).getTokenAndPosition();
     return AutoTabsScaffold(
       lazyLoad: true,
       routes: const [

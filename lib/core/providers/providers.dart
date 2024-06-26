@@ -2,7 +2,9 @@ import 'package:catt_catt/core/models/user.dart';
 import 'package:catt_catt/core/services/auth_service.dart';
 import 'package:catt_catt/core/services/matching_service.dart';
 import 'package:catt_catt/core/services/messages_service.dart';
+import 'package:catt_catt/ui/pages/discover/filter_bottom_sheet.dart';
 import 'package:catt_catt/utils/extensions.dart';
+import 'package:catt_catt/utils/print.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -50,7 +52,13 @@ final userStreamProvider = StreamProvider.autoDispose<UserModel>((ref) {
 
 final profilesProvider = StreamProvider.autoDispose<List<UserModel>>((ref) {
   final authService = ref.read(authServiceProvider);
-  return authService.getProfilesStream();
+  final filters = ref.watch(filtersProvider);
+  Print.error(filters, "ehe");
+  return authService.getProfilesStream(
+    genderFilter: filters.gender,
+    minAge: filters.minAge,
+    maxAge: filters.maxAge,
+  );
 });
 
 final userProviderWithID =

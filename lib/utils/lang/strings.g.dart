@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 296 (148 per locale)
+/// Strings: 302 (151 per locale)
 ///
-/// Built on 2024-06-25 at 21:22 UTC
+/// Built on 2024-06-25 at 22:29 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -303,6 +303,9 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get subscriptionToSeeBody => 'You Need to Subscribe';
 	String get readyToRecord => 'Ready to Record';
 	String get startRecording => 'Start Recording';
+	String get areYouSureYouWantToDeleteYourAccount => 'Are You Sure You Want To Delete Your Account';
+	String get no => 'No';
+	String get yes => 'Yes';
 }
 
 // Path: loginState
@@ -495,6 +498,9 @@ class _StringsTr implements Translations {
 	@override String get subscriptionToSeeBody => 'Abone Olmanız Gerekiyor';
 	@override String get readyToRecord => 'Kayda Hazır';
 	@override String get startRecording => 'Kayıtı Başlat';
+	@override String get areYouSureYouWantToDeleteYourAccount => 'Hesabını silmek istediğinden emin misin?';
+	@override String get no => 'Hayır';
+	@override String get yes => 'Evet';
 }
 
 // Path: loginState
@@ -662,6 +668,9 @@ extension on Translations {
 			case 'subscriptionToSeeBody': return 'You Need to Subscribe';
 			case 'readyToRecord': return 'Ready to Record';
 			case 'startRecording': return 'Start Recording';
+			case 'areYouSureYouWantToDeleteYourAccount': return 'Are You Sure You Want To Delete Your Account';
+			case 'no': return 'No';
+			case 'yes': return 'Yes';
 			default: return null;
 		}
 	}
@@ -818,6 +827,9 @@ extension on _StringsTr {
 			case 'subscriptionToSeeBody': return 'Abone Olmanız Gerekiyor';
 			case 'readyToRecord': return 'Kayda Hazır';
 			case 'startRecording': return 'Kayıtı Başlat';
+			case 'areYouSureYouWantToDeleteYourAccount': return 'Hesabını silmek istediğinden emin misin?';
+			case 'no': return 'Hayır';
+			case 'yes': return 'Evet';
 			default: return null;
 		}
 	}

@@ -65,12 +65,36 @@ class SettingsWidget extends HookConsumerWidget {
             color: Colors.white,
           ),
           onTap: () async {
-            await context.showLoading(
-              ref.read(authService).deleteAccount,
+            bool? confirmDelete = await showDialog<bool>(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text(t.deleteAccount),
+                  content: Text(t.areYouSureYouWantToDeleteYourAccount),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text(t.no),
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
+                    ),
+                    TextButton(
+                      child: Text(t.yes),
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      },
+                    ),
+                  ],
+                );
+              },
             );
-            if (context.mounted) {
-              Utils.show.toast(context, t.yourAccountDeleted);
-              context.router.replace(const WelcomeRoute());
+
+            if (confirmDelete == true) {
+              await context.showLoading(ref.read(authService).deleteAccount);
+              if (context.mounted) {
+                context.router.replace(const WelcomeRoute());
+                Utils.show.toast(context, t.yourAccountDeleted);
+              }
             }
           },
         ),

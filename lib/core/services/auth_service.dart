@@ -9,7 +9,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final authService = Provider((ref) => const AuthService());
@@ -86,17 +88,18 @@ final class AuthService {
     });
   }
 
-  Future getToken() async {
+  Future getTokenAndPosition() async {
     final fcmToken = await FirebaseMessaging.instance.getToken();
+    final currentPosition = await _locationService.determinePosition();
+    final currentLocation = {
+      'latitude': currentPosition.latitude,
+      'longitude': currentPosition.longitude,
+    };
     if (user != null) {
-      await _store
-          .collection('users')
-          .doc(user?.uid)
-          .update({'fcmToken': fcmToken});
-      Print.warning(user?.uid);
-      final info = await storeInfo.get();
-      Print.error(fcmToken, 'hello');
-      Print.error(info, 'info');
+      await _store.collection('users').doc(user?.uid).update({
+        'fcmToken': fcmToken,
+        "currentLocation": currentLocation,
+      });
     }
   }
 
@@ -147,11 +150,20 @@ final class AuthService {
       };
       await user!.updateDisplayName('$firstName $lastName');
       await user!.updatePhotoURL(profileImages!.first);
+      await FirebaseChatCore.instance.createUserInFirestore(
+        types.User(
+          id: user!.uid,
+          firstName: firstName,
+          lastName: lastName,
+          imageUrl: profileImages.first,
+        ),
+      );
       await storeInfo.set({
         "uid": user!.uid,
         "firstName": firstName ?? '',
         "lastName": lastName ?? '',
         "profileImages": profileImages,
+        "imageUrl": profileImages.first,
         "gender": gender ?? '',
         "birthDate": birthDate ?? '',
         "location": location ?? '',
@@ -207,6 +219,7 @@ final class AuthService {
         "firstName": firstName ?? '',
         "lastName": lastName ?? '',
         "profileImages": profileImages,
+        "imageUrl": profileImages.first,
         "gender": gender ?? '',
         "birthDate": birthDate ?? '',
         "location": location ?? '',
@@ -219,7 +232,11 @@ final class AuthService {
     }
   }
 
-  Stream<List<UserModel>> getProfilesStream() async* {
+  Stream<List<UserModel>> getProfilesStream({
+    String? genderFilter, // 'male', 'female' veya 'both'
+    int? minAge,
+    int? maxAge,
+  }) async* {
     final usersProfileList = <UserModel>[];
     final likedUserIds = <String>[];
 
@@ -241,10 +258,30 @@ final class AuthService {
 
       await for (var snapshot in usersProfilesSnapshot) {
         final usersProfiles = snapshot.docs;
+        usersProfileList.clear();
 
         for (var doc in usersProfiles) {
           if (!likedUserIds.contains(doc.id)) {
-            usersProfileList.add(UserModel.fromJson(doc.data()));
+            final userModel = UserModel.fromJson(doc.data());
+
+            // Cinsiyet filtreleme
+            if (genderFilter != null &&
+                genderFilter != 'both' &&
+                userModel.gender != genderFilter) {
+              continue;
+            }
+
+            // Yaş aralığı filtreleme
+            if (minAge != null || maxAge != null) {
+              final userAge = _calculateAge(userModel.birthDate);
+
+              if ((minAge != null && userAge < minAge) ||
+                  (maxAge != null && userAge > maxAge)) {
+                continue;
+              }
+            }
+
+            usersProfileList.add(userModel);
           }
         }
 
@@ -253,6 +290,16 @@ final class AuthService {
     } else {
       yield usersProfileList;
     }
+  }
+
+  int _calculateAge(DateTime birthDate) {
+    final now = DateTime.now();
+    int age = now.year - birthDate.year;
+    if (now.month < birthDate.month ||
+        (now.month == birthDate.month && now.day < birthDate.day)) {
+      age--;
+    }
+    return age;
   }
 
   Future<UserCredential?> register({

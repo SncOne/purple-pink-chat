@@ -90,7 +90,9 @@ class AudioPlayerWidget extends HookConsumerWidget {
         children: [
           Text(
             t.audio,
-            style: S.textStyles.font16White,
+            style: message.author.id != currentUser!.uid
+                ? S.textStyles.font16
+                : S.textStyles.font16White,
           ),
           const SizedBox(height: 8),
           Row(
@@ -98,7 +100,7 @@ class AudioPlayerWidget extends HookConsumerWidget {
               IconButton(
                 icon: Icon(
                   isPlaying.value ? Icons.pause : Icons.play_arrow,
-                  color: message.author.id != currentUser!.uid
+                  color: message.author.id != currentUser.uid
                       ? Colors.black
                       : Colors.white,
                 ),

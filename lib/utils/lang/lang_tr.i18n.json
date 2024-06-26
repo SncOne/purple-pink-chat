@@ -153,5 +153,8 @@
   "subscriptionToSeeTitle": "Bu Profili Görmek İçin",
   "subscriptionToSeeBody": "Abone Olmanız Gerekiyor",
   "readyToRecord": "Kayda Hazır",
-  "startRecording": "Kayıtı Başlat"
+  "startRecording": "Kayıtı Başlat",
+  "areYouSureYouWantToDeleteYourAccount": "Hesabını silmek istediğinden emin misin?",
+  "no": "Hayır",
+  "yes": "Evet"
 }

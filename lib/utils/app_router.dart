@@ -21,7 +21,6 @@ import 'package:catt_catt/ui/shared/pages/not_found/not_found_page.dart';
 import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:catt_catt/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart';
 
 part 'app_router.gr.dart';
 

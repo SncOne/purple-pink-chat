@@ -126,9 +126,11 @@ class MessagesPage extends HookConsumerWidget {
                                           child: Row(
                                             children: [
                                               const Icon(
-                                                  Icons
-                                                      .video_camera_back_outlined,
-                                                  color: Colors.white),
+                                                Icons
+                                                    .video_camera_back_outlined,
+                                                color: Colors.white,
+                                                size: 20,
+                                              ),
                                               Text(t.video,
                                                   style:
                                                       S.textStyles.font16White),
@@ -147,8 +149,11 @@ class MessagesPage extends HookConsumerWidget {
                                         Expanded(
                                           child: Row(
                                             children: [
-                                              const Icon(Icons.image,
-                                                  color: Colors.white),
+                                              const Icon(
+                                                Icons.image,
+                                                color: Colors.white,
+                                                size: 20,
+                                              ),
                                               Text(t.photo,
                                                   style:
                                                       S.textStyles.font16White),
@@ -168,8 +173,10 @@ class MessagesPage extends HookConsumerWidget {
                                           child: Row(
                                             children: [
                                               const Icon(
-                                                  Icons.audiotrack_outlined,
-                                                  color: Colors.white),
+                                                Icons.audiotrack_outlined,
+                                                color: Colors.white,
+                                                size: 20,
+                                              ),
                                               Text(t.audio,
                                                   style:
                                                       S.textStyles.font16White),
