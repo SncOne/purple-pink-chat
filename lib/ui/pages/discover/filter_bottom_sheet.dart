@@ -10,7 +10,7 @@ class FilterBottomSheet extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final genderController = useState<String?>(null);
-    final relationshipController = useState<String?>(null);
+    final lookingForController = useState<String?>(null);
     final ageRangeController =
         useState<SfRangeValues>(const SfRangeValues(20, 40));
 
@@ -40,69 +40,75 @@ class FilterBottomSheet extends HookConsumerWidget {
           Text(t.lookingFor,
               style:
                   const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          ToggleButtons(
-            isSelected: [
-              relationshipController.value == 'longTermPartner',
-              relationshipController.value == 'shortTermPartner',
-              relationshipController.value == 'longTermOpenRelationship',
-              relationshipController.value == 'shortTermOpenRelationship',
-              relationshipController.value == 'newFriends',
-              relationshipController.value == 'stillFiguringOut',
-              relationshipController.value == 'Everyone',
-            ],
-            onPressed: (int index) {
-              relationshipController.value = [
-                'longTermPartner',
-                'shortTermPartner',
-                'longTermOpenRelationship',
-                'shortTermOpenRelationship',
-                'newFriends',
-                'stillFiguringOut',
-                'Everyone'
-              ][index];
-            },
-            children: [
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(t.lookingForList(
-                      lookingFor: lookingForContext.longTermPartner))),
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(t.lookingForList(
-                      lookingFor: lookingForContext.shortTermPartner))),
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(t.lookingForList(
-                      lookingFor: lookingForContext.longTermOpenRelationship))),
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(t.lookingForList(
-                      lookingFor:
-                          lookingForContext.shortTermOpenRelationship))),
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(t.lookingForList(
-                      lookingFor: lookingForContext.newFriends))),
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(t.lookingForList(
-                      lookingFor: lookingForContext.stillFiguringOut))),
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(t.everyone)),
-            ],
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: ToggleButtons(
+              verticalDirection: VerticalDirection.down,
+              isSelected: [
+                lookingForController.value == 'longTermPartner',
+                lookingForController.value == 'shortTermPartner',
+                lookingForController.value == 'longTermOpenRelationship',
+                lookingForController.value == 'shortTermOpenRelationship',
+                lookingForController.value == 'newFriends',
+                lookingForController.value == 'stillFiguringOut',
+                lookingForController.value == 'everyone',
+              ],
+              onPressed: (int index) {
+                lookingForController.value = [
+                  'longTermPartner',
+                  'shortTermPartner',
+                  'longTermOpenRelationship',
+                  'shortTermOpenRelationship',
+                  'newFriends',
+                  'stillFiguringOut',
+                  'everyone'
+                ][index];
+              },
+              children: [
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(t.lookingForList(
+                        lookingFor: lookingForContext.longTermPartner))),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(t.lookingForList(
+                        lookingFor: lookingForContext.shortTermPartner))),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(t.lookingForList(
+                        lookingFor:
+                            lookingForContext.longTermOpenRelationship))),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(t.lookingForList(
+                        lookingFor:
+                            lookingForContext.shortTermOpenRelationship))),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(t.lookingForList(
+                        lookingFor: lookingForContext.newFriends))),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(t.lookingForList(
+                        lookingFor: lookingForContext.stillFiguringOut))),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(t.everyone)),
+              ],
+            ),
           ),
           const SizedBox(height: 16),
-          const Text('Sex',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          Text(t.gender,
+              style:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           ToggleButtons(
             isSelected: [
               genderController.value == 'male',
               genderController.value == 'female',
-              genderController.value == 'Everyone',
+              genderController.value == 'everyone',
             ],
             onPressed: (int index) {
-              genderController.value = ['male', 'female', 'Everyone'][index];
+              genderController.value = ['male', 'female', 'everyone'][index];
             },
             children: [
               Padding(
@@ -138,7 +144,7 @@ class FilterBottomSheet extends HookConsumerWidget {
             onPressed: () {
               ref.read(filtersProvider.notifier).state = Filters(
                 gender: genderController.value,
-                relationship: relationshipController.value,
+                lookingFor: lookingForController.value,
                 minAge: ageRangeController.value.start.toInt(),
                 maxAge: ageRangeController.value.end.toInt(),
               );
@@ -154,11 +160,16 @@ class FilterBottomSheet extends HookConsumerWidget {
 
 class Filters {
   String? gender;
-  String? relationship;
+  String? lookingFor;
   int? minAge;
   int? maxAge;
 
-  Filters({this.gender, this.relationship, this.minAge, this.maxAge});
+  Filters({
+    this.gender,
+    this.lookingFor,
+    this.minAge,
+    this.maxAge,
+  });
 }
 
 final filtersProvider = StateProvider<Filters>((ref) {

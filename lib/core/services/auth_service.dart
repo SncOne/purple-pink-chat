@@ -250,6 +250,7 @@ final class AuthService {
 
   Stream<List<UserModel>> getProfilesStream({
     String? genderFilter, // 'male', 'female' veya 'both'
+    String? lookingFor,
     int? minAge,
     int? maxAge,
   }) async* {
@@ -282,11 +283,19 @@ final class AuthService {
 
             // Cinsiyet filtreleme
             if (genderFilter != null &&
-                genderFilter != 'both' &&
+                genderFilter != 'everyone' &&
                 userModel.gender.name != genderFilter) {
               continue;
             }
+            Print.error(userModel.lookingFor);
 
+            // LookingFor filtreleme
+            if (lookingFor != null &&
+                lookingFor != 'everyone' &&
+                !userModel.lookingFor
+                    .contains(stringToLookingForContext(lookingFor))) {
+              continue;
+            }
             // Yaş aralığı filtreleme
             if (minAge != null || maxAge != null) {
               final userAge = _calculateAge(userModel.birthDate);

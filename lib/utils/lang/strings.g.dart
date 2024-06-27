@@ -6,7 +6,7 @@
 /// Locales: 2
 /// Strings: 306 (153 per locale)
 ///
-/// Built on 2024-06-27 at 09:17 UTC
+/// Built on 2024-06-27 at 18:37 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -141,7 +141,7 @@ enum HobbyContext {
 	climbing,
 	diving,
 	movies,
-	tv_shows,
+	tvShows,
 	anime,
 	technology,
 	music,
@@ -284,7 +284,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 				return 'Diving';
 			case HobbyContext.movies:
 				return 'Movies';
-			case HobbyContext.tv_shows:
+			case HobbyContext.tvShows:
 				return 'TV Shows';
 			case HobbyContext.anime:
 				return 'Anime';
@@ -326,7 +326,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 				return 'Bicurious';
 		}
 	}
-	String get lookingFor => 'Looking For';
+	String get lookingFor => 'The Relationship You Are Looking For';
 	String lookingForList({required lookingForContext lookingFor}) {
 		switch (lookingFor) {
 			case lookingForContext.longTermPartner:
@@ -531,7 +531,7 @@ class _StringsTr implements Translations {
 				return 'Dalış';
 			case HobbyContext.movies:
 				return 'Filmler';
-			case HobbyContext.tv_shows:
+			case HobbyContext.tvShows:
 				return 'TV Programları';
 			case HobbyContext.anime:
 				return 'Anime';
@@ -573,7 +573,7 @@ class _StringsTr implements Translations {
 				return 'Bikürsüel';
 		}
 	}
-	@override String get lookingFor => 'Aranan';
+	@override String get lookingFor => 'Aranan İlişki';
 	@override String lookingForList({required lookingForContext lookingFor}) {
 		switch (lookingFor) {
 			case lookingForContext.longTermPartner:
@@ -761,7 +761,7 @@ extension on Translations {
 						return 'Diving';
 					case HobbyContext.movies:
 						return 'Movies';
-					case HobbyContext.tv_shows:
+					case HobbyContext.tvShows:
 						return 'TV Shows';
 					case HobbyContext.anime:
 						return 'Anime';
@@ -803,7 +803,7 @@ extension on Translations {
 						return 'Bicurious';
 				}
 			};
-			case 'lookingFor': return 'Looking For';
+			case 'lookingFor': return 'The Relationship You Are Looking For';
 			case 'lookingForList': return ({required lookingForContext lookingFor}) {
 				switch (lookingFor) {
 					case lookingForContext.longTermPartner:
@@ -980,7 +980,7 @@ extension on _StringsTr {
 						return 'Dalış';
 					case HobbyContext.movies:
 						return 'Filmler';
-					case HobbyContext.tv_shows:
+					case HobbyContext.tvShows:
 						return 'TV Programları';
 					case HobbyContext.anime:
 						return 'Anime';
@@ -1022,7 +1022,7 @@ extension on _StringsTr {
 						return 'Bikürsüel';
 				}
 			};
-			case 'lookingFor': return 'Aranan';
+			case 'lookingFor': return 'Aranan İlişki';
 			case 'lookingForList': return ({required lookingForContext lookingFor}) {
 				switch (lookingFor) {
 					case lookingForContext.longTermPartner:

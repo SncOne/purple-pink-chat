@@ -91,7 +91,7 @@ const _$HobbyContextEnumMap = {
   HobbyContext.climbing: 'climbing',
   HobbyContext.diving: 'diving',
   HobbyContext.movies: 'movies',
-  HobbyContext.tv_shows: 'tv_shows',
+  HobbyContext.tvShows: 'tvShows',
   HobbyContext.anime: 'anime',
   HobbyContext.technology: 'technology',
   HobbyContext.music: 'music',

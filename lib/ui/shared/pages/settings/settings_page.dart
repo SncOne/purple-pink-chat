@@ -265,24 +265,29 @@ class EmailVerificationScreen extends HookWidget {
   Widget build(BuildContext context) {
     final auth = FirebaseAuth.instance.currentUser!;
     final isEmailVerified = useState(false);
-    late Timer timer;
 
     useEffect(() {
-      auth.sendEmailVerification();
+      Timer? timer;
 
-      timer = Timer.periodic(const Duration(seconds: 3), (_) async {
-        await auth.reload();
-        if (auth.emailVerified) {
-          isEmailVerified.value = true;
-          if (context.mounted) {
-            Utils.show.toast(context, t.accountVerified);
+      Future<void> checkEmailVerification() async {
+        await auth.sendEmailVerification();
+
+        timer = Timer.periodic(const Duration(seconds: 3), (_) async {
+          await auth.reload();
+          if (auth.emailVerified) {
+            isEmailVerified.value = true;
+            if (context.mounted) {
+              Utils.show.toast(context, t.accountVerified);
+            }
+
+            timer?.cancel();
           }
+        });
+      }
 
-          timer.cancel();
-        }
-      });
+      checkEmailVerification();
 
-      return () => timer.cancel();
+      return () => timer?.cancel();
     }, const []);
 
     return SafeArea(
@@ -317,10 +322,12 @@ class EmailVerificationScreen extends HookWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: Center(
-                  child: Text(
-                    t.verifyingEmail,
-                    textAlign: TextAlign.center,
-                  ),
+                  child: isEmailVerified.value
+                      ? const SizedBox.shrink()
+                      : Text(
+                          t.verifyingEmail,
+                          textAlign: TextAlign.center,
+                        ),
                 ),
               ),
               const SizedBox(height: 57),

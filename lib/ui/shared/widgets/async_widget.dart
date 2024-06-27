@@ -23,7 +23,7 @@ class AsyncWidget<T> extends StatelessWidget {
           (e, err) {
             Print.error(e, 'e');
             Print.warning(err, 'err');
-            return const Center(child: Text('err'));
+            return Center(child: Text('err $e'));
           },
       loading: () {
         return loading ?? const Center(child: CircularProgressIndicator());
