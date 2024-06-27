@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:catt_catt/core/models/user.dart';
 import 'package:catt_catt/core/providers/providers.dart';
 import 'package:catt_catt/core/services/auth_service.dart';
+import 'package:catt_catt/core/services/slang_enum_functions.dart';
 import 'package:catt_catt/ui/shared/widgets/async_widget.dart';
 import 'package:catt_catt/ui/shared/widgets/custom_image.dart';
 import 'package:catt_catt/ui/shared/widgets/image_viewer.dart';
@@ -76,7 +77,7 @@ class ProfilePage extends HookConsumerWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    '${userData.gender} / ',
+                                    '${t.genderList(gender: stringToGenderContext(userData.gender.name))} / ',
                                     style: S.textStyles.font16White,
                                   ),
                                   Text(
@@ -151,7 +152,8 @@ class ProfilePage extends HookConsumerWidget {
                     spacing: 10,
                     children: userData.hobiesAndInterests.map((interest) {
                       return Chip(
-                        label: Text(interest),
+                        label: Text(t.hobbyList(
+                            hobby: stringToHobbyContext(interest.name))),
                       );
                     }).toList(),
                   ),

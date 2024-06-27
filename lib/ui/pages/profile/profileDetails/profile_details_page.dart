@@ -141,7 +141,7 @@ class ProfileDetailsPage extends HookConsumerWidget {
                         spacing: 10,
                         children: userData.hobiesAndInterests.map((interest) {
                           return Chip(
-                            label: Text(interest),
+                            label: Text(t.hobbyList(hobby: interest)),
                           );
                         }).toList(),
                       ),

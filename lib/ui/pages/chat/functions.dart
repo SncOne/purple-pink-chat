@@ -24,7 +24,7 @@ Future<void> handleImageSelection(WidgetRef ref, BuildContext context,
       await ref.watch(getUserStreamWithId(currentUser!.uid).future);
   if (otherUserProfile.canRecieveImages) {
     final result = await ImagePicker().pickMultiImage(
-      imageQuality: 70,
+      imageQuality: 25,
       maxWidth: 1440,
       limit: 4,
     );
@@ -115,7 +115,7 @@ Future<void> handleVideoSelection(WidgetRef ref, BuildContext context,
 
   if (otherUserProfile.canRecieveVideos) {
     final result = await ImagePicker().pickVideo(
-      maxDuration: const Duration(minutes: 2),
+      maxDuration: const Duration(seconds: 30),
       source: ImageSource.gallery,
     );
 

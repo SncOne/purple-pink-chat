@@ -3,15 +3,16 @@ import 'dart:io';
 
 import 'package:catt_catt/core/models/user.dart';
 import 'package:catt_catt/core/services/location_service.dart';
+import 'package:catt_catt/core/services/slang_enum_functions.dart';
+import 'package:catt_catt/utils/enums.dart';
+import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:catt_catt/utils/print.dart';
 import 'package:catt_catt/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final authService = Provider((ref) => const AuthService());
@@ -132,13 +133,13 @@ final class AuthService {
     List<String>? profileImages,
     String? firstName,
     String? lastName,
-    String? gender,
+    GenderContext? gender,
     String? birthDate,
     String? location,
-    List<String>? hobiesAndInterests,
-    String? interestedGender,
-    List<String>? lookingFor,
-    String? sexualOrientation,
+    List<HobbyContext>? hobiesAndInterests,
+    GenderContext? interestedGender,
+    List<lookingForContext>? lookingFor,
+    sexualOrientationContext? sexualOrientation,
     String? about,
     bool? isAdmin,
   }) async {
@@ -149,28 +150,30 @@ final class AuthService {
         'longitude': currentPosition.longitude,
       };
       await user!.updateDisplayName('$firstName $lastName');
-      await user!.updatePhotoURL(profileImages!.first);
-      await FirebaseChatCore.instance.createUserInFirestore(
-        types.User(
-          id: user!.uid,
-          firstName: firstName,
-          lastName: lastName,
-          imageUrl: profileImages.first,
-        ),
-      );
+
       await storeInfo.set({
         "uid": user!.uid,
         "firstName": firstName ?? '',
         "lastName": lastName ?? '',
         "profileImages": profileImages,
-        "imageUrl": profileImages.first,
-        "gender": gender ?? '',
+        "imageUrl": profileImages?.first ?? '',
+        "gender": gender != null ? genderContextToString(gender) : '',
         "birthDate": birthDate ?? '',
         "location": location ?? '',
-        "hobiesAndInterests": hobiesAndInterests ?? [],
-        "interestedGender": interestedGender ?? '',
-        "lookingFor": lookingFor ?? [],
-        "sexualOrientation": sexualOrientation ?? '',
+        "hobiesAndInterests": hobiesAndInterests != null
+            ? hobiesAndInterests
+                .map((hobby) => hobbyContextToString(hobby))
+                .toList()
+            : [],
+        "interestedGender": interestedGender != null
+            ? genderContextToString(interestedGender)
+            : '',
+        "lookingFor": lookingFor != null
+            ? lookingFor.map((lf) => lookingForContextToString(lf)).toList()
+            : [],
+        "sexualOrientation": sexualOrientation != null
+            ? sexualOrientationContextToString(sexualOrientation)
+            : '',
         "about": about ?? '',
         "isAdmin": false, //For admin account
         "currentLocation": currentLocation,
@@ -180,6 +183,9 @@ final class AuthService {
         "canRecieveImages": false,
         "canRecieveAudios": false,
         "canRecieveVideos": false,
+        "subscriptionType": subscriptionTypeToString(SubscriptionType.none),
+        "dailyMessageLimit": 5,
+        "swipeLimitForAd": 5,
       });
     }
   }
@@ -200,13 +206,13 @@ final class AuthService {
     List<String>? profileImages,
     String? firstName,
     String? lastName,
-    String? gender,
+    GenderContext? gender,
     String? birthDate,
     String? location,
-    List<String>? hobiesAndInterests,
-    String? interestedGender,
-    List<String>? lookingFor,
-    String? sexualOrientation,
+    List<HobbyContext>? hobiesAndInterests,
+    GenderContext? interestedGender,
+    List<lookingForContext>? lookingFor,
+    sexualOrientationContext? sexualOrientation,
     String? about,
   }) async {
     if (user != null) {
@@ -220,13 +226,23 @@ final class AuthService {
         "lastName": lastName ?? '',
         "profileImages": profileImages,
         "imageUrl": profileImages.first,
-        "gender": gender ?? '',
+        "gender": gender != null ? genderContextToString(gender) : '',
         "birthDate": birthDate ?? '',
         "location": location ?? '',
-        "hobiesAndInterests": hobiesAndInterests ?? [],
-        "interestedGender": interestedGender ?? '',
-        "lookingFor": lookingFor ?? [],
-        "sexualOrientation": sexualOrientation ?? '',
+        "hobiesAndInterests": hobiesAndInterests != null
+            ? hobiesAndInterests
+                .map((hobby) => hobbyContextToString(hobby))
+                .toList()
+            : [],
+        "interestedGender": interestedGender != null
+            ? genderContextToString(interestedGender)
+            : '',
+        "lookingFor": lookingFor != null
+            ? lookingFor.map((lf) => lookingForContextToString(lf)).toList()
+            : [],
+        "sexualOrientation": sexualOrientation != null
+            ? sexualOrientationContextToString(sexualOrientation)
+            : '',
         "about": about ?? '',
       });
     }
@@ -267,7 +283,7 @@ final class AuthService {
             // Cinsiyet filtreleme
             if (genderFilter != null &&
                 genderFilter != 'both' &&
-                userModel.gender != genderFilter) {
+                userModel.gender.name != genderFilter) {
               continue;
             }
 

@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 302 (151 per locale)
+/// Strings: 306 (153 per locale)
 ///
-/// Built on 2024-06-25 at 22:29 UTC
+/// Built on 2024-06-27 at 09:17 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -116,6 +116,62 @@ class AppLocaleUtils extends BaseAppLocaleUtils<AppLocale, Translations> {
 	static List<String> get supportedLocalesRaw => instance.supportedLocalesRaw;
 }
 
+// context enums
+
+enum GenderContext {
+	male,
+	female,
+}
+
+enum HobbyContext {
+	wrestling,
+	sailing,
+	triathlon,
+	sauna,
+	comedy,
+	gymAndFitness,
+	game,
+	book,
+	cripto,
+	nft,
+	football,
+	basketball,
+	volleyball,
+	gliding,
+	climbing,
+	diving,
+	movies,
+	tv_shows,
+	anime,
+	technology,
+	music,
+	traveling,
+	cooking,
+	meditation,
+	hunting,
+	swimming,
+}
+
+enum sexualOrientationContext {
+	straight,
+	gay,
+	lesbian,
+	bisexual,
+	asexual,
+	demisexual,
+	pansexual,
+	bicurious,
+}
+
+enum lookingForContext {
+	longTermPartner,
+	shortTermPartner,
+	longTermOpenRelationship,
+	shortTermOpenRelationship,
+	newFriends,
+	stillFiguringOut,
+}
+
 // translations
 
 // Path: <root>
@@ -183,61 +239,110 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get validationProfile => 'Picture, Name, Last Name and Birth Date are required.';
 	String get infoAboutYou => 'Info About Yourself';
 	String get gender => 'Gender';
-	List<String> get genderList => [
-		'Male',
-		'Female',
-	];
+	String genderList({required GenderContext gender}) {
+		switch (gender) {
+			case GenderContext.male:
+				return 'Male';
+			case GenderContext.female:
+				return 'Female';
+		}
+	}
 	String get hobbies => 'Hobbies & Interests';
-	List<String> get hobbyList => [
-		'Wrestling',
-		'Sailing',
-		'Triathlon',
-		'Sauna',
-		'Comedy',
-		'Gym & Fitness',
-		'Gaming',
-		'Book',
-		'Cripto',
-		'NFT',
-		'Football',
-		'Basketball',
-		'Volleyball',
-		'Gliding',
-		'Climbing',
-		'Diving',
-		'Movies',
-		'Tv Shows',
-		'Anime',
-		'Technology',
-		'Music',
-		'Traveling',
-		'Cooking',
-		'Meditation',
-		'Hunting',
-		'Swimming',
-	];
+	String hobbyList({required HobbyContext hobby}) {
+		switch (hobby) {
+			case HobbyContext.wrestling:
+				return 'Wrestling';
+			case HobbyContext.sailing:
+				return 'Sailing';
+			case HobbyContext.triathlon:
+				return 'Triathlon';
+			case HobbyContext.sauna:
+				return 'Sauna';
+			case HobbyContext.comedy:
+				return 'Comedy';
+			case HobbyContext.gymAndFitness:
+				return 'Gym & Fitness';
+			case HobbyContext.game:
+				return 'Gaming';
+			case HobbyContext.book:
+				return 'Book';
+			case HobbyContext.cripto:
+				return 'Cripto';
+			case HobbyContext.nft:
+				return 'NFT';
+			case HobbyContext.football:
+				return 'Football';
+			case HobbyContext.basketball:
+				return 'Basketball';
+			case HobbyContext.volleyball:
+				return 'Volleyball';
+			case HobbyContext.gliding:
+				return 'Gliding';
+			case HobbyContext.climbing:
+				return 'Climbing';
+			case HobbyContext.diving:
+				return 'Diving';
+			case HobbyContext.movies:
+				return 'Movies';
+			case HobbyContext.tv_shows:
+				return 'TV Shows';
+			case HobbyContext.anime:
+				return 'Anime';
+			case HobbyContext.technology:
+				return 'Technology';
+			case HobbyContext.music:
+				return 'Music';
+			case HobbyContext.traveling:
+				return 'Traveling';
+			case HobbyContext.cooking:
+				return 'Cooking  ';
+			case HobbyContext.meditation:
+				return 'Meditation';
+			case HobbyContext.hunting:
+				return 'Hunting';
+			case HobbyContext.swimming:
+				return 'Swimming';
+		}
+	}
 	String get interestedGender => 'Interested Gender';
 	String get sexualOrientation => 'Sexual Orientation';
-	List<String> get sexualOrientationList => [
-		'Straight',
-		'Gay',
-		'Lesbian',
-		'Bisexual',
-		'Asexual',
-		'Demisexual',
-		'Pansexual',
-		'Bicurious',
-		'Queer',
-	];
+	String sexualOrientationList({required sexualOrientationContext sexualOrientation}) {
+		switch (sexualOrientation) {
+			case sexualOrientationContext.straight:
+				return 'Straight';
+			case sexualOrientationContext.gay:
+				return 'Gay';
+			case sexualOrientationContext.lesbian:
+				return 'Lesbian';
+			case sexualOrientationContext.bisexual:
+				return 'Bisexual';
+			case sexualOrientationContext.asexual:
+				return 'Asexual';
+			case sexualOrientationContext.demisexual:
+				return 'Demisexual';
+			case sexualOrientationContext.pansexual:
+				return 'Pansexual';
+			case sexualOrientationContext.bicurious:
+				return 'Bicurious';
+		}
+	}
 	String get lookingFor => 'Looking For';
-	List<String> get lookingForList => [
-		'Long-term Partner',
-		'Short-term Partner',
-		'Long-term Open Relationship',
-		'Short-term Open Relationship',
-		'New Friens',
-		'Still Figuring It Out',
-	];
+	String lookingForList({required lookingForContext lookingFor}) {
+		switch (lookingFor) {
+			case lookingForContext.longTermPartner:
+				return 'Long-term Partner';
+			case lookingForContext.shortTermPartner:
+				return 'Short-term Partner';
+			case lookingForContext.longTermOpenRelationship:
+				return 'Long-term Open Relationship';
+			case lookingForContext.shortTermOpenRelationship:
+				return 'Short-term Open Relationship';
+			case lookingForContext.newFriends:
+				return 'New Friends';
+			case lookingForContext.stillFiguringOut:
+				return 'Still Figuring It Out';
+		}
+	}
 	String get discover => 'Discover';
 	String get profile => 'Profile';
 	String get updateProfile => 'Update Profile';
@@ -306,6 +411,9 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get areYouSureYouWantToDeleteYourAccount => 'Are You Sure You Want To Delete Your Account';
 	String get no => 'No';
 	String get yes => 'Yes';
+	String get apply => 'Apply';
+	String get everyone => 'Everyone';
+	String get age => 'Age';
 }
 
 // Path: loginState
@@ -378,61 +486,110 @@ class _StringsTr implements Translations {
 	@override String get helpCenter => 'Yardım Merkezi';
 	@override String get aboutLoveLens => 'Hakkında (Love Lens)';
 	@override String get gender => 'Cinsiyet';
-	@override List<String> get genderList => [
-		'Erkek',
-		'Kadın',
-	];
+	@override String genderList({required GenderContext gender}) {
+		switch (gender) {
+			case GenderContext.male:
+				return 'Erkek';
+			case GenderContext.female:
+				return 'Kadın';
+		}
+	}
 	@override String get hobbies => 'Hobiler & İlgi Alanları';
-	@override List<String> get hobbyList => [
-		'Güreş',
-		'Yelkencilik',
-		'Triatlon',
-		'Sauna',
-		'Komedi',
-		'Spor Salonu & Fitness',
-		'Oyun',
-		'Kitap',
-		'Kripto',
-		'NFT',
-		'Futbol',
-		'Basketbol',
-		'Voleybol',
-		'Planörle Uçuş',
-		'Dağcılık',
-		'Dalış',
-		'Filmler',
-		'TV Programları',
-		'Anime',
-		'Teknoloji',
-		'Müzik',
-		'Seyahat',
-		'Yemek Pişirme',
-		'Meditasyon',
-		'Avcılık',
-		'Yüzme',
-	];
+	@override String hobbyList({required HobbyContext hobby}) {
+		switch (hobby) {
+			case HobbyContext.wrestling:
+				return 'Güreş';
+			case HobbyContext.sailing:
+				return 'Yelkencilik';
+			case HobbyContext.triathlon:
+				return 'Triatlon';
+			case HobbyContext.sauna:
+				return 'Sauna';
+			case HobbyContext.comedy:
+				return 'Komedi';
+			case HobbyContext.gymAndFitness:
+				return 'Spor Salonu & Fitness';
+			case HobbyContext.game:
+				return 'Oyun';
+			case HobbyContext.book:
+				return 'Kitap';
+			case HobbyContext.cripto:
+				return 'Kripto';
+			case HobbyContext.nft:
+				return 'NFT';
+			case HobbyContext.football:
+				return 'Futbol';
+			case HobbyContext.basketball:
+				return 'Basketbol';
+			case HobbyContext.volleyball:
+				return 'Voleybol';
+			case HobbyContext.gliding:
+				return 'Planörle Uçuş';
+			case HobbyContext.climbing:
+				return 'Dağcılık';
+			case HobbyContext.diving:
+				return 'Dalış';
+			case HobbyContext.movies:
+				return 'Filmler';
+			case HobbyContext.tv_shows:
+				return 'TV Programları';
+			case HobbyContext.anime:
+				return 'Anime';
+			case HobbyContext.technology:
+				return 'Teknoloji';
+			case HobbyContext.music:
+				return 'Müzik';
+			case HobbyContext.traveling:
+				return 'Seyahat';
+			case HobbyContext.cooking:
+				return 'Yemek Pişirme';
+			case HobbyContext.meditation:
+				return 'Meditasyon';
+			case HobbyContext.hunting:
+				return 'Avcılık';
+			case HobbyContext.swimming:
+				return 'Yüzme';
+		}
+	}
 	@override String get interestedGender => 'İlgilenilen Cinsiyet';
 	@override String get sexualOrientation => 'Cinsel Yönelim';
-	@override List<String> get sexualOrientationList => [
-		'Heteroseksüel',
-		'Eşcinsel',
-		'Lezbiyen',
-		'Biseksüel',
-		'Aseksüel',
-		'Demiseksüel',
-		'Panseksüel',
-		'Bikürsüel',
-		'Queer',
-	];
+	@override String sexualOrientationList({required sexualOrientationContext sexualOrientation}) {
+		switch (sexualOrientation) {
+			case sexualOrientationContext.straight:
+				return 'Heteroseksüel';
+			case sexualOrientationContext.gay:
+				return 'Eşcinsel';
+			case sexualOrientationContext.lesbian:
+				return 'Lezbiyen';
+			case sexualOrientationContext.bisexual:
+				return 'Biseksüel';
+			case sexualOrientationContext.asexual:
+				return 'Aseksüel';
+			case sexualOrientationContext.demisexual:
+				return 'Demiseksüel';
+			case sexualOrientationContext.pansexual:
+				return 'Panseksüel';
+			case sexualOrientationContext.bicurious:
+				return 'Bikürsüel';
+		}
+	}
 	@override String get lookingFor => 'Aranan';
-	@override List<String> get lookingForList => [
-		'Uzun Vadeli Partner',
-		'Kısa Vadeli Partner',
-		'Uzun Vadeli Açık İlişki',
-		'Kısa Vadeli Açık İlişki',
-		'Yeni Arkadaşlar',
-		'Hala Anlamaya Çalışıyorum',
-	];
+	@override String lookingForList({required lookingForContext lookingFor}) {
+		switch (lookingFor) {
+			case lookingForContext.longTermPartner:
+				return 'Uzun Vadeli Partner';
+			case lookingForContext.shortTermPartner:
+				return 'Kısa Vadeli Partner';
+			case lookingForContext.longTermOpenRelationship:
+				return 'Uzun Vadeli Açık İlişki';
+			case lookingForContext.shortTermOpenRelationship:
+				return 'Kısa Vadeli Açık İlişki';
+			case lookingForContext.newFriends:
+				return 'Yeni Arkadaşlıklar';
+			case lookingForContext.stillFiguringOut:
+				return 'Hala Anlamaya Çalışıyorum';
+		}
+	}
 	@override String get discover => 'Keşfet';
 	@override String get profile => 'Profil';
 	@override String get updateProfile => 'Profil Güncelle';
@@ -501,6 +658,9 @@ class _StringsTr implements Translations {
 	@override String get areYouSureYouWantToDeleteYourAccount => 'Hesabını silmek istediğinden emin misin?';
 	@override String get no => 'Hayır';
 	@override String get yes => 'Evet';
+	@override String get apply => 'Onayla';
+	@override String get everyone => 'Herkes';
+	@override String get age => 'Yaş';
 }
 
 // Path: loginState
@@ -556,53 +716,110 @@ extension on Translations {
 			case 'validationProfile': return 'Picture, Name, Last Name and Birth Date are required.';
 			case 'infoAboutYou': return 'Info About Yourself';
 			case 'gender': return 'Gender';
-			case 'genderList.0': return 'Male';
-			case 'genderList.1': return 'Female';
+			case 'genderList': return ({required GenderContext gender}) {
+				switch (gender) {
+					case GenderContext.male:
+						return 'Male';
+					case GenderContext.female:
+						return 'Female';
+				}
+			};
 			case 'hobbies': return 'Hobbies & Interests';
-			case 'hobbyList.0': return 'Wrestling';
-			case 'hobbyList.1': return 'Sailing';
-			case 'hobbyList.2': return 'Triathlon';
-			case 'hobbyList.3': return 'Sauna';
-			case 'hobbyList.4': return 'Comedy';
-			case 'hobbyList.5': return 'Gym & Fitness';
-			case 'hobbyList.6': return 'Gaming';
-			case 'hobbyList.7': return 'Book';
-			case 'hobbyList.8': return 'Cripto';
-			case 'hobbyList.9': return 'NFT';
-			case 'hobbyList.10': return 'Football';
-			case 'hobbyList.11': return 'Basketball';
-			case 'hobbyList.12': return 'Volleyball';
-			case 'hobbyList.13': return 'Gliding';
-			case 'hobbyList.14': return 'Climbing';
-			case 'hobbyList.15': return 'Diving';
-			case 'hobbyList.16': return 'Movies';
-			case 'hobbyList.17': return 'Tv Shows';
-			case 'hobbyList.18': return 'Anime';
-			case 'hobbyList.19': return 'Technology';
-			case 'hobbyList.20': return 'Music';
-			case 'hobbyList.21': return 'Traveling';
-			case 'hobbyList.22': return 'Cooking';
-			case 'hobbyList.23': return 'Meditation';
-			case 'hobbyList.24': return 'Hunting';
-			case 'hobbyList.25': return 'Swimming';
+			case 'hobbyList': return ({required HobbyContext hobby}) {
+				switch (hobby) {
+					case HobbyContext.wrestling:
+						return 'Wrestling';
+					case HobbyContext.sailing:
+						return 'Sailing';
+					case HobbyContext.triathlon:
+						return 'Triathlon';
+					case HobbyContext.sauna:
+						return 'Sauna';
+					case HobbyContext.comedy:
+						return 'Comedy';
+					case HobbyContext.gymAndFitness:
+						return 'Gym & Fitness';
+					case HobbyContext.game:
+						return 'Gaming';
+					case HobbyContext.book:
+						return 'Book';
+					case HobbyContext.cripto:
+						return 'Cripto';
+					case HobbyContext.nft:
+						return 'NFT';
+					case HobbyContext.football:
+						return 'Football';
+					case HobbyContext.basketball:
+						return 'Basketball';
+					case HobbyContext.volleyball:
+						return 'Volleyball';
+					case HobbyContext.gliding:
+						return 'Gliding';
+					case HobbyContext.climbing:
+						return 'Climbing';
+					case HobbyContext.diving:
+						return 'Diving';
+					case HobbyContext.movies:
+						return 'Movies';
+					case HobbyContext.tv_shows:
+						return 'TV Shows';
+					case HobbyContext.anime:
+						return 'Anime';
+					case HobbyContext.technology:
+						return 'Technology';
+					case HobbyContext.music:
+						return 'Music';
+					case HobbyContext.traveling:
+						return 'Traveling';
+					case HobbyContext.cooking:
+						return 'Cooking  ';
+					case HobbyContext.meditation:
+						return 'Meditation';
+					case HobbyContext.hunting:
+						return 'Hunting';
+					case HobbyContext.swimming:
+						return 'Swimming';
+				}
+			};
 			case 'interestedGender': return 'Interested Gender';
 			case 'sexualOrientation': return 'Sexual Orientation';
-			case 'sexualOrientationList.0': return 'Straight';
-			case 'sexualOrientationList.1': return 'Gay';
-			case 'sexualOrientationList.2': return 'Lesbian';
-			case 'sexualOrientationList.3': return 'Bisexual';
-			case 'sexualOrientationList.4': return 'Asexual';
-			case 'sexualOrientationList.5': return 'Demisexual';
-			case 'sexualOrientationList.6': return 'Pansexual';
-			case 'sexualOrientationList.7': return 'Bicurious';
-			case 'sexualOrientationList.8': return 'Queer';
+			case 'sexualOrientationList': return ({required sexualOrientationContext sexualOrientation}) {
+				switch (sexualOrientation) {
+					case sexualOrientationContext.straight:
+						return 'Straight';
+					case sexualOrientationContext.gay:
+						return 'Gay';
+					case sexualOrientationContext.lesbian:
+						return 'Lesbian';
+					case sexualOrientationContext.bisexual:
+						return 'Bisexual';
+					case sexualOrientationContext.asexual:
+						return 'Asexual';
+					case sexualOrientationContext.demisexual:
+						return 'Demisexual';
+					case sexualOrientationContext.pansexual:
+						return 'Pansexual';
+					case sexualOrientationContext.bicurious:
+						return 'Bicurious';
+				}
+			};
 			case 'lookingFor': return 'Looking For';
-			case 'lookingForList.0': return 'Long-term Partner';
-			case 'lookingForList.1': return 'Short-term Partner';
-			case 'lookingForList.2': return 'Long-term Open Relationship';
-			case 'lookingForList.3': return 'Short-term Open Relationship';
-			case 'lookingForList.4': return 'New Friens';
-			case 'lookingForList.5': return 'Still Figuring It Out';
+			case 'lookingForList': return ({required lookingForContext lookingFor}) {
+				switch (lookingFor) {
+					case lookingForContext.longTermPartner:
+						return 'Long-term Partner';
+					case lookingForContext.shortTermPartner:
+						return 'Short-term Partner';
+					case lookingForContext.longTermOpenRelationship:
+						return 'Long-term Open Relationship';
+					case lookingForContext.shortTermOpenRelationship:
+						return 'Short-term Open Relationship';
+					case lookingForContext.newFriends:
+						return 'New Friends';
+					case lookingForContext.stillFiguringOut:
+						return 'Still Figuring It Out';
+				}
+			};
 			case 'discover': return 'Discover';
 			case 'profile': return 'Profile';
 			case 'updateProfile': return 'Update Profile';
@@ -671,6 +888,9 @@ extension on Translations {
 			case 'areYouSureYouWantToDeleteYourAccount': return 'Are You Sure You Want To Delete Your Account';
 			case 'no': return 'No';
 			case 'yes': return 'Yes';
+			case 'apply': return 'Apply';
+			case 'everyone': return 'Everyone';
+			case 'age': return 'Age';
 			default: return null;
 		}
 	}
@@ -715,53 +935,110 @@ extension on _StringsTr {
 			case 'helpCenter': return 'Yardım Merkezi';
 			case 'aboutLoveLens': return 'Hakkında (Love Lens)';
 			case 'gender': return 'Cinsiyet';
-			case 'genderList.0': return 'Erkek';
-			case 'genderList.1': return 'Kadın';
+			case 'genderList': return ({required GenderContext gender}) {
+				switch (gender) {
+					case GenderContext.male:
+						return 'Erkek';
+					case GenderContext.female:
+						return 'Kadın';
+				}
+			};
 			case 'hobbies': return 'Hobiler & İlgi Alanları';
-			case 'hobbyList.0': return 'Güreş';
-			case 'hobbyList.1': return 'Yelkencilik';
-			case 'hobbyList.2': return 'Triatlon';
-			case 'hobbyList.3': return 'Sauna';
-			case 'hobbyList.4': return 'Komedi';
-			case 'hobbyList.5': return 'Spor Salonu & Fitness';
-			case 'hobbyList.6': return 'Oyun';
-			case 'hobbyList.7': return 'Kitap';
-			case 'hobbyList.8': return 'Kripto';
-			case 'hobbyList.9': return 'NFT';
-			case 'hobbyList.10': return 'Futbol';
-			case 'hobbyList.11': return 'Basketbol';
-			case 'hobbyList.12': return 'Voleybol';
-			case 'hobbyList.13': return 'Planörle Uçuş';
-			case 'hobbyList.14': return 'Dağcılık';
-			case 'hobbyList.15': return 'Dalış';
-			case 'hobbyList.16': return 'Filmler';
-			case 'hobbyList.17': return 'TV Programları';
-			case 'hobbyList.18': return 'Anime';
-			case 'hobbyList.19': return 'Teknoloji';
-			case 'hobbyList.20': return 'Müzik';
-			case 'hobbyList.21': return 'Seyahat';
-			case 'hobbyList.22': return 'Yemek Pişirme';
-			case 'hobbyList.23': return 'Meditasyon';
-			case 'hobbyList.24': return 'Avcılık';
-			case 'hobbyList.25': return 'Yüzme';
+			case 'hobbyList': return ({required HobbyContext hobby}) {
+				switch (hobby) {
+					case HobbyContext.wrestling:
+						return 'Güreş';
+					case HobbyContext.sailing:
+						return 'Yelkencilik';
+					case HobbyContext.triathlon:
+						return 'Triatlon';
+					case HobbyContext.sauna:
+						return 'Sauna';
+					case HobbyContext.comedy:
+						return 'Komedi';
+					case HobbyContext.gymAndFitness:
+						return 'Spor Salonu & Fitness';
+					case HobbyContext.game:
+						return 'Oyun';
+					case HobbyContext.book:
+						return 'Kitap';
+					case HobbyContext.cripto:
+						return 'Kripto';
+					case HobbyContext.nft:
+						return 'NFT';
+					case HobbyContext.football:
+						return 'Futbol';
+					case HobbyContext.basketball:
+						return 'Basketbol';
+					case HobbyContext.volleyball:
+						return 'Voleybol';
+					case HobbyContext.gliding:
+						return 'Planörle Uçuş';
+					case HobbyContext.climbing:
+						return 'Dağcılık';
+					case HobbyContext.diving:
+						return 'Dalış';
+					case HobbyContext.movies:
+						return 'Filmler';
+					case HobbyContext.tv_shows:
+						return 'TV Programları';
+					case HobbyContext.anime:
+						return 'Anime';
+					case HobbyContext.technology:
+						return 'Teknoloji';
+					case HobbyContext.music:
+						return 'Müzik';
+					case HobbyContext.traveling:
+						return 'Seyahat';
+					case HobbyContext.cooking:
+						return 'Yemek Pişirme';
+					case HobbyContext.meditation:
+						return 'Meditasyon';
+					case HobbyContext.hunting:
+						return 'Avcılık';
+					case HobbyContext.swimming:
+						return 'Yüzme';
+				}
+			};
 			case 'interestedGender': return 'İlgilenilen Cinsiyet';
 			case 'sexualOrientation': return 'Cinsel Yönelim';
-			case 'sexualOrientationList.0': return 'Heteroseksüel';
-			case 'sexualOrientationList.1': return 'Eşcinsel';
-			case 'sexualOrientationList.2': return 'Lezbiyen';
-			case 'sexualOrientationList.3': return 'Biseksüel';
-			case 'sexualOrientationList.4': return 'Aseksüel';
-			case 'sexualOrientationList.5': return 'Demiseksüel';
-			case 'sexualOrientationList.6': return 'Panseksüel';
-			case 'sexualOrientationList.7': return 'Bikürsüel';
-			case 'sexualOrientationList.8': return 'Queer';
+			case 'sexualOrientationList': return ({required sexualOrientationContext sexualOrientation}) {
+				switch (sexualOrientation) {
+					case sexualOrientationContext.straight:
+						return 'Heteroseksüel';
+					case sexualOrientationContext.gay:
+						return 'Eşcinsel';
+					case sexualOrientationContext.lesbian:
+						return 'Lezbiyen';
+					case sexualOrientationContext.bisexual:
+						return 'Biseksüel';
+					case sexualOrientationContext.asexual:
+						return 'Aseksüel';
+					case sexualOrientationContext.demisexual:
+						return 'Demiseksüel';
+					case sexualOrientationContext.pansexual:
+						return 'Panseksüel';
+					case sexualOrientationContext.bicurious:
+						return 'Bikürsüel';
+				}
+			};
 			case 'lookingFor': return 'Aranan';
-			case 'lookingForList.0': return 'Uzun Vadeli Partner';
-			case 'lookingForList.1': return 'Kısa Vadeli Partner';
-			case 'lookingForList.2': return 'Uzun Vadeli Açık İlişki';
-			case 'lookingForList.3': return 'Kısa Vadeli Açık İlişki';
-			case 'lookingForList.4': return 'Yeni Arkadaşlar';
-			case 'lookingForList.5': return 'Hala Anlamaya Çalışıyorum';
+			case 'lookingForList': return ({required lookingForContext lookingFor}) {
+				switch (lookingFor) {
+					case lookingForContext.longTermPartner:
+						return 'Uzun Vadeli Partner';
+					case lookingForContext.shortTermPartner:
+						return 'Kısa Vadeli Partner';
+					case lookingForContext.longTermOpenRelationship:
+						return 'Uzun Vadeli Açık İlişki';
+					case lookingForContext.shortTermOpenRelationship:
+						return 'Kısa Vadeli Açık İlişki';
+					case lookingForContext.newFriends:
+						return 'Yeni Arkadaşlıklar';
+					case lookingForContext.stillFiguringOut:
+						return 'Hala Anlamaya Çalışıyorum';
+				}
+			};
 			case 'discover': return 'Keşfet';
 			case 'profile': return 'Profil';
 			case 'updateProfile': return 'Profil Güncelle';
@@ -830,6 +1107,9 @@ extension on _StringsTr {
 			case 'areYouSureYouWantToDeleteYourAccount': return 'Hesabını silmek istediğinden emin misin?';
 			case 'no': return 'Hayır';
 			case 'yes': return 'Evet';
+			case 'apply': return 'Onayla';
+			case 'everyone': return 'Herkes';
+			case 'age': return 'Yaş';
 			default: return null;
 		}
 	}

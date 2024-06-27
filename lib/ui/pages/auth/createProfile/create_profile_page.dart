@@ -36,11 +36,11 @@ class CreateProfilePage extends HookConsumerWidget {
     final about = ref.watch(aboutController);
     final imageFiles = useState<List<XFile>>([]);
     final deletedImages = useState<List<String>>([]);
-    final hobbies = useState<List<String>>([]);
-    final gender = useState<String>('');
-    final interestedGender = useState<String>('');
-    final sexualOrientation = useState<String>('');
-    final lookingFor = useState<List<String>>([]);
+    final hobbies = useState<List<HobbyContext>>([]);
+    final gender = useState<GenderContext?>(null);
+    final interestedGender = useState<GenderContext?>(null);
+    final sexualOrientation = useState<sexualOrientationContext?>(null);
+    final lookingFor = useState<List<lookingForContext>>([]);
 
     final formKey = GlobalKey<FormBuilderState>();
     final introKey = useMemoized(GlobalKey<IntroductionScreenState>.new);
@@ -59,7 +59,7 @@ class CreateProfilePage extends HookConsumerWidget {
             final faceDetector = FaceDetector(
               options: FaceDetectorOptions(
                 performanceMode: FaceDetectorMode.accurate,
-                minFaceSize: 0.7,
+                minFaceSize: 0.8,
               ),
             );
             final List<Face> faces =
@@ -378,7 +378,7 @@ class CreateProfilePage extends HookConsumerWidget {
                         maxLines: 5,
                       ),
                     ),
-                    ChipsChoice<String>.multiple(
+                    ChipsChoice<HobbyContext>.multiple(
                       value: hobbies.value,
                       onChanged: (val) => hobbies.value = val,
                       wrapped: true,
@@ -395,10 +395,10 @@ class CreateProfilePage extends HookConsumerWidget {
                           backgroundColor: Colors.deepPurple,
                         ),
                       ),
-                      choiceItems: C2Choice.listFrom<String, String>(
-                        source: t.hobbyList,
+                      choiceItems: C2Choice.listFrom(
+                        source: HobbyContext.values,
                         value: (i, v) => v,
-                        label: (i, v) => v,
+                        label: (i, v) => t.hobbyList(hobby: v),
                       ),
                     ),
                   ],
@@ -415,9 +415,9 @@ class CreateProfilePage extends HookConsumerWidget {
                 ),
                 bodyWidget: Column(
                   children: [
-                    ChipsChoice<String>.single(
+                    ChipsChoice<GenderContext>.single(
                       value: gender.value,
-                      onChanged: (val) => gender.value = val,
+                      onChanged: (GenderContext val) => gender.value = val,
                       wrapped: true,
                       choiceCheckmark: true,
                       choiceStyle: C2ChipStyle.filled(
@@ -431,10 +431,10 @@ class CreateProfilePage extends HookConsumerWidget {
                           backgroundColor: Colors.deepPurple,
                         ),
                       ),
-                      choiceItems: C2Choice.listFrom<String, String>(
-                        source: t.genderList,
+                      choiceItems: C2Choice.listFrom(
+                        source: GenderContext.values,
                         value: (i, v) => v,
-                        label: (i, v) => v,
+                        label: (i, v) => t.genderList(gender: v),
                       ),
                     ),
                     Align(
@@ -445,7 +445,7 @@ class CreateProfilePage extends HookConsumerWidget {
                             fontSize: 14, color: Colors.deepPurple),
                       ),
                     ),
-                    ChipsChoice<String>.single(
+                    ChipsChoice<GenderContext>.single(
                       value: interestedGender.value,
                       onChanged: (val) => interestedGender.value = val,
                       wrapped: true,
@@ -461,10 +461,10 @@ class CreateProfilePage extends HookConsumerWidget {
                           backgroundColor: Colors.deepPurple,
                         ),
                       ),
-                      choiceItems: C2Choice.listFrom<String, String>(
-                        source: t.genderList,
+                      choiceItems: C2Choice.listFrom(
+                        source: GenderContext.values,
                         value: (i, v) => v,
-                        label: (i, v) => v,
+                        label: (i, v) => t.genderList(gender: v),
                       ),
                     ),
                     Align(
@@ -475,7 +475,7 @@ class CreateProfilePage extends HookConsumerWidget {
                             fontSize: 14, color: Colors.deepPurple),
                       ),
                     ),
-                    ChipsChoice<String>.single(
+                    ChipsChoice<sexualOrientationContext>.single(
                       value: sexualOrientation.value,
                       onChanged: (val) => sexualOrientation.value = val,
                       wrapped: true,
@@ -491,10 +491,11 @@ class CreateProfilePage extends HookConsumerWidget {
                           backgroundColor: Colors.deepPurple,
                         ),
                       ),
-                      choiceItems: C2Choice.listFrom<String, String>(
-                        source: t.sexualOrientationList,
+                      choiceItems: C2Choice.listFrom(
+                        source: sexualOrientationContext.values,
                         value: (i, v) => v,
-                        label: (i, v) => v,
+                        label: (i, v) =>
+                            t.sexualOrientationList(sexualOrientation: v),
                       ),
                     ),
                     Align(
@@ -505,7 +506,7 @@ class CreateProfilePage extends HookConsumerWidget {
                             fontSize: 14, color: Colors.deepPurple),
                       ),
                     ),
-                    ChipsChoice<String>.multiple(
+                    ChipsChoice<lookingForContext>.multiple(
                       value: lookingFor.value,
                       onChanged: (val) => lookingFor.value = val,
                       wrapped: true,
@@ -521,10 +522,10 @@ class CreateProfilePage extends HookConsumerWidget {
                           backgroundColor: Colors.deepPurple,
                         ),
                       ),
-                      choiceItems: C2Choice.listFrom<String, String>(
-                        source: t.lookingForList,
+                      choiceItems: C2Choice.listFrom(
+                        source: lookingForContext.values,
                         value: (i, v) => v,
-                        label: (i, v) => v,
+                        label: (i, v) => t.lookingForList(lookingFor: v),
                       ),
                     ),
                   ],

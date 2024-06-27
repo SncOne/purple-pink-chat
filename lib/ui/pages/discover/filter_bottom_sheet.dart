@@ -1,3 +1,4 @@
+import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -25,8 +26,9 @@ class FilterBottomSheet extends HookConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Filter',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              Text(t.filter,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold)),
               IconButton(
                 icon: const Icon(Icons.close),
                 onPressed: () => Navigator.of(context).pop(),
@@ -34,37 +36,60 @@ class FilterBottomSheet extends HookConsumerWidget {
             ],
           ),
           const SizedBox(height: 16),
-          const Wrap(
-            spacing: 8.0,
-            children: [
-              Chip(label: Text('America')),
-              Chip(label: Text('Turkey')),
-              Chip(label: Text('Russia')),
-              Chip(label: Text('+2')),
-            ],
-          ),
           const SizedBox(height: 16),
-          const Text('Relationship',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          Text(t.lookingFor,
+              style:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           ToggleButtons(
             isSelected: [
-              relationshipController.value == 'Lover',
-              relationshipController.value == 'Friend',
-              relationshipController.value == 'Both',
+              relationshipController.value == 'longTermPartner',
+              relationshipController.value == 'shortTermPartner',
+              relationshipController.value == 'longTermOpenRelationship',
+              relationshipController.value == 'shortTermOpenRelationship',
+              relationshipController.value == 'newFriends',
+              relationshipController.value == 'stillFiguringOut',
+              relationshipController.value == 'Everyone',
             ],
             onPressed: (int index) {
-              relationshipController.value = ['Lover', 'Friend', 'Both'][index];
+              relationshipController.value = [
+                'longTermPartner',
+                'shortTermPartner',
+                'longTermOpenRelationship',
+                'shortTermOpenRelationship',
+                'newFriends',
+                'stillFiguringOut',
+                'Everyone'
+              ][index];
             },
-            children: const [
+            children: [
               Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text('Lover')),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(t.lookingForList(
+                      lookingFor: lookingForContext.longTermPartner))),
               Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text('Friend')),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(t.lookingForList(
+                      lookingFor: lookingForContext.shortTermPartner))),
               Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text('Both')),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(t.lookingForList(
+                      lookingFor: lookingForContext.longTermOpenRelationship))),
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(t.lookingForList(
+                      lookingFor:
+                          lookingForContext.shortTermOpenRelationship))),
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(t.lookingForList(
+                      lookingFor: lookingForContext.newFriends))),
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(t.lookingForList(
+                      lookingFor: lookingForContext.stillFiguringOut))),
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(t.everyone)),
             ],
           ),
           const SizedBox(height: 16),
@@ -72,28 +97,29 @@ class FilterBottomSheet extends HookConsumerWidget {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           ToggleButtons(
             isSelected: [
-              genderController.value == 'Male',
-              genderController.value == 'Female',
+              genderController.value == 'male',
+              genderController.value == 'female',
               genderController.value == 'Everyone',
             ],
             onPressed: (int index) {
-              genderController.value = ['Male', 'Female', 'Everyone'][index];
+              genderController.value = ['male', 'female', 'Everyone'][index];
             },
-            children: const [
+            children: [
               Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text('Male')),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(t.genderList(gender: GenderContext.male))),
               Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text('Female')),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(t.genderList(gender: GenderContext.female))),
               Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text('Everyone')),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(t.everyone)),
             ],
           ),
           const SizedBox(height: 16),
-          const Text('Age',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          Text(t.age,
+              style:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           SfRangeSlider(
             min: 18.0,
             max: 100.0,
@@ -118,7 +144,7 @@ class FilterBottomSheet extends HookConsumerWidget {
               );
               Navigator.of(context).pop();
             },
-            child: const Text('Apply'),
+            child: Text(t.apply),
           ),
         ],
       ),

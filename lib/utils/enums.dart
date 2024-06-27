@@ -8,6 +8,8 @@ enum OnboardingStatus { none, show }
 
 enum NotifTopics { none, all }
 
+enum SubscriptionType { monthly, yearly, none }
+
 enum EmailProvider {
   gmail(name: 'gmail.com', backgroundColor: Colors.red),
   yahoo(name: 'yahoo.com', backgroundColor: Colors.purple),

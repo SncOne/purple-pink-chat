@@ -20,21 +20,26 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserModel {
-  String get sexualOrientation => throw _privateConstructorUsedError;
-  String get lastName => throw _privateConstructorUsedError;
-  String get firstName => throw _privateConstructorUsedError;
-  List<String> get profileImages => throw _privateConstructorUsedError;
   String get uid => throw _privateConstructorUsedError;
-  String get gender => throw _privateConstructorUsedError;
-  String get interestedGender => throw _privateConstructorUsedError;
-  List<String> get lookingFor => throw _privateConstructorUsedError;
-  String get location => throw _privateConstructorUsedError;
-  String? get about => throw _privateConstructorUsedError;
-  bool get subscription => throw _privateConstructorUsedError;
-  bool get isAdmin => throw _privateConstructorUsedError;
-  Location get currentLocation => throw _privateConstructorUsedError;
-  List<String> get hobiesAndInterests => throw _privateConstructorUsedError;
+  String get firstName => throw _privateConstructorUsedError;
+  String get lastName => throw _privateConstructorUsedError;
   DateTime get birthDate => throw _privateConstructorUsedError;
+  List<String> get profileImages => throw _privateConstructorUsedError;
+  String? get about => throw _privateConstructorUsedError;
+  String get location => throw _privateConstructorUsedError;
+  Location get currentLocation => throw _privateConstructorUsedError;
+  List<HobbyContext> get hobiesAndInterests =>
+      throw _privateConstructorUsedError;
+  GenderContext get gender => throw _privateConstructorUsedError;
+  GenderContext get interestedGender => throw _privateConstructorUsedError;
+  List<lookingForContext> get lookingFor => throw _privateConstructorUsedError;
+  sexualOrientationContext get sexualOrientation =>
+      throw _privateConstructorUsedError;
+  bool get subscription => throw _privateConstructorUsedError;
+  SubscriptionType get subscriptionType => throw _privateConstructorUsedError;
+  int get dailyMessageLimit => throw _privateConstructorUsedError;
+  int get swipeLimitForAd => throw _privateConstructorUsedError;
+  bool get isAdmin => throw _privateConstructorUsedError;
   bool get isValidated => throw _privateConstructorUsedError;
   bool get canRecieveImages => throw _privateConstructorUsedError;
   bool get canRecieveAudios => throw _privateConstructorUsedError;
@@ -52,21 +57,24 @@ abstract class $UserModelCopyWith<$Res> {
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
   $Res call(
-      {String sexualOrientation,
-      String lastName,
+      {String uid,
       String firstName,
-      List<String> profileImages,
-      String uid,
-      String gender,
-      String interestedGender,
-      List<String> lookingFor,
-      String location,
-      String? about,
-      bool subscription,
-      bool isAdmin,
-      Location currentLocation,
-      List<String> hobiesAndInterests,
+      String lastName,
       DateTime birthDate,
+      List<String> profileImages,
+      String? about,
+      String location,
+      Location currentLocation,
+      List<HobbyContext> hobiesAndInterests,
+      GenderContext gender,
+      GenderContext interestedGender,
+      List<lookingForContext> lookingFor,
+      sexualOrientationContext sexualOrientation,
+      bool subscription,
+      SubscriptionType subscriptionType,
+      int dailyMessageLimit,
+      int swipeLimitForAd,
+      bool isAdmin,
       bool isValidated,
       bool canRecieveImages,
       bool canRecieveAudios,
@@ -88,75 +96,58 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? sexualOrientation = null,
-    Object? lastName = null,
-    Object? firstName = null,
-    Object? profileImages = null,
     Object? uid = null,
+    Object? firstName = null,
+    Object? lastName = null,
+    Object? birthDate = null,
+    Object? profileImages = null,
+    Object? about = freezed,
+    Object? location = null,
+    Object? currentLocation = null,
+    Object? hobiesAndInterests = null,
     Object? gender = null,
     Object? interestedGender = null,
     Object? lookingFor = null,
-    Object? location = null,
-    Object? about = freezed,
+    Object? sexualOrientation = null,
     Object? subscription = null,
+    Object? subscriptionType = null,
+    Object? dailyMessageLimit = null,
+    Object? swipeLimitForAd = null,
     Object? isAdmin = null,
-    Object? currentLocation = null,
-    Object? hobiesAndInterests = null,
-    Object? birthDate = null,
     Object? isValidated = null,
     Object? canRecieveImages = null,
     Object? canRecieveAudios = null,
     Object? canRecieveVideos = null,
   }) {
     return _then(_value.copyWith(
-      sexualOrientation: null == sexualOrientation
-          ? _value.sexualOrientation
-          : sexualOrientation // ignore: cast_nullable_to_non_nullable
-              as String,
-      lastName: null == lastName
-          ? _value.lastName
-          : lastName // ignore: cast_nullable_to_non_nullable
+      uid: null == uid
+          ? _value.uid
+          : uid // ignore: cast_nullable_to_non_nullable
               as String,
       firstName: null == firstName
           ? _value.firstName
           : firstName // ignore: cast_nullable_to_non_nullable
               as String,
+      lastName: null == lastName
+          ? _value.lastName
+          : lastName // ignore: cast_nullable_to_non_nullable
+              as String,
+      birthDate: null == birthDate
+          ? _value.birthDate
+          : birthDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       profileImages: null == profileImages
           ? _value.profileImages
           : profileImages // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      uid: null == uid
-          ? _value.uid
-          : uid // ignore: cast_nullable_to_non_nullable
-              as String,
-      gender: null == gender
-          ? _value.gender
-          : gender // ignore: cast_nullable_to_non_nullable
-              as String,
-      interestedGender: null == interestedGender
-          ? _value.interestedGender
-          : interestedGender // ignore: cast_nullable_to_non_nullable
-              as String,
-      lookingFor: null == lookingFor
-          ? _value.lookingFor
-          : lookingFor // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      location: null == location
-          ? _value.location
-          : location // ignore: cast_nullable_to_non_nullable
-              as String,
       about: freezed == about
           ? _value.about
           : about // ignore: cast_nullable_to_non_nullable
               as String?,
-      subscription: null == subscription
-          ? _value.subscription
-          : subscription // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isAdmin: null == isAdmin
-          ? _value.isAdmin
-          : isAdmin // ignore: cast_nullable_to_non_nullable
-              as bool,
+      location: null == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String,
       currentLocation: null == currentLocation
           ? _value.currentLocation
           : currentLocation // ignore: cast_nullable_to_non_nullable
@@ -164,11 +155,43 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
       hobiesAndInterests: null == hobiesAndInterests
           ? _value.hobiesAndInterests
           : hobiesAndInterests // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      birthDate: null == birthDate
-          ? _value.birthDate
-          : birthDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as List<HobbyContext>,
+      gender: null == gender
+          ? _value.gender
+          : gender // ignore: cast_nullable_to_non_nullable
+              as GenderContext,
+      interestedGender: null == interestedGender
+          ? _value.interestedGender
+          : interestedGender // ignore: cast_nullable_to_non_nullable
+              as GenderContext,
+      lookingFor: null == lookingFor
+          ? _value.lookingFor
+          : lookingFor // ignore: cast_nullable_to_non_nullable
+              as List<lookingForContext>,
+      sexualOrientation: null == sexualOrientation
+          ? _value.sexualOrientation
+          : sexualOrientation // ignore: cast_nullable_to_non_nullable
+              as sexualOrientationContext,
+      subscription: null == subscription
+          ? _value.subscription
+          : subscription // ignore: cast_nullable_to_non_nullable
+              as bool,
+      subscriptionType: null == subscriptionType
+          ? _value.subscriptionType
+          : subscriptionType // ignore: cast_nullable_to_non_nullable
+              as SubscriptionType,
+      dailyMessageLimit: null == dailyMessageLimit
+          ? _value.dailyMessageLimit
+          : dailyMessageLimit // ignore: cast_nullable_to_non_nullable
+              as int,
+      swipeLimitForAd: null == swipeLimitForAd
+          ? _value.swipeLimitForAd
+          : swipeLimitForAd // ignore: cast_nullable_to_non_nullable
+              as int,
+      isAdmin: null == isAdmin
+          ? _value.isAdmin
+          : isAdmin // ignore: cast_nullable_to_non_nullable
+              as bool,
       isValidated: null == isValidated
           ? _value.isValidated
           : isValidated // ignore: cast_nullable_to_non_nullable
@@ -206,21 +229,24 @@ abstract class _$$UserModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String sexualOrientation,
-      String lastName,
+      {String uid,
       String firstName,
-      List<String> profileImages,
-      String uid,
-      String gender,
-      String interestedGender,
-      List<String> lookingFor,
-      String location,
-      String? about,
-      bool subscription,
-      bool isAdmin,
-      Location currentLocation,
-      List<String> hobiesAndInterests,
+      String lastName,
       DateTime birthDate,
+      List<String> profileImages,
+      String? about,
+      String location,
+      Location currentLocation,
+      List<HobbyContext> hobiesAndInterests,
+      GenderContext gender,
+      GenderContext interestedGender,
+      List<lookingForContext> lookingFor,
+      sexualOrientationContext sexualOrientation,
+      bool subscription,
+      SubscriptionType subscriptionType,
+      int dailyMessageLimit,
+      int swipeLimitForAd,
+      bool isAdmin,
       bool isValidated,
       bool canRecieveImages,
       bool canRecieveAudios,
@@ -241,75 +267,58 @@ class __$$UserModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? sexualOrientation = null,
-    Object? lastName = null,
-    Object? firstName = null,
-    Object? profileImages = null,
     Object? uid = null,
+    Object? firstName = null,
+    Object? lastName = null,
+    Object? birthDate = null,
+    Object? profileImages = null,
+    Object? about = freezed,
+    Object? location = null,
+    Object? currentLocation = null,
+    Object? hobiesAndInterests = null,
     Object? gender = null,
     Object? interestedGender = null,
     Object? lookingFor = null,
-    Object? location = null,
-    Object? about = freezed,
+    Object? sexualOrientation = null,
     Object? subscription = null,
+    Object? subscriptionType = null,
+    Object? dailyMessageLimit = null,
+    Object? swipeLimitForAd = null,
     Object? isAdmin = null,
-    Object? currentLocation = null,
-    Object? hobiesAndInterests = null,
-    Object? birthDate = null,
     Object? isValidated = null,
     Object? canRecieveImages = null,
     Object? canRecieveAudios = null,
     Object? canRecieveVideos = null,
   }) {
     return _then(_$UserModelImpl(
-      sexualOrientation: null == sexualOrientation
-          ? _value.sexualOrientation
-          : sexualOrientation // ignore: cast_nullable_to_non_nullable
-              as String,
-      lastName: null == lastName
-          ? _value.lastName
-          : lastName // ignore: cast_nullable_to_non_nullable
+      uid: null == uid
+          ? _value.uid
+          : uid // ignore: cast_nullable_to_non_nullable
               as String,
       firstName: null == firstName
           ? _value.firstName
           : firstName // ignore: cast_nullable_to_non_nullable
               as String,
+      lastName: null == lastName
+          ? _value.lastName
+          : lastName // ignore: cast_nullable_to_non_nullable
+              as String,
+      birthDate: null == birthDate
+          ? _value.birthDate
+          : birthDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       profileImages: null == profileImages
           ? _value._profileImages
           : profileImages // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      uid: null == uid
-          ? _value.uid
-          : uid // ignore: cast_nullable_to_non_nullable
-              as String,
-      gender: null == gender
-          ? _value.gender
-          : gender // ignore: cast_nullable_to_non_nullable
-              as String,
-      interestedGender: null == interestedGender
-          ? _value.interestedGender
-          : interestedGender // ignore: cast_nullable_to_non_nullable
-              as String,
-      lookingFor: null == lookingFor
-          ? _value._lookingFor
-          : lookingFor // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      location: null == location
-          ? _value.location
-          : location // ignore: cast_nullable_to_non_nullable
-              as String,
       about: freezed == about
           ? _value.about
           : about // ignore: cast_nullable_to_non_nullable
               as String?,
-      subscription: null == subscription
-          ? _value.subscription
-          : subscription // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isAdmin: null == isAdmin
-          ? _value.isAdmin
-          : isAdmin // ignore: cast_nullable_to_non_nullable
-              as bool,
+      location: null == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String,
       currentLocation: null == currentLocation
           ? _value.currentLocation
           : currentLocation // ignore: cast_nullable_to_non_nullable
@@ -317,11 +326,43 @@ class __$$UserModelImplCopyWithImpl<$Res>
       hobiesAndInterests: null == hobiesAndInterests
           ? _value._hobiesAndInterests
           : hobiesAndInterests // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      birthDate: null == birthDate
-          ? _value.birthDate
-          : birthDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as List<HobbyContext>,
+      gender: null == gender
+          ? _value.gender
+          : gender // ignore: cast_nullable_to_non_nullable
+              as GenderContext,
+      interestedGender: null == interestedGender
+          ? _value.interestedGender
+          : interestedGender // ignore: cast_nullable_to_non_nullable
+              as GenderContext,
+      lookingFor: null == lookingFor
+          ? _value._lookingFor
+          : lookingFor // ignore: cast_nullable_to_non_nullable
+              as List<lookingForContext>,
+      sexualOrientation: null == sexualOrientation
+          ? _value.sexualOrientation
+          : sexualOrientation // ignore: cast_nullable_to_non_nullable
+              as sexualOrientationContext,
+      subscription: null == subscription
+          ? _value.subscription
+          : subscription // ignore: cast_nullable_to_non_nullable
+              as bool,
+      subscriptionType: null == subscriptionType
+          ? _value.subscriptionType
+          : subscriptionType // ignore: cast_nullable_to_non_nullable
+              as SubscriptionType,
+      dailyMessageLimit: null == dailyMessageLimit
+          ? _value.dailyMessageLimit
+          : dailyMessageLimit // ignore: cast_nullable_to_non_nullable
+              as int,
+      swipeLimitForAd: null == swipeLimitForAd
+          ? _value.swipeLimitForAd
+          : swipeLimitForAd // ignore: cast_nullable_to_non_nullable
+              as int,
+      isAdmin: null == isAdmin
+          ? _value.isAdmin
+          : isAdmin // ignore: cast_nullable_to_non_nullable
+              as bool,
       isValidated: null == isValidated
           ? _value.isValidated
           : isValidated // ignore: cast_nullable_to_non_nullable
@@ -346,38 +387,43 @@ class __$$UserModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UserModelImpl implements _UserModel {
   const _$UserModelImpl(
-      {required this.sexualOrientation,
-      required this.lastName,
+      {required this.uid,
       required this.firstName,
+      required this.lastName,
+      required this.birthDate,
       required final List<String> profileImages,
-      required this.uid,
+      this.about,
+      required this.location,
+      required this.currentLocation,
+      required final List<HobbyContext> hobiesAndInterests,
       required this.gender,
       required this.interestedGender,
-      required final List<String> lookingFor,
-      required this.location,
-      this.about,
+      required final List<lookingForContext> lookingFor,
+      required this.sexualOrientation,
       required this.subscription,
+      required this.subscriptionType,
+      required this.dailyMessageLimit,
+      required this.swipeLimitForAd,
       required this.isAdmin,
-      required this.currentLocation,
-      required final List<String> hobiesAndInterests,
-      required this.birthDate,
       required this.isValidated,
       required this.canRecieveImages,
       required this.canRecieveAudios,
       required this.canRecieveVideos})
       : _profileImages = profileImages,
-        _lookingFor = lookingFor,
-        _hobiesAndInterests = hobiesAndInterests;
+        _hobiesAndInterests = hobiesAndInterests,
+        _lookingFor = lookingFor;
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserModelImplFromJson(json);
 
   @override
-  final String sexualOrientation;
+  final String uid;
+  @override
+  final String firstName;
   @override
   final String lastName;
   @override
-  final String firstName;
+  final DateTime birthDate;
   final List<String> _profileImages;
   @override
   List<String> get profileImages {
@@ -387,32 +433,14 @@ class _$UserModelImpl implements _UserModel {
   }
 
   @override
-  final String uid;
-  @override
-  final String gender;
-  @override
-  final String interestedGender;
-  final List<String> _lookingFor;
-  @override
-  List<String> get lookingFor {
-    if (_lookingFor is EqualUnmodifiableListView) return _lookingFor;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_lookingFor);
-  }
-
+  final String? about;
   @override
   final String location;
   @override
-  final String? about;
-  @override
-  final bool subscription;
-  @override
-  final bool isAdmin;
-  @override
   final Location currentLocation;
-  final List<String> _hobiesAndInterests;
+  final List<HobbyContext> _hobiesAndInterests;
   @override
-  List<String> get hobiesAndInterests {
+  List<HobbyContext> get hobiesAndInterests {
     if (_hobiesAndInterests is EqualUnmodifiableListView)
       return _hobiesAndInterests;
     // ignore: implicit_dynamic_type
@@ -420,7 +448,29 @@ class _$UserModelImpl implements _UserModel {
   }
 
   @override
-  final DateTime birthDate;
+  final GenderContext gender;
+  @override
+  final GenderContext interestedGender;
+  final List<lookingForContext> _lookingFor;
+  @override
+  List<lookingForContext> get lookingFor {
+    if (_lookingFor is EqualUnmodifiableListView) return _lookingFor;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_lookingFor);
+  }
+
+  @override
+  final sexualOrientationContext sexualOrientation;
+  @override
+  final bool subscription;
+  @override
+  final SubscriptionType subscriptionType;
+  @override
+  final int dailyMessageLimit;
+  @override
+  final int swipeLimitForAd;
+  @override
+  final bool isAdmin;
   @override
   final bool isValidated;
   @override
@@ -432,7 +482,7 @@ class _$UserModelImpl implements _UserModel {
 
   @override
   String toString() {
-    return 'UserModel(sexualOrientation: $sexualOrientation, lastName: $lastName, firstName: $firstName, profileImages: $profileImages, uid: $uid, gender: $gender, interestedGender: $interestedGender, lookingFor: $lookingFor, location: $location, about: $about, subscription: $subscription, isAdmin: $isAdmin, currentLocation: $currentLocation, hobiesAndInterests: $hobiesAndInterests, birthDate: $birthDate, isValidated: $isValidated, canRecieveImages: $canRecieveImages, canRecieveAudios: $canRecieveAudios, canRecieveVideos: $canRecieveVideos)';
+    return 'UserModel(uid: $uid, firstName: $firstName, lastName: $lastName, birthDate: $birthDate, profileImages: $profileImages, about: $about, location: $location, currentLocation: $currentLocation, hobiesAndInterests: $hobiesAndInterests, gender: $gender, interestedGender: $interestedGender, lookingFor: $lookingFor, sexualOrientation: $sexualOrientation, subscription: $subscription, subscriptionType: $subscriptionType, dailyMessageLimit: $dailyMessageLimit, swipeLimitForAd: $swipeLimitForAd, isAdmin: $isAdmin, isValidated: $isValidated, canRecieveImages: $canRecieveImages, canRecieveAudios: $canRecieveAudios, canRecieveVideos: $canRecieveVideos)';
   }
 
   @override
@@ -440,32 +490,38 @@ class _$UserModelImpl implements _UserModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UserModelImpl &&
-            (identical(other.sexualOrientation, sexualOrientation) ||
-                other.sexualOrientation == sexualOrientation) &&
-            (identical(other.lastName, lastName) ||
-                other.lastName == lastName) &&
+            (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.firstName, firstName) ||
                 other.firstName == firstName) &&
+            (identical(other.lastName, lastName) ||
+                other.lastName == lastName) &&
+            (identical(other.birthDate, birthDate) ||
+                other.birthDate == birthDate) &&
             const DeepCollectionEquality()
                 .equals(other._profileImages, _profileImages) &&
-            (identical(other.uid, uid) || other.uid == uid) &&
+            (identical(other.about, about) || other.about == about) &&
+            (identical(other.location, location) ||
+                other.location == location) &&
+            (identical(other.currentLocation, currentLocation) ||
+                other.currentLocation == currentLocation) &&
+            const DeepCollectionEquality()
+                .equals(other._hobiesAndInterests, _hobiesAndInterests) &&
             (identical(other.gender, gender) || other.gender == gender) &&
             (identical(other.interestedGender, interestedGender) ||
                 other.interestedGender == interestedGender) &&
             const DeepCollectionEquality()
                 .equals(other._lookingFor, _lookingFor) &&
-            (identical(other.location, location) ||
-                other.location == location) &&
-            (identical(other.about, about) || other.about == about) &&
+            (identical(other.sexualOrientation, sexualOrientation) ||
+                other.sexualOrientation == sexualOrientation) &&
             (identical(other.subscription, subscription) ||
                 other.subscription == subscription) &&
+            (identical(other.subscriptionType, subscriptionType) ||
+                other.subscriptionType == subscriptionType) &&
+            (identical(other.dailyMessageLimit, dailyMessageLimit) ||
+                other.dailyMessageLimit == dailyMessageLimit) &&
+            (identical(other.swipeLimitForAd, swipeLimitForAd) ||
+                other.swipeLimitForAd == swipeLimitForAd) &&
             (identical(other.isAdmin, isAdmin) || other.isAdmin == isAdmin) &&
-            (identical(other.currentLocation, currentLocation) ||
-                other.currentLocation == currentLocation) &&
-            const DeepCollectionEquality()
-                .equals(other._hobiesAndInterests, _hobiesAndInterests) &&
-            (identical(other.birthDate, birthDate) ||
-                other.birthDate == birthDate) &&
             (identical(other.isValidated, isValidated) ||
                 other.isValidated == isValidated) &&
             (identical(other.canRecieveImages, canRecieveImages) ||
@@ -480,21 +536,24 @@ class _$UserModelImpl implements _UserModel {
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
-        sexualOrientation,
-        lastName,
-        firstName,
-        const DeepCollectionEquality().hash(_profileImages),
         uid,
+        firstName,
+        lastName,
+        birthDate,
+        const DeepCollectionEquality().hash(_profileImages),
+        about,
+        location,
+        currentLocation,
+        const DeepCollectionEquality().hash(_hobiesAndInterests),
         gender,
         interestedGender,
         const DeepCollectionEquality().hash(_lookingFor),
-        location,
-        about,
+        sexualOrientation,
         subscription,
+        subscriptionType,
+        dailyMessageLimit,
+        swipeLimitForAd,
         isAdmin,
-        currentLocation,
-        const DeepCollectionEquality().hash(_hobiesAndInterests),
-        birthDate,
         isValidated,
         canRecieveImages,
         canRecieveAudios,
@@ -517,21 +576,24 @@ class _$UserModelImpl implements _UserModel {
 
 abstract class _UserModel implements UserModel {
   const factory _UserModel(
-      {required final String sexualOrientation,
-      required final String lastName,
+      {required final String uid,
       required final String firstName,
-      required final List<String> profileImages,
-      required final String uid,
-      required final String gender,
-      required final String interestedGender,
-      required final List<String> lookingFor,
-      required final String location,
-      final String? about,
-      required final bool subscription,
-      required final bool isAdmin,
-      required final Location currentLocation,
-      required final List<String> hobiesAndInterests,
+      required final String lastName,
       required final DateTime birthDate,
+      required final List<String> profileImages,
+      final String? about,
+      required final String location,
+      required final Location currentLocation,
+      required final List<HobbyContext> hobiesAndInterests,
+      required final GenderContext gender,
+      required final GenderContext interestedGender,
+      required final List<lookingForContext> lookingFor,
+      required final sexualOrientationContext sexualOrientation,
+      required final bool subscription,
+      required final SubscriptionType subscriptionType,
+      required final int dailyMessageLimit,
+      required final int swipeLimitForAd,
+      required final bool isAdmin,
       required final bool isValidated,
       required final bool canRecieveImages,
       required final bool canRecieveAudios,
@@ -541,35 +603,41 @@ abstract class _UserModel implements UserModel {
       _$UserModelImpl.fromJson;
 
   @override
-  String get sexualOrientation;
-  @override
-  String get lastName;
+  String get uid;
   @override
   String get firstName;
   @override
+  String get lastName;
+  @override
+  DateTime get birthDate;
+  @override
   List<String> get profileImages;
-  @override
-  String get uid;
-  @override
-  String get gender;
-  @override
-  String get interestedGender;
-  @override
-  List<String> get lookingFor;
-  @override
-  String get location;
   @override
   String? get about;
   @override
-  bool get subscription;
-  @override
-  bool get isAdmin;
+  String get location;
   @override
   Location get currentLocation;
   @override
-  List<String> get hobiesAndInterests;
+  List<HobbyContext> get hobiesAndInterests;
   @override
-  DateTime get birthDate;
+  GenderContext get gender;
+  @override
+  GenderContext get interestedGender;
+  @override
+  List<lookingForContext> get lookingFor;
+  @override
+  sexualOrientationContext get sexualOrientation;
+  @override
+  bool get subscription;
+  @override
+  SubscriptionType get subscriptionType;
+  @override
+  int get dailyMessageLimit;
+  @override
+  int get swipeLimitForAd;
+  @override
+  bool get isAdmin;
   @override
   bool get isValidated;
   @override
