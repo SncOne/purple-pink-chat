@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:catt_catt/core/providers/providers.dart';
-import 'package:catt_catt/core/services/notification_service.dart';
 import 'package:catt_catt/ui/pages/discover/filter_bottom_sheet.dart';
 import 'package:catt_catt/ui/shared/widgets/banner_ad_widget.dart';
 import 'package:catt_catt/ui/shared/widgets/profile_cards.dart';
@@ -16,8 +15,6 @@ class DiscoverPage extends HookConsumerWidget {
   const DiscoverPage({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.read(notificationServiceProvider).requestNotificationPermission();
-
     return Scaffold(
       appBar: AppBar(
         title: Text(t.discover),

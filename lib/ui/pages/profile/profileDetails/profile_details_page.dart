@@ -66,7 +66,7 @@ class ProfileDetailsPage extends HookConsumerWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        '${userData.gender} / ',
+                                        '${t.genderList(gender:userData.gender)} / ',
                                         style: S.textStyles.font16White,
                                       ),
                                       Text(

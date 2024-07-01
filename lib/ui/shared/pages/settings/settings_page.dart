@@ -11,6 +11,7 @@ import 'package:catt_catt/utils/extensions.dart';
 import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:catt_catt/utils/styles.dart';
 import 'package:catt_catt/utils/utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -264,91 +265,100 @@ class EmailVerificationScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final auth = FirebaseAuth.instance.currentUser!;
-    final isEmailVerified = useState(false);
+    final isEmailVerified = useState(auth.emailVerified);
+
+    Timer? timer;
+
+    void startTimer() {
+      timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+        await auth.reload();
+        if (auth.emailVerified) {
+          isEmailVerified.value = true;
+          if (context.mounted) {
+            Utils.show.toast(context, t.accountVerified);
+            FirebaseFirestore.instance
+                .collection("users")
+                .doc(auth.uid)
+                .update({"isValidated": true});
+          }
+          timer.cancel();
+        }
+      });
+    }
+
+    if (!isEmailVerified.value) {
+      startTimer();
+      auth.sendEmailVerification();
+    }
 
     useEffect(() {
-      Timer? timer;
-
-      Future<void> checkEmailVerification() async {
-        await auth.sendEmailVerification();
-
-        timer = Timer.periodic(const Duration(seconds: 3), (_) async {
-          await auth.reload();
-          if (auth.emailVerified) {
-            isEmailVerified.value = true;
-            if (context.mounted) {
-              Utils.show.toast(context, t.accountVerified);
-            }
-
-            timer?.cancel();
-          }
-        });
-      }
-
-      checkEmailVerification();
-
       return () => timer?.cancel();
-    }, const []);
+    }, []);
 
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 35),
-              const SizedBox(height: 30),
-              Center(
-                child: Text(
-                  t.checkYourMail,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                child: Center(
-                  child: Text(
-                    t.sendedMail(email: auth.email!),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              isEmailVerified.value
-                  ? Center(child: Text(t.emailVerified))
-                  : const Center(child: CircularProgressIndicator()),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                child: Center(
-                  child: isEmailVerified.value
-                      ? const SizedBox.shrink()
-                      : Text(
-                          t.verifyingEmail,
+    return isEmailVerified.value
+        ? SafeArea(
+            child: Center(
+              child: Text(t.accountVerified),
+            ),
+          )
+        : SafeArea(
+            child: Scaffold(
+              body: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 35),
+                    const SizedBox(height: 30),
+                    Center(
+                      child: Text(
+                        t.checkYourMail,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                      child: Center(
+                        child: Text(
+                          t.sendedMail(email: auth.email!),
                           textAlign: TextAlign.center,
                         ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    isEmailVerified.value
+                        ? Center(child: Text(t.accountVerified))
+                        : const Center(child: CircularProgressIndicator()),
+                    const SizedBox(height: 8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                      child: Center(
+                        child: isEmailVerified.value
+                            ? const SizedBox.shrink()
+                            : Text(
+                                t.verifyingEmail,
+                                textAlign: TextAlign.center,
+                              ),
+                      ),
+                    ),
+                    const SizedBox(height: 57),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                      child: ElevatedButton(
+                        child: Text(t.resend),
+                        onPressed: () async {
+                          try {
+                            await auth.sendEmailVerification();
+                          } catch (e) {
+                            Future.error('${t.error}: $e');
+                          }
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 57),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                child: ElevatedButton(
-                  child: Text(t.resend),
-                  onPressed: () {
-                    try {
-                      auth.sendEmailVerification();
-                    } catch (e) {
-                      // Replace Future.error with your own error handling logic
-                      Future.error('${t.error}: $e');
-                    }
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
   }
 }

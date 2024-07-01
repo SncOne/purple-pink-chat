@@ -19,9 +19,10 @@ class ProfileCards extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUser = ref.read(userProvider);
     final matchingProvider = ref.read(matchingService);
+    final profileData = ref.watch(profilesProvider);
     final lastCard = useState(false);
     return AsyncWidget(
-      data: ref.watch(profilesProvider),
+      data: profileData,
       builder: (userData) {
         if (userData.isEmpty) {
           return Container(
