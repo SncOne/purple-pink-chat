@@ -79,7 +79,10 @@ class AttachmentButton extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: Row(
           children: [
-            Icon(icon, color: Colors.deepPurple),
+            Icon(
+              icon,
+              color: const Color(0xff200F3A),
+            ),
             S.sizedBox.w12,
             Text(text),
           ],

@@ -45,14 +45,16 @@ class WelcomePage extends StatelessWidget {
               Text(
                 t.appIntro,
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.deepPurple),
+                style: const TextStyle(
+                  color: Color(0xff200F3A),
+                ),
               ),
               S.sizedBox.h32,
               TouchableOpacity(
                 child: Container(
                   padding: S.edgeInsets.all20,
                   decoration: BoxDecoration(
-                    color: Colors.deepPurple,
+                    color: const Color(0xff200F3A),
                     borderRadius: S.borderRadius.radius50,
                   ),
                   child: Row(

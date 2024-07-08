@@ -93,7 +93,7 @@ class MatchingService {
             builder: (BuildContext context) {
               return Center(
                 child: Container(
-                  color: Colors.deepPurple,
+                  color: const Color(0xff200F3A),
                   height: 600,
                   child: Stack(
                     alignment: Alignment.center,

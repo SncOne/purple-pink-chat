@@ -32,7 +32,10 @@ class LoginPage extends HookConsumerWidget {
         elevation: 17,
         title: const Text(
           C.title,
-          style: TextStyle(fontSize: 24, color: Colors.deepPurple),
+          style: TextStyle(
+            fontSize: 24,
+            color: Color(0xff200F3A),
+          ),
         ),
       ),
       body: Padding(
@@ -48,7 +51,7 @@ class LoginPage extends HookConsumerWidget {
                 child: Text(
                   t.login,
                   style: const TextStyle(
-                    color: Colors.deepPurple,
+                    color: Color(0xff200F3A),
                     fontSize: 15,
                   ),
                   textAlign: TextAlign.left,
@@ -117,7 +120,7 @@ class LoginPage extends HookConsumerWidget {
                   child: Text(
                     t.forgotPw,
                     style: const TextStyle(
-                      color: Colors.deepPurple,
+                      color: Color(0xff200F3A),
                       fontSize: 15,
                     ),
                     textAlign: TextAlign.right,
@@ -129,7 +132,7 @@ class LoginPage extends HookConsumerWidget {
                 child: Container(
                   padding: S.edgeInsets.all20,
                   decoration: BoxDecoration(
-                    color: Colors.deepPurple,
+                    color: const Color(0xff200F3A),
                     borderRadius: S.borderRadius.radius50,
                   ),
                   child: Row(
@@ -174,7 +177,7 @@ class LoginPage extends HookConsumerWidget {
               Text(
                 t.dontHaveAccount,
                 style: const TextStyle(
-                  color: Colors.deepPurple,
+                  color: Color(0xff200F3A),
                   fontSize: 15,
                 ),
               ),
@@ -184,7 +187,7 @@ class LoginPage extends HookConsumerWidget {
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.deepPurple,
+                    color: Color(0xff200F3A),
                   ),
                 ),
                 onTap: () {

@@ -34,7 +34,10 @@ class RegisterPage extends HookConsumerWidget {
           onTap: () => context.router.replace(const LoginRoute()),
           child: const Text(
             C.title,
-            style: TextStyle(fontSize: 24, color: Colors.deepPurple),
+            style: TextStyle(
+              fontSize: 24,
+              color: Color(0xff200F3A),
+            ),
           ),
         ),
       ),
@@ -51,7 +54,7 @@ class RegisterPage extends HookConsumerWidget {
                 child: Text(
                   t.register,
                   style: const TextStyle(
-                    color: Colors.deepPurple,
+                    color: Color(0xff200F3A),
                     fontSize: 15,
                   ),
                   textAlign: TextAlign.left,
@@ -155,7 +158,7 @@ class RegisterPage extends HookConsumerWidget {
                 child: Container(
                   padding: S.edgeInsets.all20,
                   decoration: BoxDecoration(
-                    color: Colors.deepPurple,
+                    color: const Color(0xff200F3A),
                     borderRadius: S.borderRadius.radius50,
                   ),
                   child: Row(

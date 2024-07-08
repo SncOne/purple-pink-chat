@@ -46,7 +46,7 @@ class ProfileDetailsPage extends HookConsumerWidget {
                               margin: const EdgeInsets.only(top: 50),
                               padding: const EdgeInsets.all(20),
                               decoration: BoxDecoration(
-                                color: Colors.deepPurple,
+                                color: const Color(0xff200F3A),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Column(
@@ -66,7 +66,7 @@ class ProfileDetailsPage extends HookConsumerWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        '${t.genderList(gender:userData.gender)} / ',
+                                        '${t.genderList(gender: userData.gender)} / ',
                                         style: S.textStyles.font16White,
                                       ),
                                       Text(
@@ -96,7 +96,7 @@ class ProfileDetailsPage extends HookConsumerWidget {
                                     decoration: BoxDecoration(
                                       borderRadius: S.borderRadius.radius50,
                                       border: Border.all(
-                                        color: Colors.deepPurple,
+                                        color: const Color(0xff200F3A),
                                         width: 3,
                                       ),
                                     ),

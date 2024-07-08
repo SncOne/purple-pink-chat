@@ -250,7 +250,8 @@ final class AuthService {
 
   Stream<List<UserModel>> getProfilesStream({
     String? genderFilter, // 'male', 'female' veya 'both'
-    String? lookingFor,
+    String? lookingFor, //sexualOrientation
+    String? hobbies,
     int? minAge,
     int? maxAge,
   }) async* {
@@ -280,6 +281,14 @@ final class AuthService {
         for (var doc in usersProfiles) {
           if (!likedUserIds.contains(doc.id)) {
             final userModel = UserModel.fromJson(doc.data());
+
+            // Hobi filtreleme
+            if (hobbies != null &&
+                hobbies != 'everyone' &&
+                userModel.hobiesAndInterests
+                    .contains(stringToHobbyContext(hobbies))) {
+              continue;
+            }
 
             // Cinsiyet filtreleme
             if (genderFilter != null &&

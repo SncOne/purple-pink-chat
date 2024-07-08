@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 306 (153 per locale)
+/// Strings: 308 (154 per locale)
 ///
-/// Built on 2024-06-30 at 10:42 UTC
+/// Built on 2024-07-08 at 09:52 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -414,6 +414,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get apply => 'Apply';
 	String get everyone => 'Everyone';
 	String get age => 'Age';
+	String get startTexting => 'Nothing to show here yet.Start a new conversation';
 }
 
 // Path: loginState
@@ -661,6 +662,7 @@ class _StringsTr implements Translations {
 	@override String get apply => 'Onayla';
 	@override String get everyone => 'Herkes';
 	@override String get age => 'Yaş';
+	@override String get startTexting => 'Burada gösterecek bir şey yok. Yeni bir sohbet başlatın.';
 }
 
 // Path: loginState
@@ -891,6 +893,7 @@ extension on Translations {
 			case 'apply': return 'Apply';
 			case 'everyone': return 'Everyone';
 			case 'age': return 'Age';
+			case 'startTexting': return 'Nothing to show here yet.Start a new conversation';
 			default: return null;
 		}
 	}
@@ -1110,6 +1113,7 @@ extension on _StringsTr {
 			case 'apply': return 'Onayla';
 			case 'everyone': return 'Herkes';
 			case 'age': return 'Yaş';
+			case 'startTexting': return 'Burada gösterecek bir şey yok. Yeni bir sohbet başlatın.';
 			default: return null;
 		}
 	}

@@ -78,7 +78,7 @@ class VideoPlayerWidget extends HookConsumerWidget {
                         controller,
                         allowScrubbing: false,
                         colors: const VideoProgressColors(
-                          playedColor: Colors.deepPurple,
+                          playedColor: Color(0xff200F3A),
                         ),
                       ),
                     ],
@@ -141,7 +141,7 @@ class _FullScreenVideoPlayer extends HookWidget {
                       controller,
                       allowScrubbing: true,
                       colors: const VideoProgressColors(
-                        playedColor: Colors.deepPurple,
+                        playedColor: Color(0xff200F3A),
                       ),
                     ),
                     Positioned(

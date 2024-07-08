@@ -32,12 +32,10 @@ class MessagesService {
         .limit(1)
         .snapshots()
         .map((snapshot) {
-      if (snapshot.docs.isNotEmpty) {
-        Print.error(snapshot.docs.first.data());
-        return snapshot.docs.first.data();
-      } else {
-        throw Exception("No messages found");
+      if (snapshot.docs.isEmpty) {
+        return {};
       }
+      return snapshot.docs.first.data();
     });
   }
 

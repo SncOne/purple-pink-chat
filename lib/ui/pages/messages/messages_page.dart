@@ -9,6 +9,7 @@ import 'package:catt_catt/ui/shared/widgets/async_widget.dart';
 import 'package:catt_catt/ui/shared/widgets/custom_image.dart';
 import 'package:catt_catt/utils/app_router.dart';
 import 'package:catt_catt/utils/assets.dart';
+import 'package:catt_catt/utils/extensions.dart';
 import 'package:catt_catt/utils/lang/strings.g.dart';
 import 'package:catt_catt/utils/print.dart';
 import 'package:catt_catt/utils/styles.dart';
@@ -76,8 +77,8 @@ class MessagesPage extends HookConsumerWidget {
                   ),
                   semanticContainer: false,
                   elevation: 5,
-                  shadowColor: Colors.deepPurpleAccent,
-                  color: Colors.deepPurple,
+                  shadowColor: const Color(0xff200F3A),
+                  color: const Color(0xff200F3A),
                   child: Padding(
                     padding: S.edgeInsets.all5,
                     child: Row(
@@ -117,6 +118,13 @@ class MessagesPage extends HookConsumerWidget {
                                   Print.info(lastMessage);
                                   String formattedTime =
                                       formatTimestamp(lastMessage['updatedAt']);
+                                  if (lastMessage.isEmpty ||
+                                      lastMessage.isNull) {
+                                    return Text(
+                                      t.startTexting,
+                                      style: S.textStyles.font16White,
+                                    );
+                                  }
                                   if (lastMessage['type'] == 'video') {
                                     return Row(
                                       mainAxisAlignment:
@@ -193,8 +201,12 @@ class MessagesPage extends HookConsumerWidget {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Expanded(
-                                        child: Text(lastMessage['text'],
-                                            style: S.textStyles.font16White),
+                                        child: Text(
+                                          lastMessage['text'],
+                                          style: S.textStyles.font16White,
+                                          maxLines: 3,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
                                       Text(formattedTime,
                                           style: S.textStyles.font16White),

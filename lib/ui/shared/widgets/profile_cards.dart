@@ -17,7 +17,7 @@ class ProfileCards extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentUser = ref.read(userProvider);
+    final currentUser = ref.watch(userProvider);
     final matchingProvider = ref.read(matchingService);
     final profileData = ref.watch(profilesProvider);
     final lastCard = useState(false);
@@ -26,7 +26,7 @@ class ProfileCards extends HookConsumerWidget {
       builder: (userData) {
         if (userData.isEmpty) {
           return Container(
-            color: Colors.deepPurple,
+            color: const Color(0xff200F3A),
             padding: S.edgeInsets.all20,
             margin: S.edgeInsets.all20,
             height: MediaQuery.sizeOf(context).height / 1.5,
@@ -72,7 +72,7 @@ class ProfileCards extends HookConsumerWidget {
           cardBuilder: (context, index, percentThresholdX, percentThresholdY) {
             if (index == userData.length) {
               return Container(
-                color: Colors.deepPurple,
+                color: const Color(0xff200F3A),
                 padding: S.edgeInsets.all20,
                 margin: S.edgeInsets.all20,
                 height: MediaQuery.sizeOf(context).height / 1.5,
