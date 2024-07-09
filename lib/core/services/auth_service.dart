@@ -173,7 +173,7 @@ final class AuthService {
             : [],
         "sexualOrientation": sexualOrientation != null
             ? sexualOrientationContextToString(sexualOrientation)
-            : '',
+            : sexualOrientationContext.straight,
         "about": about ?? '',
         "isAdmin": false, //For admin account
         "currentLocation": currentLocation,

@@ -161,7 +161,7 @@ class LikesList extends ConsumerWidget {
                       if (isObsecured)
                         Positioned.fill(
                           child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                            filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
                             child: const SizedBox.shrink(),
                           ),
                         ),

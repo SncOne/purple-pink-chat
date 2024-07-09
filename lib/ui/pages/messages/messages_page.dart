@@ -77,8 +77,8 @@ class MessagesPage extends HookConsumerWidget {
                   ),
                   semanticContainer: false,
                   elevation: 5,
-                  shadowColor: const Color(0xff200F3A),
-                  color: const Color(0xff200F3A),
+                  shadowColor: Colors.deepPurple,
+                  color: Colors.deepPurple,
                   child: Padding(
                     padding: S.edgeInsets.all5,
                     child: Row(

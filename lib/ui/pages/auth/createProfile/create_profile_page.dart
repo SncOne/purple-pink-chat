@@ -163,10 +163,7 @@ class CreateProfilePage extends HookConsumerWidget {
         elevation: 17,
         title: const Text(
           C.title,
-          style: TextStyle(
-            fontSize: 24,
-            color: Color(0xff200F3A),
-          ),
+          style: TextStyle(fontSize: 24, color: Colors.deepPurple),
         ),
       ),
       body: Padding(
@@ -183,7 +180,7 @@ class CreateProfilePage extends HookConsumerWidget {
                   child: Text(
                     t.infoAboutYou.toUpperCase(),
                     style: const TextStyle(
-                      color: Color(0xff200F3A),
+                      color: Colors.deepPurple,
                       fontSize: 15,
                     ),
                     textAlign: TextAlign.left,
@@ -204,7 +201,16 @@ class CreateProfilePage extends HookConsumerWidget {
                               child: Container(
                                 width: 100,
                                 height: 100,
-                                color: const Color(0xff200F3A),
+                                decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Colors.deepPurple,
+                                      Colors.pinkAccent
+                                    ],
+                                  ),
+                                ),
                                 child: index < imageFiles.value.length
                                     ? Image.file(
                                         File(imageFiles.value[index].path),
@@ -349,7 +355,7 @@ class CreateProfilePage extends HookConsumerWidget {
                   child: Text(
                     t.hobbies.toUpperCase(),
                     style: const TextStyle(
-                      color: Color(0xff200F3A),
+                      color: Colors.deepPurple,
                       fontSize: 15,
                     ),
                     textAlign: TextAlign.left,
@@ -390,12 +396,12 @@ class CreateProfilePage extends HookConsumerWidget {
                       choiceStyle: C2ChipStyle.filled(
                         borderWidth: 1,
                         borderStyle: BorderStyle.solid,
-                        foregroundColor: const Color(0xff200F3A),
+                        foregroundColor: Colors.deepPurple,
                         color: Colors.grey[300],
                         selectedStyle: const C2ChipStyle(
-                          borderColor: Color(0xff200F3A),
+                          borderColor: Colors.deepPurple,
                           foregroundColor: Colors.white,
-                          backgroundColor: Color(0xff200F3A),
+                          backgroundColor: Colors.deepPurple,
                         ),
                       ),
                       choiceItems: C2Choice.listFrom(
@@ -414,7 +420,7 @@ class CreateProfilePage extends HookConsumerWidget {
                     t.gender,
                     style: const TextStyle(
                       fontSize: 16,
-                      color: Color(0xff200F3A),
+                      color: Colors.deepPurple,
                     ),
                   ),
                 ),
@@ -428,12 +434,12 @@ class CreateProfilePage extends HookConsumerWidget {
                       choiceStyle: C2ChipStyle.filled(
                         borderWidth: 1,
                         borderStyle: BorderStyle.solid,
-                        foregroundColor: const Color(0xff200F3A),
+                        foregroundColor: Colors.deepPurple,
                         color: Colors.grey[300],
                         selectedStyle: const C2ChipStyle(
-                          borderColor: Color(0xff200F3A),
+                          borderColor: Colors.deepPurple,
                           foregroundColor: Colors.white,
-                          backgroundColor: Color(0xff200F3A),
+                          backgroundColor: Colors.deepPurple,
                         ),
                       ),
                       choiceItems: C2Choice.listFrom(
@@ -448,7 +454,7 @@ class CreateProfilePage extends HookConsumerWidget {
                         t.interestedGender,
                         style: const TextStyle(
                           fontSize: 14,
-                          color: Color(0xff200F3A),
+                          color: Colors.deepPurple,
                         ),
                       ),
                     ),
@@ -460,12 +466,12 @@ class CreateProfilePage extends HookConsumerWidget {
                       choiceStyle: C2ChipStyle.filled(
                         borderWidth: 1,
                         borderStyle: BorderStyle.solid,
-                        foregroundColor: const Color(0xff200F3A),
+                        foregroundColor: Colors.deepPurple,
                         color: Colors.grey[300],
                         selectedStyle: const C2ChipStyle(
-                          borderColor: Color(0xff200F3A),
+                          borderColor: Colors.deepPurple,
                           foregroundColor: Colors.white,
-                          backgroundColor: Color(0xff200F3A),
+                          backgroundColor: Colors.deepPurple,
                         ),
                       ),
                       choiceItems: C2Choice.listFrom(
@@ -480,7 +486,7 @@ class CreateProfilePage extends HookConsumerWidget {
                         t.sexualOrientation,
                         style: const TextStyle(
                           fontSize: 14,
-                          color: Color(0xff200F3A),
+                          color: Colors.deepPurple,
                         ),
                       ),
                     ),
@@ -492,12 +498,12 @@ class CreateProfilePage extends HookConsumerWidget {
                       choiceStyle: C2ChipStyle.filled(
                         borderWidth: 1,
                         borderStyle: BorderStyle.solid,
-                        foregroundColor: const Color(0xff200F3A),
+                        foregroundColor: Colors.deepPurple,
                         color: Colors.grey[300],
                         selectedStyle: const C2ChipStyle(
-                          borderColor: Color(0xff200F3A),
+                          borderColor: Colors.deepPurple,
                           foregroundColor: Colors.white,
-                          backgroundColor: Color(0xff200F3A),
+                          backgroundColor: Colors.deepPurple,
                         ),
                       ),
                       choiceItems: C2Choice.listFrom(
@@ -513,7 +519,7 @@ class CreateProfilePage extends HookConsumerWidget {
                         t.lookingFor,
                         style: const TextStyle(
                           fontSize: 14,
-                          color: Color(0xff200F3A),
+                          color: Colors.deepPurple,
                         ),
                       ),
                     ),
@@ -525,12 +531,12 @@ class CreateProfilePage extends HookConsumerWidget {
                       choiceStyle: C2ChipStyle.filled(
                         borderWidth: 1,
                         borderStyle: BorderStyle.solid,
-                        foregroundColor: const Color(0xff200F3A),
+                        foregroundColor: Colors.deepPurple,
                         color: Colors.grey[300],
                         selectedStyle: const C2ChipStyle(
-                          borderColor: Color(0xff200F3A),
+                          borderColor: Colors.deepPurple,
                           foregroundColor: Colors.white,
-                          backgroundColor: Color(0xff200F3A),
+                          backgroundColor: Colors.deepPurple,
                         ),
                       ),
                       choiceItems: C2Choice.listFrom(
@@ -549,14 +555,14 @@ class CreateProfilePage extends HookConsumerWidget {
             next: Text(
               t.next.toUpperCase(),
               style: const TextStyle(
-                color: Color(0xff200F3A),
+                color: Colors.deepPurple,
                 fontWeight: FontWeight.w600,
               ),
             ),
             done: Text(
               t.done.toUpperCase(),
               style: const TextStyle(
-                color: Color(0xff200F3A),
+                color: Colors.deepPurple,
                 fontWeight: FontWeight.w600,
               ),
             ),

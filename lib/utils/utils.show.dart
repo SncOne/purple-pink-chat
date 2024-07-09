@@ -28,7 +28,7 @@ class _Show {
         duration: const Duration(milliseconds: 250),
         padding: EdgeInsets.only(bottom: MediaQuery.of(c).viewInsets.bottom),
         child: Material(
-          color: const Color(0xff200F3A),
+          color: Colors.deepPurple,
           borderRadius:
               borderRadius ?? const BorderRadius.all(Radius.circular(16)),
           child: child,
@@ -109,7 +109,7 @@ class _Show {
             child: Container(
               margin: const EdgeInsets.only(bottom: 30.0),
               decoration: BoxDecoration(
-                color: bgColor ?? const Color(0xff200F3A),
+                color: bgColor ?? Colors.deepPurple,
                 borderRadius: borderRadius ?? S.borderRadius.radius16,
               ),
               child: Padding(

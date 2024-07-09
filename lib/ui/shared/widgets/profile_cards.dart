@@ -26,7 +26,13 @@ class ProfileCards extends HookConsumerWidget {
       builder: (userData) {
         if (userData.isEmpty) {
           return Container(
-            color: const Color(0xff200F3A),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Colors.deepPurple, Colors.pinkAccent],
+              ),
+            ),
             padding: S.edgeInsets.all20,
             margin: S.edgeInsets.all20,
             height: MediaQuery.sizeOf(context).height / 1.5,
@@ -72,7 +78,13 @@ class ProfileCards extends HookConsumerWidget {
           cardBuilder: (context, index, percentThresholdX, percentThresholdY) {
             if (index == userData.length) {
               return Container(
-                color: const Color(0xff200F3A),
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Colors.deepPurple, Colors.pinkAccent],
+                  ),
+                ),
                 padding: S.edgeInsets.all20,
                 margin: S.edgeInsets.all20,
                 height: MediaQuery.sizeOf(context).height / 1.5,

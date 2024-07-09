@@ -46,7 +46,7 @@ class WelcomePage extends StatelessWidget {
                 t.appIntro,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  color: Color(0xff200F3A),
+                  color: Colors.deepPurple,
                 ),
               ),
               S.sizedBox.h32,
@@ -54,7 +54,11 @@ class WelcomePage extends StatelessWidget {
                 child: Container(
                   padding: S.edgeInsets.all20,
                   decoration: BoxDecoration(
-                    color: const Color(0xff200F3A),
+                    gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Colors.deepPurple, Colors.pinkAccent],
+                    ),
                     borderRadius: S.borderRadius.radius50,
                   ),
                   child: Row(

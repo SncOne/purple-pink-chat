@@ -11,7 +11,7 @@ class ImageViewerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff200F3A),
+      backgroundColor: Colors.deepPurple,
       body: Stack(
         children: [
           Center(

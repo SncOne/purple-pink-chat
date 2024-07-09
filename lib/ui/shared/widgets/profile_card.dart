@@ -87,7 +87,7 @@ class ProfileCard extends ConsumerWidget {
                         user.isValidated
                             ? const Icon(
                                 Icons.check_circle_outline_outlined,
-                                color: Color(0xff200F3A),
+                                color: Colors.deepPurple,
                               )
                             : const Icon(
                                 Icons.check_circle_rounded,

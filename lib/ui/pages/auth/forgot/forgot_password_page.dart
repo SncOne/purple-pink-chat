@@ -36,7 +36,7 @@ class ForgotPasswordPage extends HookConsumerWidget {
             C.title,
             style: TextStyle(
               fontSize: 24,
-              color: Color(0xff200F3A),
+              color: Colors.deepPurple,
             ),
           ),
         ),
@@ -54,7 +54,7 @@ class ForgotPasswordPage extends HookConsumerWidget {
                 child: Text(
                   t.forgotPw,
                   style: const TextStyle(
-                    color: Color(0xff200F3A),
+                    color: Colors.deepPurple,
                     fontSize: 15,
                   ),
                   textAlign: TextAlign.left,
@@ -90,7 +90,11 @@ class ForgotPasswordPage extends HookConsumerWidget {
                 child: Container(
                   padding: S.edgeInsets.all20,
                   decoration: BoxDecoration(
-                    color: const Color(0xff200F3A),
+                    gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Colors.deepPurple, Colors.pinkAccent],
+                    ),
                     borderRadius: S.borderRadius.radius50,
                   ),
                   child: Row(

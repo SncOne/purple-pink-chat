@@ -34,7 +34,7 @@ class LoginPage extends HookConsumerWidget {
           C.title,
           style: TextStyle(
             fontSize: 24,
-            color: Color(0xff200F3A),
+            color: Colors.deepPurple,
           ),
         ),
       ),
@@ -51,7 +51,7 @@ class LoginPage extends HookConsumerWidget {
                 child: Text(
                   t.login,
                   style: const TextStyle(
-                    color: Color(0xff200F3A),
+                    color: Colors.deepPurple,
                     fontSize: 15,
                   ),
                   textAlign: TextAlign.left,
@@ -60,7 +60,11 @@ class LoginPage extends HookConsumerWidget {
               S.sizedBox.h32,
               Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xff52388A),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Colors.deepPurple, Colors.pinkAccent],
+                  ),
                   borderRadius: S.borderRadius.radius50,
                 ),
                 child: FormBuilderTextField(
@@ -85,7 +89,11 @@ class LoginPage extends HookConsumerWidget {
               S.sizedBox.h12,
               Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xff52388A),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Colors.deepPurple, Colors.pinkAccent],
+                  ),
                   borderRadius: S.borderRadius.radius50,
                 ),
                 child: FormBuilderTextField(
@@ -120,7 +128,7 @@ class LoginPage extends HookConsumerWidget {
                   child: Text(
                     t.forgotPw,
                     style: const TextStyle(
-                      color: Color(0xff200F3A),
+                      color: Colors.deepPurple,
                       fontSize: 15,
                     ),
                     textAlign: TextAlign.right,
@@ -132,7 +140,11 @@ class LoginPage extends HookConsumerWidget {
                 child: Container(
                   padding: S.edgeInsets.all20,
                   decoration: BoxDecoration(
-                    color: const Color(0xff200F3A),
+                    gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Colors.deepPurple, Colors.pinkAccent],
+                    ),
                     borderRadius: S.borderRadius.radius50,
                   ),
                   child: Row(
@@ -177,7 +189,7 @@ class LoginPage extends HookConsumerWidget {
               Text(
                 t.dontHaveAccount,
                 style: const TextStyle(
-                  color: Color(0xff200F3A),
+                  color: Colors.deepPurple,
                   fontSize: 15,
                 ),
               ),
@@ -187,7 +199,7 @@ class LoginPage extends HookConsumerWidget {
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xff200F3A),
+                    color: Colors.deepPurple,
                   ),
                 ),
                 onTap: () {

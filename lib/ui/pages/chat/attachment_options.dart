@@ -81,7 +81,7 @@ class AttachmentButton extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: const Color(0xff200F3A),
+              color: Colors.deepPurple,
             ),
             S.sizedBox.w12,
             Text(text),

@@ -93,7 +93,13 @@ class MatchingService {
             builder: (BuildContext context) {
               return Center(
                 child: Container(
-                  color: const Color(0xff200F3A),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Colors.deepPurple, Colors.pinkAccent],
+                    ),
+                  ),
                   height: 600,
                   child: Stack(
                     alignment: Alignment.center,

@@ -57,7 +57,11 @@ class ProfilePage extends HookConsumerWidget {
                           margin: const EdgeInsets.only(top: 50),
                           padding: const EdgeInsets.all(20),
                           decoration: BoxDecoration(
-                            color: const Color(0xff200F3A),
+                            gradient: const LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [Colors.deepPurple, Colors.pinkAccent],
+                            ),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Column(
@@ -107,7 +111,7 @@ class ProfilePage extends HookConsumerWidget {
                                 decoration: BoxDecoration(
                                   borderRadius: S.borderRadius.radius50,
                                   border: Border.all(
-                                    color: const Color(0xff200F3A),
+                                    color: Colors.deepPurple,
                                     width: 3,
                                   ),
                                 ),

@@ -196,7 +196,7 @@ class EditProfilePage extends HookConsumerWidget {
           C.title,
           style: TextStyle(
             fontSize: 24,
-            color: Color(0xff200F3A),
+            color: Colors.deepPurple,
           ),
         ),
       ),
@@ -214,7 +214,7 @@ class EditProfilePage extends HookConsumerWidget {
                   child: Text(
                     t.infoAboutYou.toUpperCase(),
                     style: const TextStyle(
-                      color: Color(0xff200F3A),
+                      color: Colors.deepPurple,
                       fontSize: 15,
                     ),
                     textAlign: TextAlign.left,
@@ -235,7 +235,7 @@ class EditProfilePage extends HookConsumerWidget {
                               child: Container(
                                 width: 100,
                                 height: 100,
-                                color: const Color(0xff200F3A),
+                                color: Colors.deepPurple,
                                 child: index < imageFiles.value.length
                                     ? (Uri.tryParse(imageFiles
                                                     .value[index].path)
@@ -389,7 +389,7 @@ class EditProfilePage extends HookConsumerWidget {
                   child: Text(
                     t.hobbies.toUpperCase(),
                     style: const TextStyle(
-                      color: Color(0xff200F3A),
+                      color: Colors.deepPurple,
                       fontSize: 15,
                     ),
                     textAlign: TextAlign.left,
@@ -430,12 +430,12 @@ class EditProfilePage extends HookConsumerWidget {
                       choiceStyle: C2ChipStyle.filled(
                         borderWidth: 1,
                         borderStyle: BorderStyle.solid,
-                        foregroundColor: const Color(0xff200F3A),
+                        foregroundColor: Colors.deepPurple,
                         color: Colors.grey[300],
                         selectedStyle: const C2ChipStyle(
-                          borderColor: Color(0xff200F3A),
+                          borderColor: Colors.deepPurple,
                           foregroundColor: Colors.white,
-                          backgroundColor: Color(0xff200F3A),
+                          backgroundColor: Colors.deepPurple,
                         ),
                       ),
                       choiceItems: C2Choice.listFrom(
@@ -454,7 +454,7 @@ class EditProfilePage extends HookConsumerWidget {
                     t.gender,
                     style: const TextStyle(
                       fontSize: 16,
-                      color: Color(0xff200F3A),
+                      color: Colors.deepPurple,
                     ),
                   ),
                 ),
@@ -468,12 +468,12 @@ class EditProfilePage extends HookConsumerWidget {
                       choiceStyle: C2ChipStyle.filled(
                         borderWidth: 1,
                         borderStyle: BorderStyle.solid,
-                        foregroundColor: const Color(0xff200F3A),
+                        foregroundColor: Colors.deepPurple,
                         color: Colors.grey[300],
                         selectedStyle: const C2ChipStyle(
-                          borderColor: Color(0xff200F3A),
+                          borderColor: Colors.deepPurple,
                           foregroundColor: Colors.white,
-                          backgroundColor: Color(0xff200F3A),
+                          backgroundColor: Colors.deepPurple,
                         ),
                       ),
                       choiceItems: C2Choice.listFrom(
@@ -488,7 +488,7 @@ class EditProfilePage extends HookConsumerWidget {
                         t.interestedGender,
                         style: const TextStyle(
                           fontSize: 14,
-                          color: Color(0xff200F3A),
+                          color: Colors.deepPurple,
                         ),
                       ),
                     ),
@@ -500,12 +500,12 @@ class EditProfilePage extends HookConsumerWidget {
                       choiceStyle: C2ChipStyle.filled(
                         borderWidth: 1,
                         borderStyle: BorderStyle.solid,
-                        foregroundColor: const Color(0xff200F3A),
+                        foregroundColor: Colors.deepPurple,
                         color: Colors.grey[300],
                         selectedStyle: const C2ChipStyle(
-                          borderColor: Color(0xff200F3A),
+                          borderColor: Colors.deepPurple,
                           foregroundColor: Colors.white,
-                          backgroundColor: Color(0xff200F3A),
+                          backgroundColor: Colors.deepPurple,
                         ),
                       ),
                       choiceItems: C2Choice.listFrom(
@@ -520,7 +520,7 @@ class EditProfilePage extends HookConsumerWidget {
                         t.sexualOrientation,
                         style: const TextStyle(
                           fontSize: 14,
-                          color: Color(0xff200F3A),
+                          color: Colors.deepPurple,
                         ),
                       ),
                     ),
@@ -532,12 +532,12 @@ class EditProfilePage extends HookConsumerWidget {
                       choiceStyle: C2ChipStyle.filled(
                         borderWidth: 1,
                         borderStyle: BorderStyle.solid,
-                        foregroundColor: const Color(0xff200F3A),
+                        foregroundColor: Colors.deepPurple,
                         color: Colors.grey[300],
                         selectedStyle: const C2ChipStyle(
-                          borderColor: Color(0xff200F3A),
+                          borderColor: Colors.deepPurple,
                           foregroundColor: Colors.white,
-                          backgroundColor: Color(0xff200F3A),
+                          backgroundColor: Colors.deepPurple,
                         ),
                       ),
                       choiceItems: C2Choice.listFrom(
@@ -553,7 +553,7 @@ class EditProfilePage extends HookConsumerWidget {
                         t.lookingFor,
                         style: const TextStyle(
                           fontSize: 14,
-                          color: Color(0xff200F3A),
+                          color: Colors.deepPurple,
                         ),
                       ),
                     ),
@@ -565,12 +565,12 @@ class EditProfilePage extends HookConsumerWidget {
                       choiceStyle: C2ChipStyle.filled(
                         borderWidth: 1,
                         borderStyle: BorderStyle.solid,
-                        foregroundColor: const Color(0xff200F3A),
+                        foregroundColor: Colors.deepPurple,
                         color: Colors.grey[300],
                         selectedStyle: const C2ChipStyle(
-                          borderColor: Color(0xff200F3A),
+                          borderColor: Colors.deepPurple,
                           foregroundColor: Colors.white,
-                          backgroundColor: Color(0xff200F3A),
+                          backgroundColor: Colors.deepPurple,
                         ),
                       ),
                       choiceItems: C2Choice.listFrom(
@@ -589,14 +589,14 @@ class EditProfilePage extends HookConsumerWidget {
             next: Text(
               t.next.toUpperCase(),
               style: const TextStyle(
-                color: Color(0xff200F3A),
+                color: Colors.deepPurple,
                 fontWeight: FontWeight.w600,
               ),
             ),
             done: Text(
               t.done.toUpperCase(),
               style: const TextStyle(
-                color: Color(0xff200F3A),
+                color: Colors.deepPurple,
                 fontWeight: FontWeight.w600,
               ),
             ),

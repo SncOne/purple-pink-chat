@@ -17,7 +17,11 @@ class CustomBottomNavigationBar extends HookWidget {
         showLabel: false,
         shadowElevation: 5,
         kBottomRadius: 28.0,
-        notchColor: const Color(0xff200F3A),
+        notchGradient: const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomRight,
+          colors: [Colors.deepPurple, Colors.pinkAccent],
+        ),
         removeMargins: false,
         bottomBarWidth: 500,
         durationInMilliSeconds: 300,
@@ -31,7 +35,7 @@ class CustomBottomNavigationBar extends HookWidget {
             ),
             inActiveItem: const Icon(
               Icons.explore,
-              color: Color(0xff200F3A),
+              color: Colors.deepPurple,
             ),
             itemLabel: t.discover,
           ),
@@ -42,7 +46,7 @@ class CustomBottomNavigationBar extends HookWidget {
             ),
             inActiveItem: const Icon(
               Icons.message,
-              color: Color(0xff200F3A),
+              color: Colors.deepPurple,
             ),
             itemLabel: t.messages,
           ),
@@ -53,7 +57,7 @@ class CustomBottomNavigationBar extends HookWidget {
             ),
             inActiveItem: const Icon(
               Icons.favorite_border,
-              color: Color(0xff200F3A),
+              color: Colors.deepPurple,
             ),
             itemLabel: t.likes,
           ),
@@ -64,7 +68,7 @@ class CustomBottomNavigationBar extends HookWidget {
             ),
             inActiveItem: const Icon(
               Icons.person,
-              color: Color(0xff200F3A),
+              color: Colors.deepPurple,
             ),
             itemLabel: t.profile,
           ),
