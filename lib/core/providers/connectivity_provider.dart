@@ -1,43 +1,42 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:catt_catt/main.dart';
+import 'package:catt_catt/utils/app_router.dart';
+import 'package:catt_catt/utils/print.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final connectivityProvider = StateNotifierProvider<ConnectivityService, bool>(
-  (_) => ConnectivityService().._init(),
-);
+final connectivityProvider =
+    StateNotifierProvider<ConnectivityService, ConnectivityResult>((ref) {
+  return ConnectivityService()..init();
+});
 
-class ConnectivityService extends StateNotifier<bool> {
-  ConnectivityService() : super(true);
+class ConnectivityService extends StateNotifier<ConnectivityResult> {
+  ConnectivityService() : super(ConnectivityResult.none);
 
-  final _conn = Connectivity();
+  final _connectivity = Connectivity();
 
-  Connectivity get conn => _conn;
-
-  Future<void> _init() async {
-    final e = await _conn.checkConnectivity();
-    state = _check(e.first);
-    if (!state) _action();
-    _conn.onConnectivityChanged.listen((e) {
-      state = _check(e.first);
-      if (!state) _action();
+  void init() {
+    _connectivity.onConnectivityChanged.listen((results) {
+      if (results.isNotEmpty) {
+        state = results.first;
+        if (state == ConnectivityResult.none) {
+          whenConnectionLost();
+        } else {
+          whenConnectionComeBack();
+        }
+      }
     });
   }
 
-  bool _check(ConnectivityResult e) {
-    return e == ConnectivityResult.none ? false : true;
+  void whenConnectionLost() {
+    Print.error('Connection lost');
+    final router = AutoRouter.of(appRouter.navigatorKey.currentContext!);
+    router.push(const NoConnectionRoute());
   }
 
-  // Run when connection lost
-  void _action() {
-    if (state) {
-      whenConnectionComeBack();
-    } else {
-      whenConnectionLost();
-    }
+  void whenConnectionComeBack() {
+    Print.error('Connection came back');
+    final router = AutoRouter.of(appRouter.navigatorKey.currentContext!);
+    router.canPop();
   }
-
-  /// Custom behaivor when the app lost the internet connection
-  void whenConnectionLost() {}
-
-  /// Custom behaivor when the app get back the internet connection
-  void whenConnectionComeBack() {}
 }
