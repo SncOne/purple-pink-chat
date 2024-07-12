@@ -54,6 +54,8 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: OnboardingRoute.page),
         AutoRoute(page: ChatRoute.page),
         AutoRoute(page: ProfileDetailsRoute.page),
+        AutoRoute(page: NotFoundRoute.page),
+        AutoRoute(page: NoConnectionRoute.page),
       ];
 }
 

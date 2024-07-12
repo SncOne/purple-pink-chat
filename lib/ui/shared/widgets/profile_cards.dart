@@ -35,7 +35,7 @@ class ProfileCards extends HookConsumerWidget {
             ),
             padding: S.edgeInsets.all20,
             margin: S.edgeInsets.all20,
-            height: MediaQuery.sizeOf(context).height / 1.5,
+            height: MediaQuery.sizeOf(context).height / 1.52,
             alignment: Alignment.center,
             child: Text(
               t.noProfile,
@@ -87,7 +87,7 @@ class ProfileCards extends HookConsumerWidget {
                 ),
                 padding: S.edgeInsets.all20,
                 margin: S.edgeInsets.all20,
-                height: MediaQuery.sizeOf(context).height / 1.5,
+                height: MediaQuery.sizeOf(context).height / 1.52,
                 alignment: Alignment.center,
                 child: Text(
                   t.noDataAvailable,

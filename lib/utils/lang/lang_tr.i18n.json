@@ -162,5 +162,9 @@
   "apply": "Onayla",
   "everyone": "Herkes",
   "age": "Yaş",
-  "startTexting": "Burada gösterecek bir şey yok. Yeni bir sohbet başlatın."
+  "startTexting": "Burada gösterecek bir şey yok. Yeni bir sohbet başlatın.",
+  "noConnectionTitle": "Oops! Bağlantı Yok",
+  "noConnectionDescription": "İnternet bağlantınızda bir sorun var gibi görünüyor. Lütfen internet bağlantınızı kontrol edin. Biz bekliyor olacağız!!",
+  "notFoundTitle": "Sayfa Bulunamadı",
+  "notFoundDescription": "Üzgünüz, aradığınız sayfayı bulamadık. Lütfen URL'yi kontrol edin veya ana sayfaya geri dönün."
 }

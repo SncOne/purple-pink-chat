@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 308 (154 per locale)
+/// Strings: 316 (158 per locale)
 ///
-/// Built on 2024-07-08 at 09:52 UTC
+/// Built on 2024-07-12 at 16:49 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -415,6 +415,10 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get everyone => 'Everyone';
 	String get age => 'Age';
 	String get startTexting => 'Nothing to show here yet.Start a new conversation';
+	String get noConnectionTitle => 'Oopps! No Connection';
+	String get noConnectionDescription => 'It seems like there is something wrong with your internet connection. Please check your internet connection. We will wait!!';
+	String get notFoundTitle => 'Page Not Found';
+	String get notFoundDescription => 'Sorry, we couldn\'t find the page you were looking for. Please check the URL or go back to the homepage.';
 }
 
 // Path: loginState
@@ -663,6 +667,10 @@ class _StringsTr implements Translations {
 	@override String get everyone => 'Herkes';
 	@override String get age => 'Yaş';
 	@override String get startTexting => 'Burada gösterecek bir şey yok. Yeni bir sohbet başlatın.';
+	@override String get noConnectionTitle => 'Oops! Bağlantı Yok';
+	@override String get noConnectionDescription => 'İnternet bağlantınızda bir sorun var gibi görünüyor. Lütfen internet bağlantınızı kontrol edin. Biz bekliyor olacağız!!';
+	@override String get notFoundTitle => 'Sayfa Bulunamadı';
+	@override String get notFoundDescription => 'Üzgünüz, aradığınız sayfayı bulamadık. Lütfen URL\'yi kontrol edin veya ana sayfaya geri dönün.';
 }
 
 // Path: loginState
@@ -894,6 +902,10 @@ extension on Translations {
 			case 'everyone': return 'Everyone';
 			case 'age': return 'Age';
 			case 'startTexting': return 'Nothing to show here yet.Start a new conversation';
+			case 'noConnectionTitle': return 'Oopps! No Connection';
+			case 'noConnectionDescription': return 'It seems like there is something wrong with your internet connection. Please check your internet connection. We will wait!!';
+			case 'notFoundTitle': return 'Page Not Found';
+			case 'notFoundDescription': return 'Sorry, we couldn\'t find the page you were looking for. Please check the URL or go back to the homepage.';
 			default: return null;
 		}
 	}
@@ -1114,6 +1126,10 @@ extension on _StringsTr {
 			case 'everyone': return 'Herkes';
 			case 'age': return 'Yaş';
 			case 'startTexting': return 'Burada gösterecek bir şey yok. Yeni bir sohbet başlatın.';
+			case 'noConnectionTitle': return 'Oops! Bağlantı Yok';
+			case 'noConnectionDescription': return 'İnternet bağlantınızda bir sorun var gibi görünüyor. Lütfen internet bağlantınızı kontrol edin. Biz bekliyor olacağız!!';
+			case 'notFoundTitle': return 'Sayfa Bulunamadı';
+			case 'notFoundDescription': return 'Üzgünüz, aradığınız sayfayı bulamadık. Lütfen URL\'yi kontrol edin veya ana sayfaya geri dönün.';
 			default: return null;
 		}
 	}

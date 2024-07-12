@@ -37,6 +37,6 @@ class ConnectivityService extends StateNotifier<ConnectivityResult> {
   void whenConnectionComeBack() {
     Print.error('Connection came back');
     final router = AutoRouter.of(appRouter.navigatorKey.currentContext!);
-    router.canPop();
+    router.maybePop();
   }
 }

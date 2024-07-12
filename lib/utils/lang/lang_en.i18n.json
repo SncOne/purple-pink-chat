@@ -162,5 +162,9 @@
   "apply": "Apply",
   "everyone": "Everyone",
   "age": "Age",
-  "startTexting": "Nothing to show here yet.Start a new conversation"
+  "startTexting": "Nothing to show here yet.Start a new conversation",
+  "noConnectionTitle": "Oopps! No Connection",
+  "noConnectionDescription": "It seems like there is something wrong with your internet connection. Please check your internet connection. We will wait!!",
+  "notFoundTitle": "Page Not Found",
+  "notFoundDescription": "Sorry, we couldn't find the page you were looking for. Please check the URL or go back to the homepage."
 }

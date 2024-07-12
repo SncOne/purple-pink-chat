@@ -34,6 +34,7 @@ class _Images {
   final logo = '$path/logo.png';
   final welcomePhoto1 = '$path/welcome_photo_1.png';
   final welcomePhoto2 = '$path/welcome_photo_2.png';
+  final noConnection = '$path/no-connection.jpg';
   final welcomePhoto3 = '$path/welcome_photo_3.png';
   final welcomePhoto4 = '$path/welcome_photo_4.png';
   final logoSquare = '$path/logo_square.png';

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:catt_catt/core/models/user.dart';
 import 'package:catt_catt/core/providers/providers.dart';
 import 'package:catt_catt/core/services/matching_service.dart';
+import 'package:catt_catt/ui/pages/chat/chat_provider.dart';
 import 'package:catt_catt/ui/shared/widgets/async_widget.dart';
 import 'package:catt_catt/ui/shared/widgets/custom_image.dart';
 import 'package:catt_catt/ui/shared/widgets/image_viewer.dart';
@@ -203,6 +204,7 @@ class ProfileDetailsPage extends HookConsumerWidget {
               );
 
               if (context.mounted) {
+                ref.read(selectedRoomProvider.notifier).setRoom(room);
                 context.router.push(ChatRoute(roomId: room.id));
               }
             } else {
